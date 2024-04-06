@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
+import 'package:onboarding_app/pages/login_page.dart';
 import 'package:onboarding_app/pages/welcome_page.dart';
 
 void main() {
@@ -14,6 +15,9 @@ class MyApp extends StatelessWidget {
     return MaterialApp(
       theme: _buildTheme(Brightness.light),
       home: const WelcomePage(),
+      routes: {
+        "/login": (context) => const LoginPage(),
+      },
     );
   }
 

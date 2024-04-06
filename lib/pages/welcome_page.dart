@@ -48,7 +48,9 @@ class WelcomePage extends StatelessWidget {
                   mainAxisAlignment: MainAxisAlignment.spaceBetween,
                   children: [
                     ElevatedButton(
-                      onPressed: () {},
+                      onPressed: () {
+                        Navigator.pushNamed(context, "/login");
+                      },
                       style: ElevatedButton.styleFrom(
                         backgroundColor: const Color(0xFF1F41BB),
                         foregroundColor: Colors.white,
