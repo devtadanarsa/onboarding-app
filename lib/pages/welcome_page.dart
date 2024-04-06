@@ -69,7 +69,9 @@ class WelcomePage extends StatelessWidget {
                       ),
                     ),
                     ElevatedButton(
-                      onPressed: () {},
+                      onPressed: () {
+                        Navigator.pushNamed(context, "/register");
+                      },
                       style: ElevatedButton.styleFrom(
                         side: const BorderSide(
                           color: Color(0xFF1F41BB),
