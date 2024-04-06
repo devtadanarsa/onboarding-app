@@ -1,3 +1,6 @@
+import 'dart:async';
+
+import 'package:email_validator/email_validator.dart';
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
 
@@ -11,6 +14,13 @@ class RegisterPage extends StatefulWidget {
 class _RegisterPageState extends State<RegisterPage> {
   bool _passwordHidden = true;
   bool _confirmPasswordHidden = true;
+  bool _invalidInput = false;
+
+  final TextEditingController _emailController = TextEditingController();
+  final TextEditingController _passwordController = TextEditingController();
+  final TextEditingController _confirmPasswordController =
+      TextEditingController();
+  String _warningText = "";
 
   void onPasswordOpenTap() {
     setState(() {
@@ -22,6 +32,33 @@ class _RegisterPageState extends State<RegisterPage> {
     setState(() {
       _confirmPasswordHidden = !_confirmPasswordHidden;
     });
+  }
+
+  void onRegisterTap() {
+    if (!EmailValidator.validate(_emailController.text)) {
+      setState(() {
+        _invalidInput = true;
+        Timer(const Duration(seconds: 3), () {
+          setState(() {
+            _invalidInput = false;
+          });
+        });
+        _warningText = "Please enter a valid email";
+      });
+    } else if (_passwordController.text.isEmpty ||
+        _confirmPasswordController.text.isEmpty) {
+      setState(() {
+        _invalidInput = true;
+        Timer(const Duration(seconds: 3), () {
+          setState(() {
+            _invalidInput = false;
+          });
+        });
+        _warningText = "Password can't be empty!";
+      });
+    } else {
+      Navigator.pushNamed(context, "/login");
+    }
   }
 
   @override
@@ -60,10 +97,11 @@ class _RegisterPageState extends State<RegisterPage> {
                   ),
                 ),
               ),
-              const Padding(
-                padding: EdgeInsets.only(top: 60),
+              Padding(
+                padding: const EdgeInsets.only(top: 60),
                 child: TextField(
-                  decoration: InputDecoration(
+                  controller: _emailController,
+                  decoration: const InputDecoration(
                     hintText: "Email",
                     contentPadding: EdgeInsets.all(20),
                     enabledBorder: OutlineInputBorder(
@@ -83,6 +121,7 @@ class _RegisterPageState extends State<RegisterPage> {
               Padding(
                 padding: const EdgeInsets.only(top: 20),
                 child: TextField(
+                  controller: _passwordController,
                   obscureText: _passwordHidden,
                   decoration: InputDecoration(
                     hintText: "Password",
@@ -115,6 +154,7 @@ class _RegisterPageState extends State<RegisterPage> {
               Padding(
                 padding: const EdgeInsets.only(top: 20),
                 child: TextField(
+                  controller: _confirmPasswordController,
                   obscureText: _confirmPasswordHidden,
                   decoration: InputDecoration(
                     hintText: "Confirm Password",
@@ -147,7 +187,9 @@ class _RegisterPageState extends State<RegisterPage> {
               Padding(
                 padding: const EdgeInsets.only(top: 50),
                 child: ElevatedButton(
-                  onPressed: () {},
+                  onPressed: () {
+                    onRegisterTap();
+                  },
                   style: ElevatedButton.styleFrom(
                     backgroundColor: const Color(0xFF1F41BB),
                     foregroundColor: Colors.white,
@@ -163,6 +205,21 @@ class _RegisterPageState extends State<RegisterPage> {
                       style: TextStyle(
                         fontWeight: FontWeight.w600,
                         fontSize: 20,
+                      ),
+                    ),
+                  ),
+                ),
+              ),
+              Visibility(
+                visible: _invalidInput,
+                child: Container(
+                  padding: const EdgeInsets.only(top: 10),
+                  child: Center(
+                    child: Text(
+                      _warningText,
+                      style: const TextStyle(
+                        color: Colors.red,
+                        fontWeight: FontWeight.bold,
                       ),
                     ),
                   ),

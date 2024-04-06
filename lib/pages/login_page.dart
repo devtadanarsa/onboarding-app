@@ -1,3 +1,6 @@
+import 'dart:async';
+
+import 'package:email_validator/email_validator.dart';
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
 
@@ -22,7 +25,31 @@ class _LoginPageState extends State<LoginPage> {
     });
   }
 
-  void onSignInTap() {}
+  void onSignInTap() {
+    if (!EmailValidator.validate(_emailController.text)) {
+      setState(() {
+        _invalidInput = true;
+        Timer(const Duration(seconds: 3), () {
+          setState(() {
+            _invalidInput = false;
+          });
+        });
+        _warningText = "Please enter a valid email";
+      });
+    } else if (_passwordController.text.isEmpty) {
+      setState(() {
+        _invalidInput = true;
+        Timer(const Duration(seconds: 3), () {
+          setState(() {
+            _invalidInput = false;
+          });
+        });
+        _warningText = "Password can't be empty!";
+      });
+    } else {
+      Navigator.pushNamed(context, "/otp");
+    }
+  }
 
   @override
   Widget build(BuildContext context) {
