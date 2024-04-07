@@ -61,12 +61,7 @@ class _OTPPageState extends State<OTPPage> {
                   numberOfFields: 4,
                   onSubmit: (String verificationCode) {
                     if (verificationCode == "1060") {
-                      Navigator.push(
-                        context,
-                        MaterialPageRoute(
-                          builder: (context) => const HomePage(),
-                        ),
-                      );
+                      Navigator.pushNamed(context, "/home");
                     } else {
                       showDialog(
                         context: context,
