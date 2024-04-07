@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
-import 'package:onboarding_app/pages/home_page.dart';
 import 'package:onboarding_app/pages/login_page.dart';
+import 'package:onboarding_app/pages/main/main_layout.dart';
 import 'package:onboarding_app/pages/otp_page.dart';
 import 'package:onboarding_app/pages/register_page.dart';
 import 'package:onboarding_app/pages/welcome_page.dart';
@@ -22,7 +22,7 @@ class MyApp extends StatelessWidget {
         "/login": (context) => const LoginPage(),
         "/register": (context) => const RegisterPage(),
         "/otp": (context) => const OTPPage(),
-        "/home": (context) => HomePage(),
+        "/home": (context) => MainLayout(),
       },
     );
   }
