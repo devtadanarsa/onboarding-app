@@ -60,6 +60,9 @@ flutter:
     - assets/work-from-home.png
     - assets/otp-image.png
     - assets/profile-image.jpeg
+    - assets/companies/gojek-icon.png
+    - assets/companies/elux-icon.png
+    - assets/companies/djitugo-icon.jpeg
   # The following line ensures that the Material Icons font is
   # included with your application, so that you can use the icons in
   # the material Icons class.

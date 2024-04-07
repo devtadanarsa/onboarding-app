@@ -1,8 +1,36 @@
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
+import 'package:onboarding_app/util/featured_card.dart';
 
 class HomePage extends StatelessWidget {
-  const HomePage({super.key});
+  HomePage({super.key});
+
+  final List featuredList = [
+    {
+      "companyName": "Gojek",
+      "companyLocation": "Jakarta",
+      "jobTitle": "Software Engineer",
+      "jobLocation": "Anywhere",
+      "salary": "\$50K - \$60K",
+      "imageUrl": "assets/companies/gojek-icon.png"
+    },
+    {
+      "companyName": "Elux Space",
+      "companyLocation": "Malang",
+      "jobTitle": "UI/UX Designer",
+      "jobLocation": "On-Site",
+      "salary": "\$10K - \$30K",
+      "imageUrl": "assets/companies/elux-icon.png"
+    },
+    {
+      "companyName": "Djitugo",
+      "companyLocation": "Denpasar",
+      "jobTitle": "Web Developer",
+      "jobLocation": "On-Site",
+      "salary": "\$20K - \$30K",
+      "imageUrl": "assets/companies/djitugo-icon.jpeg"
+    },
+  ];
 
   @override
   Widget build(BuildContext context) {
@@ -140,6 +168,52 @@ class HomePage extends StatelessWidget {
                     ),
                   ),
                 ],
+              ),
+            ),
+            const Padding(
+              padding: EdgeInsets.only(top: 30),
+              child: Row(
+                mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                crossAxisAlignment: CrossAxisAlignment.center,
+                children: [
+                  Text(
+                    "Featured Jobs",
+                    style: TextStyle(
+                      fontSize: 17,
+                      fontWeight: FontWeight.bold,
+                    ),
+                  ),
+                  Text(
+                    "See All",
+                    style: TextStyle(
+                      color: Color.fromRGBO(31, 65, 187, 1),
+                      fontWeight: FontWeight.bold,
+                    ),
+                  ),
+                ],
+              ),
+            ),
+            Padding(
+              padding: const EdgeInsets.only(top: 20),
+              child: SizedBox(
+                height: 170,
+                child: ListView.builder(
+                  scrollDirection: Axis.horizontal,
+                  itemCount: featuredList.length,
+                  itemBuilder: (context, index) {
+                    return Container(
+                      margin: EdgeInsets.only(left: (index == 0 ? 0 : 10)),
+                      child: FeaturedCard(
+                        companyName: featuredList[index]["companyName"],
+                        companyLocation: featuredList[index]["companyLocation"],
+                        jobTitle: featuredList[index]["jobTitle"],
+                        jobLocation: featuredList[index]["jobLocation"],
+                        salary: featuredList[index]["salary"],
+                        imageUrl: featuredList[index]["imageUrl"],
+                      ),
+                    );
+                  },
+                ),
               ),
             ),
           ],
