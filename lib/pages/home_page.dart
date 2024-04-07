@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:onboarding_app/util/featured_card.dart';
+import 'package:onboarding_app/util/recommendation_card.dart';
 
 class HomePage extends StatelessWidget {
   HomePage({super.key});
@@ -29,6 +30,30 @@ class HomePage extends StatelessWidget {
       "jobLocation": "On-Site",
       "salary": "\$20K - \$30K",
       "imageUrl": "assets/companies/djitugo-icon.jpeg"
+    },
+  ];
+
+  final List recommendationList = [
+    {
+      "companyName": "Tokopedia",
+      "companyLocation": "Jakarta • Indonesia",
+      "jobTitle": "Software Engineer",
+      "jobLocation": "Onsite",
+      "imageUrl": "assets/companies/tokopedia-icon.jpeg"
+    },
+    {
+      "companyName": "Laksita Emi Saguna",
+      "companyLocation": "Bali • Indonesia",
+      "jobTitle": "Data Engineer",
+      "jobLocation": "Onsite",
+      "imageUrl": "assets/companies/laksita-icon.png"
+    },
+    {
+      "companyName": "eFishery Indonesia",
+      "companyLocation": "Bandung • Indonesia",
+      "jobTitle": "Graphic Designer",
+      "jobLocation": "Onsite",
+      "imageUrl": "assets/companies/efishery-icon.png"
     },
   ];
 
@@ -213,6 +238,52 @@ class HomePage extends StatelessWidget {
                       ),
                     );
                   },
+                ),
+              ),
+            ),
+            const Padding(
+              padding: EdgeInsets.only(top: 30),
+              child: Row(
+                mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                crossAxisAlignment: CrossAxisAlignment.center,
+                children: [
+                  Text(
+                    "Recommendation",
+                    style: TextStyle(
+                      fontSize: 17,
+                      fontWeight: FontWeight.bold,
+                    ),
+                  ),
+                  Text(
+                    "See All",
+                    style: TextStyle(
+                      color: Color.fromRGBO(31, 65, 187, 1),
+                      fontWeight: FontWeight.bold,
+                    ),
+                  ),
+                ],
+              ),
+            ),
+            Padding(
+              padding: const EdgeInsets.only(top: 20, bottom: 20),
+              child: SizedBox(
+                child: SingleChildScrollView(
+                  physics: const NeverScrollableScrollPhysics(),
+                  child: Column(
+                    children: List.generate(recommendationList.length, (index) {
+                      return Container(
+                        margin: EdgeInsets.only(top: (index == 0 ? 0 : 10)),
+                        child: RecommendationCard(
+                          companyName: recommendationList[index]["companyName"],
+                          companyLocation: recommendationList[index]
+                              ["companyLocation"],
+                          jobTitle: recommendationList[index]["jobTitle"],
+                          jobLocation: recommendationList[index]["jobLocation"],
+                          imageUrl: recommendationList[index]["imageUrl"],
+                        ),
+                      );
+                    }),
+                  ),
                 ),
               ),
             ),

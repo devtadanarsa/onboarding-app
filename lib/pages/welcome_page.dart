@@ -15,7 +15,7 @@ class WelcomePage extends StatelessWidget {
           ),
         ),
         child: Padding(
-          padding: const EdgeInsets.only(left: 40, right: 40),
+          padding: const EdgeInsets.only(left: 30, right: 30),
           child: Column(
             mainAxisAlignment: MainAxisAlignment.center,
             children: [
