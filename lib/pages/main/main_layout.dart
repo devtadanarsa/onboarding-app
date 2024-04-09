@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:onboarding_app/pages/main/home_page.dart';
 import 'package:onboarding_app/pages/main/search_page.dart';
+import 'package:onboarding_app/pages/main/unfinished_page.dart';
 
 class MainLayout extends StatefulWidget {
   const MainLayout({super.key});
@@ -15,8 +16,8 @@ class _MainLayoutState extends State<MainLayout> {
   final List _pages = [
     HomePage(),
     SearchPage(),
-    HomePage(),
-    HomePage(),
+    const UnfinishedPage(),
+    const UnfinishedPage(),
   ];
 
   @override
