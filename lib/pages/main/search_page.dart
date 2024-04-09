@@ -1,8 +1,61 @@
 import 'package:flutter/material.dart';
-import 'package:flutter/widgets.dart';
+import 'package:onboarding_app/util/suggested_card.dart';
 
 class SearchPage extends StatelessWidget {
-  const SearchPage({super.key});
+  SearchPage({super.key});
+
+  final List suggestedList = [
+    {
+      "companyName": "Gojek",
+      "companyLocation": "Jakarta",
+      "jobTitle": "Software Engineer",
+      "jobLocation": "Anywhere",
+      "salary": "50K - 60K",
+      "imageUrl": "assets/companies/gojek-icon.png",
+      "isFastApply": true,
+      "dayPosted": 1,
+    },
+    {
+      "companyName": "Gojek",
+      "companyLocation": "Jakarta",
+      "jobTitle": "Product Designer",
+      "jobLocation": "On-Site",
+      "salary": "10K - 30K",
+      "imageUrl": "assets/companies/gojek-icon.png",
+      "isFastApply": true,
+      "dayPosted": 1,
+    },
+    {
+      "companyName": "Gojek",
+      "companyLocation": "Jakarta",
+      "jobTitle": "Tech Researcher",
+      "jobLocation": "On-Site",
+      "salary": "100K - 130K",
+      "imageUrl": "assets/companies/gojek-icon.png",
+      "isFastApply": false,
+      "dayPosted": 2,
+    },
+    {
+      "companyName": "Elux Space",
+      "companyLocation": "Bandung",
+      "jobTitle": "Graphic Designer",
+      "jobLocation": "Remote",
+      "salary": "5K - 10K",
+      "imageUrl": "assets/companies/elux-icon.png",
+      "isFastApply": true,
+      "dayPosted": 5,
+    },
+    {
+      "companyName": "Djitugo",
+      "companyLocation": "Bali",
+      "jobTitle": "Web Developer",
+      "jobLocation": "On-Site",
+      "salary": "10K - 13K",
+      "imageUrl": "assets/companies/djitugo-icon.jpeg",
+      "isFastApply": true,
+      "dayPosted": 5,
+    },
+  ];
 
   @override
   Widget build(BuildContext context) {
@@ -161,7 +214,42 @@ class SearchPage extends StatelessWidget {
               ),
             ],
           ),
-        )
+        ),
+        const Padding(
+          padding: EdgeInsets.only(top: 25),
+          child: Text(
+            "Suggested Job",
+            style: TextStyle(
+              fontSize: 16,
+              fontWeight: FontWeight.bold,
+            ),
+          ),
+        ),
+        Padding(
+          padding: const EdgeInsets.only(top: 15),
+          child: SizedBox(
+            child: SingleChildScrollView(
+              physics: const NeverScrollableScrollPhysics(),
+              child: Column(
+                children: List.generate(suggestedList.length, (index) {
+                  return Container(
+                    margin: EdgeInsets.only(top: (index == 0 ? 0 : 10)),
+                    child: SuggestedCard(
+                      companyName: suggestedList[index]["companyName"],
+                      companyLocation: suggestedList[index]["companyLocation"],
+                      jobTitle: suggestedList[index]["jobTitle"],
+                      jobLocation: suggestedList[index]["jobLocation"],
+                      salary: suggestedList[index]["salary"],
+                      imageUrl: suggestedList[index]["imageUrl"],
+                      isFastApply: suggestedList[index]["isFastApply"],
+                      dayPosted: suggestedList[index]["dayPosted"],
+                    ),
+                  );
+                }),
+              ),
+            ),
+          ),
+        ),
       ],
     );
   }

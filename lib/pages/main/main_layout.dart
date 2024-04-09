@@ -14,7 +14,7 @@ class _MainLayoutState extends State<MainLayout> {
 
   final List _pages = [
     HomePage(),
-    const SearchPage(),
+    SearchPage(),
     HomePage(),
     HomePage(),
   ];
