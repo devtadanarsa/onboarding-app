@@ -1,8 +1,23 @@
 import 'package:flutter/material.dart';
 import 'package:onboarding_app/pages/main/home_page.dart';
+import 'package:onboarding_app/pages/main/search_page.dart';
 
-class MainLayout extends StatelessWidget {
+class MainLayout extends StatefulWidget {
   const MainLayout({super.key});
+
+  @override
+  State<MainLayout> createState() => _MainLayoutState();
+}
+
+class _MainLayoutState extends State<MainLayout> {
+  int _selectedIdx = 0;
+
+  final List _pages = [
+    HomePage(),
+    const SearchPage(),
+    HomePage(),
+    HomePage(),
+  ];
 
   @override
   Widget build(BuildContext context) {
@@ -18,41 +33,85 @@ class MainLayout extends StatelessWidget {
             )
           ],
         ),
-        child: const BottomAppBar(
+        child: BottomAppBar(
           surfaceTintColor: Colors.white,
           color: Colors.white,
           child: Padding(
-            padding: EdgeInsets.only(left: 20, right: 20),
+            padding: const EdgeInsets.only(left: 20, right: 20),
             child: Row(
               mainAxisAlignment: MainAxisAlignment.spaceBetween,
               children: [
-                Column(
-                  mainAxisAlignment: MainAxisAlignment.center,
-                  children: [
-                    Icon(Icons.home_work_outlined),
-                    Text("Home"),
-                  ],
+                GestureDetector(
+                  onTap: () {
+                    setState(() {
+                      _selectedIdx = 0;
+                    });
+                  },
+                  child: Column(
+                    mainAxisAlignment: MainAxisAlignment.center,
+                    children: [
+                      Icon(
+                        Icons.home_work_outlined,
+                        color: (_selectedIdx == 0
+                            ? const Color.fromRGBO(31, 65, 187, 1)
+                            : Colors.black),
+                      ),
+                      const Text("Home"),
+                    ],
+                  ),
                 ),
-                Column(
-                  mainAxisAlignment: MainAxisAlignment.center,
-                  children: [
-                    Icon(Icons.cases_outlined),
-                    Text("Interviews"),
-                  ],
+                GestureDetector(
+                  onTap: () {
+                    setState(() {
+                      _selectedIdx = 1;
+                    });
+                  },
+                  child: Column(
+                    mainAxisAlignment: MainAxisAlignment.center,
+                    children: [
+                      Icon(
+                        Icons.search,
+                        color: (_selectedIdx == 1
+                            ? const Color.fromRGBO(31, 65, 187, 1)
+                            : Colors.black),
+                      ),
+                      const Text("Search"),
+                    ],
+                  ),
                 ),
-                Column(
-                  mainAxisAlignment: MainAxisAlignment.center,
-                  children: [
-                    Icon(Icons.mail_outline),
-                    Text("Messages"),
-                  ],
+                GestureDetector(
+                  onTap: () {
+                    setState(() {
+                      _selectedIdx = 2;
+                    });
+                  },
+                  child: Column(
+                    mainAxisAlignment: MainAxisAlignment.center,
+                    children: [
+                      Icon(Icons.mail_outline,
+                          color: (_selectedIdx == 2
+                              ? const Color.fromRGBO(31, 65, 187, 1)
+                              : Colors.black)),
+                      const Text("Messages"),
+                    ],
+                  ),
                 ),
-                Column(
-                  mainAxisAlignment: MainAxisAlignment.center,
-                  children: [
-                    Icon(Icons.person_outline_sharp),
-                    Text("Account"),
-                  ],
+                GestureDetector(
+                  onTap: () {
+                    setState(() {
+                      _selectedIdx = 3;
+                    });
+                  },
+                  child: Column(
+                    mainAxisAlignment: MainAxisAlignment.center,
+                    children: [
+                      Icon(Icons.person_outline_sharp,
+                          color: (_selectedIdx == 3
+                              ? const Color.fromRGBO(31, 65, 187, 1)
+                              : Colors.black)),
+                      const Text("Account"),
+                    ],
+                  ),
                 ),
               ],
             ),
@@ -61,7 +120,7 @@ class MainLayout extends StatelessWidget {
       ),
       body: Container(
         padding: const EdgeInsets.only(top: 20, left: 25, right: 25),
-        child: HomePage(),
+        child: _pages[_selectedIdx],
       ),
     );
   }
