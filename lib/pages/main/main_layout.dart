@@ -56,7 +56,15 @@ class _MainLayoutState extends State<MainLayout> {
                             ? const Color.fromRGBO(31, 65, 187, 1)
                             : Colors.black),
                       ),
-                      const Text("Home"),
+                      Text(
+                        "Home",
+                        style: TextStyle(
+                          fontWeight: FontWeight.bold,
+                          color: (_selectedIdx == 0
+                              ? const Color.fromRGBO(31, 65, 187, 1)
+                              : Colors.black),
+                        ),
+                      ),
                     ],
                   ),
                 ),
@@ -75,7 +83,15 @@ class _MainLayoutState extends State<MainLayout> {
                             ? const Color.fromRGBO(31, 65, 187, 1)
                             : Colors.black),
                       ),
-                      const Text("Search"),
+                      Text(
+                        "Search",
+                        style: TextStyle(
+                          fontWeight: FontWeight.bold,
+                          color: (_selectedIdx == 1
+                              ? const Color.fromRGBO(31, 65, 187, 1)
+                              : Colors.black),
+                        ),
+                      ),
                     ],
                   ),
                 ),
@@ -88,11 +104,21 @@ class _MainLayoutState extends State<MainLayout> {
                   child: Column(
                     mainAxisAlignment: MainAxisAlignment.center,
                     children: [
-                      Icon(Icons.mail_outline,
+                      Icon(
+                        Icons.mail_outline,
+                        color: (_selectedIdx == 2
+                            ? const Color.fromRGBO(31, 65, 187, 1)
+                            : Colors.black),
+                      ),
+                      Text(
+                        "Messages",
+                        style: TextStyle(
+                          fontWeight: FontWeight.bold,
                           color: (_selectedIdx == 2
                               ? const Color.fromRGBO(31, 65, 187, 1)
-                              : Colors.black)),
-                      const Text("Messages"),
+                              : Colors.black),
+                        ),
+                      ),
                     ],
                   ),
                 ),
@@ -105,11 +131,21 @@ class _MainLayoutState extends State<MainLayout> {
                   child: Column(
                     mainAxisAlignment: MainAxisAlignment.center,
                     children: [
-                      Icon(Icons.person_outline_sharp,
+                      Icon(
+                        Icons.person_outline_sharp,
+                        color: (_selectedIdx == 3
+                            ? const Color.fromRGBO(31, 65, 187, 1)
+                            : Colors.black),
+                      ),
+                      Text(
+                        "Account",
+                        style: TextStyle(
+                          fontWeight: FontWeight.bold,
                           color: (_selectedIdx == 3
                               ? const Color.fromRGBO(31, 65, 187, 1)
-                              : Colors.black)),
-                      const Text("Account"),
+                              : Colors.black),
+                        ),
+                      ),
                     ],
                   ),
                 ),
