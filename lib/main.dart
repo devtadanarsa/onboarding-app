@@ -17,13 +17,14 @@ class MyApp extends StatelessWidget {
   Widget build(BuildContext context) {
     return MaterialApp(
       theme: _buildTheme(Brightness.light),
-      home: const WelcomePage(),
       routes: {
+        "/": (context) => const WelcomePage(),
         "/login": (context) => const LoginPage(),
         "/register": (context) => const RegisterPage(),
         "/otp": (context) => const OTPPage(),
         "/home": (context) => const MainLayout(),
       },
+      initialRoute: "/",
     );
   }
 

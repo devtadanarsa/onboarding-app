@@ -92,20 +92,27 @@ class _LoginPageState extends State<LoginPage> {
                 padding: const EdgeInsets.only(top: 60),
                 child: TextField(
                   controller: _emailController,
-                  decoration: const InputDecoration(
+                  decoration: InputDecoration(
                     hintText: "Email",
-                    contentPadding: EdgeInsets.all(20),
+                    contentPadding: const EdgeInsets.all(20),
                     enabledBorder: OutlineInputBorder(
-                      borderSide: BorderSide(color: Colors.white),
-                      borderRadius: BorderRadius.all(Radius.circular(10)),
+                      borderSide: BorderSide(
+                        color: (_invalidInput ? Colors.red : Colors.white),
+                        width: 2,
+                      ),
+                      borderRadius: const BorderRadius.all(Radius.circular(10)),
                     ),
                     focusedBorder: OutlineInputBorder(
-                      borderSide:
-                          BorderSide(color: Color(0xFF1F41BB), width: 2),
-                      borderRadius: BorderRadius.all(Radius.circular(10)),
+                      borderSide: BorderSide(
+                        color: (_invalidInput
+                            ? Colors.red
+                            : const Color(0xFF1F41BB)),
+                        width: 2,
+                      ),
+                      borderRadius: const BorderRadius.all(Radius.circular(10)),
                     ),
                     filled: true,
-                    fillColor: Color(0xFFF1F4FF),
+                    fillColor: const Color(0xFFF1F4FF),
                   ),
                 ),
               ),
@@ -128,14 +135,21 @@ class _LoginPageState extends State<LoginPage> {
                       ),
                     ),
                     contentPadding: const EdgeInsets.all(20),
-                    enabledBorder: const OutlineInputBorder(
-                      borderSide: BorderSide(color: Colors.white),
-                      borderRadius: BorderRadius.all(Radius.circular(10)),
+                    enabledBorder: OutlineInputBorder(
+                      borderSide: BorderSide(
+                        color: (_invalidInput ? Colors.red : Colors.white),
+                        width: 2,
+                      ),
+                      borderRadius: const BorderRadius.all(Radius.circular(10)),
                     ),
-                    focusedBorder: const OutlineInputBorder(
-                      borderSide:
-                          BorderSide(color: Color(0xFF1F41BB), width: 2),
-                      borderRadius: BorderRadius.all(Radius.circular(10)),
+                    focusedBorder: OutlineInputBorder(
+                      borderSide: BorderSide(
+                        color: (_invalidInput
+                            ? Colors.red
+                            : const Color(0xFF1F41BB)),
+                        width: 2,
+                      ),
+                      borderRadius: const BorderRadius.all(Radius.circular(10)),
                     ),
                     filled: true,
                     fillColor: const Color(0xFFF1F4FF),
