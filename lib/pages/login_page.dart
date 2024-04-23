@@ -3,6 +3,7 @@ import 'dart:async';
 import 'package:email_validator/email_validator.dart';
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
+import 'package:dio/dio.dart';
 
 class LoginPage extends StatefulWidget {
   const LoginPage({super.key});
@@ -12,12 +13,26 @@ class LoginPage extends StatefulWidget {
 }
 
 class _LoginPageState extends State<LoginPage> {
+  static const String apiUrl = "https://mobileapis.manpits.xyz/api";
+
   bool _passwordHidden = true;
   bool _invalidInput = false;
 
   final TextEditingController _emailController = TextEditingController();
   final TextEditingController _passwordController = TextEditingController();
   String _warningText = "";
+
+  void onInvalidInput(String message) {
+    setState(() {
+      _invalidInput = true;
+      Timer(const Duration(seconds: 3), () {
+        setState(() {
+          _invalidInput = false;
+        });
+      });
+      _warningText = message;
+    });
+  }
 
   void onPasswordOpenTap() {
     setState(() {
@@ -27,27 +42,26 @@ class _LoginPageState extends State<LoginPage> {
 
   void onSignInTap() {
     if (!EmailValidator.validate(_emailController.text)) {
-      setState(() {
-        _invalidInput = true;
-        Timer(const Duration(seconds: 3), () {
-          setState(() {
-            _invalidInput = false;
-          });
-        });
-        _warningText = "Please enter a valid email";
-      });
+      onInvalidInput("Please enter a valid email!");
     } else if (_passwordController.text.isEmpty) {
-      setState(() {
-        _invalidInput = true;
-        Timer(const Duration(seconds: 3), () {
-          setState(() {
-            _invalidInput = false;
-          });
-        });
-        _warningText = "Password can't be empty!";
-      });
+      onInvalidInput("Password can't be empty!");
     } else {
-      Navigator.pushNamed(context, "/otp");
+      signIn();
+    }
+  }
+
+  void signIn() async {
+    final dio = Dio();
+    try {
+      final response = await dio.post("$apiUrl/login", data: {
+        "email": _emailController.text,
+        "password": _passwordController.text
+      });
+      print(response.data);
+    } on DioException catch (e) {
+      print("Error ${e.response?.statusCode} - ${e.response?.data}");
+      // print(e);
+      onInvalidInput("Username or password maybe wrong");
     }
   }
 
