@@ -5,8 +5,10 @@ import 'package:onboarding_app/pages/main/main_layout.dart';
 import 'package:onboarding_app/pages/otp_page.dart';
 import 'package:onboarding_app/pages/register_page.dart';
 import 'package:onboarding_app/pages/welcome_page.dart';
+import 'package:get_storage/get_storage.dart';
 
-void main() {
+Future<void> main() async {
+  await GetStorage.init();
   runApp(const MyApp());
 }
 

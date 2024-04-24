@@ -61,7 +61,9 @@ class _OTPPageState extends State<OTPPage> {
                   numberOfFields: 4,
                   onSubmit: (String verificationCode) {
                     if (verificationCode == "1060") {
-                      Navigator.pushNamed(context, "/home");
+                      // Navigator.pushNamed(context, "/home");
+                      Navigator.of(context)
+                          .pushNamedAndRemoveUntil("/home", (route) => false);
                     } else {
                       showDialog(
                         context: context,

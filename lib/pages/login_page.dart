@@ -2,6 +2,7 @@ import 'dart:async';
 
 import 'package:email_validator/email_validator.dart';
 import 'package:flutter/material.dart';
+import 'package:get_storage/get_storage.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:dio/dio.dart';
 
@@ -13,7 +14,8 @@ class LoginPage extends StatefulWidget {
 }
 
 class _LoginPageState extends State<LoginPage> {
-  static const String apiUrl = "https://mobileapis.manpits.xyz/api";
+  static const String _apiUrl = "https://mobileapis.manpits.xyz/api";
+  final _localStorage = GetStorage();
 
   bool _passwordHidden = true;
   bool _invalidInput = false;
@@ -53,14 +55,17 @@ class _LoginPageState extends State<LoginPage> {
   void signIn() async {
     final dio = Dio();
     try {
-      final response = await dio.post("$apiUrl/login", data: {
+      final response = await dio.post("$_apiUrl/login", data: {
         "email": _emailController.text,
         "password": _passwordController.text
       });
-      print(response.data);
+
+      if (mounted) {
+        Navigator.pushNamed(context, "/otp");
+        _localStorage.write("token", response.data["data"]["token"]);
+      }
     } on DioException catch (e) {
       print("Error ${e.response?.statusCode} - ${e.response?.data}");
-      // print(e);
       onInvalidInput("Username or password maybe wrong");
     }
   }
