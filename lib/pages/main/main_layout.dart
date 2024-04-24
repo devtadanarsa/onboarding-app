@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:get_storage/get_storage.dart';
 import 'package:onboarding_app/pages/main/home_page.dart';
+import 'package:onboarding_app/pages/main/profile_page.dart';
 import 'package:onboarding_app/pages/main/search_page.dart';
 import 'package:onboarding_app/pages/main/unfinished_page.dart';
 
@@ -19,7 +20,7 @@ class _MainLayoutState extends State<MainLayout> {
     HomePage(),
     SearchPage(),
     const UnfinishedPage(),
-    const UnfinishedPage(),
+    const ProfilePage(),
   ];
 
   @override
