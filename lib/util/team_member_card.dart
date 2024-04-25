@@ -37,7 +37,9 @@ class TeamMemberCard extends StatelessWidget {
             children: [
               const Row(
                 children: [
-                  CircleAvatar(),
+                  CircleAvatar(
+                    backgroundImage: AssetImage("assets/default-profile.png"),
+                  ),
                   Padding(
                     padding: EdgeInsets.only(left: 12),
                     child: Column(

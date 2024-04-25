@@ -64,6 +64,7 @@ flutter:
     - assets/otp-image.png
     - assets/profile-image.jpeg
     - assets/site-under-construction.png
+    - assets/default-profile.png
     - assets/companies/gojek-icon.png
     - assets/companies/elux-icon.png
     - assets/companies/djitugo-icon.jpeg
