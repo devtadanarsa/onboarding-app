@@ -69,7 +69,7 @@ class _ProfilePageState extends State<ProfilePage> {
               ),
             ),
             const Divider(),
-            const HeadingText(heading: "Info Profil"),
+            const HeadingText(heading: "Profile Info"),
             InformationField(
               label: "Name",
               value: (userData != null ? userData["name"] : "Loading..."),
@@ -82,11 +82,16 @@ class _ProfilePageState extends State<ProfilePage> {
               padding: EdgeInsets.only(top: 8),
               child: Divider(),
             ),
-            const HeadingText(heading: "List Anggota Tim"),
+            const HeadingText(heading: "Team Members"),
             const TeamMemberCard(
               name: "Devta Danarsa",
               address: "Denpasar, Indonesia",
             ),
+            const Padding(
+              padding: EdgeInsets.only(top: 16, bottom: 8),
+              child: Divider(),
+            ),
+            const LogoutButton(),
           ],
         ),
         const AddMemberButton(),
@@ -206,16 +211,21 @@ class AddMemberButton extends StatelessWidget {
       context: context,
       builder: (context) {
         return Dialog(
-          backgroundColor: Colors.white,
-          child: Padding(
-            padding: const EdgeInsets.only(
-              left: 30,
-              right: 30,
-              top: 20,
-              bottom: 20,
+          insetPadding: EdgeInsets.zero,
+          child: Container(
+            decoration: BoxDecoration(
+              color: Colors.white,
+              borderRadius: BorderRadius.circular(10),
             ),
-            child: SizedBox(
-              height: 550,
+            height: 550,
+            width: 350,
+            child: Padding(
+              padding: const EdgeInsets.only(
+                top: 20,
+                bottom: 20,
+                right: 20,
+                left: 20,
+              ),
               child: Column(
                 mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                 children: [
@@ -245,6 +255,7 @@ class AddMemberButton extends StatelessWidget {
                           );
                         },
                         style: ElevatedButton.styleFrom(
+                          backgroundColor: Colors.white,
                           foregroundColor: Colors.black,
                           shape: const RoundedRectangleBorder(
                             borderRadius: BorderRadius.all(Radius.circular(10)),
@@ -295,6 +306,124 @@ class AddMemberButton extends StatelessWidget {
         onPressed: () {
           addMemberDialog(context);
         },
+      ),
+    );
+  }
+}
+
+class LogoutButton extends StatelessWidget {
+  const LogoutButton({super.key});
+
+  @override
+  Widget build(BuildContext context) {
+    void logoutDialog() {
+      showDialog(
+        context: context,
+        builder: (context) {
+          return Dialog(
+            insetPadding: EdgeInsets.zero,
+            alignment: Alignment.bottomCenter,
+            child: Container(
+              padding: const EdgeInsets.all(20),
+              decoration: const BoxDecoration(
+                  color: Colors.white,
+                  borderRadius: BorderRadius.all(Radius.circular(20))),
+              height: 250,
+              width: 350,
+              child: Column(
+                mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                children: [
+                  Column(
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    children: [
+                      Container(
+                        decoration: BoxDecoration(
+                            color: Colors.blue[50],
+                            borderRadius:
+                                const BorderRadius.all(Radius.circular(5))),
+                        padding: const EdgeInsets.all(5),
+                        child: const Icon(
+                          Icons.warning_amber,
+                          color: Color.fromRGBO(31, 65, 187, 1),
+                        ),
+                      ),
+                      const Padding(
+                        padding: EdgeInsets.only(top: 20),
+                        child: Text(
+                          "Sign out from the App",
+                          style: TextStyle(
+                            fontSize: 18,
+                            fontWeight: FontWeight.w900,
+                          ),
+                        ),
+                      ),
+                      Padding(
+                        padding: const EdgeInsets.only(top: 8),
+                        child: Text(
+                          "Are you sure you would like to sign out of your Account?",
+                          style: TextStyle(color: Colors.grey[700]),
+                        ),
+                      ),
+                    ],
+                  ),
+                  Row(
+                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                    children: [
+                      ElevatedButton(
+                        style: ElevatedButton.styleFrom(
+                          backgroundColor: const Color(0xFF1F41BB),
+                          foregroundColor: Colors.white,
+                          minimumSize: const Size(145, 45),
+                          shape: const RoundedRectangleBorder(
+                            borderRadius: BorderRadius.all(Radius.circular(10)),
+                          ),
+                        ),
+                        onPressed: () {},
+                        child: const Text(
+                          "Cancel",
+                          style: TextStyle(
+                            fontWeight: FontWeight.bold,
+                          ),
+                        ),
+                      ),
+                      ElevatedButton(
+                        onPressed: () {},
+                        style: ElevatedButton.styleFrom(
+                          backgroundColor: Colors.blue[50],
+                          foregroundColor: const Color(0xFF1F41BB),
+                          minimumSize: const Size(150, 45),
+                          shape: const RoundedRectangleBorder(
+                            borderRadius: BorderRadius.all(Radius.circular(10)),
+                          ),
+                        ),
+                        child: const Text(
+                          "Sign Out",
+                          style: TextStyle(
+                            fontWeight: FontWeight.bold,
+                          ),
+                        ),
+                      ),
+                    ],
+                  )
+                ],
+              ),
+            ),
+          );
+        },
+      );
+    }
+
+    return GestureDetector(
+      onTap: () {
+        logoutDialog();
+      },
+      child: const Text(
+        "Log out",
+        style: TextStyle(
+          color: Colors.red,
+          fontWeight: FontWeight.bold,
+        ),
+        textAlign: TextAlign.center,
       ),
     );
   }
