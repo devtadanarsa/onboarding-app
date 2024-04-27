@@ -1,4 +1,6 @@
+import 'package:dio/dio.dart';
 import 'package:flutter/material.dart';
+import 'package:get_storage/get_storage.dart';
 import 'package:onboarding_app/util/team_member_card.dart';
 
 class ProfilePage extends StatefulWidget {
@@ -9,6 +11,10 @@ class ProfilePage extends StatefulWidget {
 }
 
 class _ProfilePageState extends State<ProfilePage> {
+  static const String _apiUrl = "https://mobileapis.manpits.xyz/api";
+  final _localStorage = GetStorage();
+  var userData;
+
   void addMemberDialog(BuildContext context) {
     final TextEditingController idController = TextEditingController();
     final TextEditingController nameController = TextEditingController();
@@ -94,6 +100,31 @@ class _ProfilePageState extends State<ProfilePage> {
     );
   }
 
+  void getUserData() async {
+    try {
+      var response = await Dio().get("$_apiUrl/user",
+          options: Options(headers: {
+            'Authorization': "Bearer ${_localStorage.read("token")}"
+          }));
+
+      if (response.statusCode == 200) {
+        setState(() {
+          userData = response.data["data"]["user"];
+        });
+      } else {
+        throw DioException.connectionTimeout;
+      }
+    } on DioException catch (e) {
+      print("Error ${e.response?.statusCode} - ${e.response?.data}");
+    }
+  }
+
+  @override
+  void initState() {
+    super.initState();
+    getUserData();
+  }
+
   @override
   Widget build(BuildContext context) {
     return Stack(
@@ -124,13 +155,13 @@ class _ProfilePageState extends State<ProfilePage> {
             ),
             const Divider(),
             const HeadingText(heading: "Info Profil"),
-            const InformationField(
+            InformationField(
               label: "Name",
-              value: "I Nengah Danarsa Suniadevta",
+              value: (userData != null ? userData["name"] : "Loading..."),
             ),
-            const InformationField(
+            InformationField(
               label: "Email",
-              value: "devtadanarsa@gmail.com",
+              value: (userData != null ? userData["email"] : "Loading..."),
             ),
             const Padding(
               padding: EdgeInsets.only(top: 8),
