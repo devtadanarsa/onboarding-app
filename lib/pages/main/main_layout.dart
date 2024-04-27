@@ -1,5 +1,4 @@
 import 'package:flutter/material.dart';
-import 'package:get_storage/get_storage.dart';
 import 'package:onboarding_app/pages/main/home_page.dart';
 import 'package:onboarding_app/pages/main/profile_page.dart';
 import 'package:onboarding_app/pages/main/search_page.dart';
@@ -14,7 +13,6 @@ class MainLayout extends StatefulWidget {
 
 class _MainLayoutState extends State<MainLayout> {
   int _selectedIdx = 0;
-  final _localStorage = GetStorage();
 
   final List _pages = [
     HomePage(),
@@ -22,12 +20,6 @@ class _MainLayoutState extends State<MainLayout> {
     const UnfinishedPage(),
     const ProfilePage(),
   ];
-
-  @override
-  void initState() {
-    super.initState();
-    print(_localStorage.read("token"));
-  }
 
   @override
   Widget build(BuildContext context) {

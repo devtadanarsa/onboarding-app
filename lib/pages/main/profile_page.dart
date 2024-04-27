@@ -13,92 +13,7 @@ class ProfilePage extends StatefulWidget {
 class _ProfilePageState extends State<ProfilePage> {
   static const String _apiUrl = "https://mobileapis.manpits.xyz/api";
   final _localStorage = GetStorage();
-  var userData;
-
-  void addMemberDialog(BuildContext context) {
-    final TextEditingController idController = TextEditingController();
-    final TextEditingController nameController = TextEditingController();
-    final TextEditingController addressController = TextEditingController();
-    final TextEditingController telephoneController = TextEditingController();
-
-    showDialog(
-      context: context,
-      builder: (context) {
-        return Dialog(
-          backgroundColor: Colors.white,
-          child: Padding(
-            padding: const EdgeInsets.only(
-              left: 30,
-              right: 30,
-              top: 20,
-              bottom: 20,
-            ),
-            child: SizedBox(
-              height: 550,
-              child: Column(
-                mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-                children: [
-                  const Text(
-                    "New Team Member",
-                    style: TextStyle(
-                      fontSize: 18,
-                      color: Color(0xFF1F41BB),
-                      fontWeight: FontWeight.bold,
-                    ),
-                  ),
-                  TextInput(hint: "ID Number", textController: idController),
-                  TextInput(hint: "Name", textController: nameController),
-                  TextInput(hint: "Address", textController: addressController),
-                  TextInput(
-                      hint: "Telephone", textController: telephoneController),
-                  Row(
-                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                    children: [
-                      const Text("Date of Birth"),
-                      ElevatedButton(
-                        onPressed: () async {
-                          final DateTime? dateTime = await showDatePicker(
-                            context: context,
-                            firstDate: DateTime(1900),
-                            lastDate: DateTime(2050),
-                          );
-                        },
-                        style: ElevatedButton.styleFrom(
-                          foregroundColor: Colors.black,
-                          shape: const RoundedRectangleBorder(
-                            borderRadius: BorderRadius.all(Radius.circular(10)),
-                            side: BorderSide(color: Colors.black),
-                          ),
-                        ),
-                        child: const Text("Pick a Date"),
-                      )
-                    ],
-                  ),
-                  ElevatedButton(
-                    onPressed: () {},
-                    style: ElevatedButton.styleFrom(
-                      backgroundColor: const Color(0xFF1F41BB),
-                      foregroundColor: Colors.white,
-                      minimumSize: const Size.fromHeight(50),
-                      shape: const RoundedRectangleBorder(
-                        borderRadius: BorderRadius.all(Radius.circular(10)),
-                      ),
-                    ),
-                    child: const Text(
-                      "Save Member",
-                      style: TextStyle(
-                        fontWeight: FontWeight.w600,
-                      ),
-                    ),
-                  ),
-                ],
-              ),
-            ),
-          ),
-        );
-      },
-    );
-  }
+  dynamic userData;
 
   void getUserData() async {
     try {
@@ -170,24 +85,11 @@ class _ProfilePageState extends State<ProfilePage> {
             const HeadingText(heading: "List Anggota Tim"),
             const TeamMemberCard(
               name: "Devta Danarsa",
-              address: "Badung, Indonesia",
+              address: "Denpasar, Indonesia",
             ),
           ],
         ),
-        Container(
-          alignment: Alignment.bottomRight,
-          padding: const EdgeInsets.only(bottom: 20),
-          child: FloatingActionButton(
-            backgroundColor: const Color.fromRGBO(31, 65, 187, 1),
-            child: const Icon(
-              Icons.add,
-              color: Colors.white,
-            ),
-            onPressed: () {
-              addMemberDialog(context);
-            },
-          ),
-        ),
+        const AddMemberButton(),
       ],
     );
   }
@@ -286,6 +188,113 @@ class TextInput extends StatelessWidget {
           borderSide:
               BorderSide(color: Color.fromRGBO(31, 65, 187, 1), width: 2),
         ),
+      ),
+    );
+  }
+}
+
+class AddMemberButton extends StatelessWidget {
+  const AddMemberButton({super.key});
+
+  void addMemberDialog(BuildContext context) {
+    final TextEditingController idController = TextEditingController();
+    final TextEditingController nameController = TextEditingController();
+    final TextEditingController addressController = TextEditingController();
+    final TextEditingController telephoneController = TextEditingController();
+
+    showDialog(
+      context: context,
+      builder: (context) {
+        return Dialog(
+          backgroundColor: Colors.white,
+          child: Padding(
+            padding: const EdgeInsets.only(
+              left: 30,
+              right: 30,
+              top: 20,
+              bottom: 20,
+            ),
+            child: SizedBox(
+              height: 550,
+              child: Column(
+                mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                children: [
+                  const Text(
+                    "New Team Member",
+                    style: TextStyle(
+                      fontSize: 18,
+                      color: Color(0xFF1F41BB),
+                      fontWeight: FontWeight.bold,
+                    ),
+                  ),
+                  TextInput(hint: "ID Number", textController: idController),
+                  TextInput(hint: "Name", textController: nameController),
+                  TextInput(hint: "Address", textController: addressController),
+                  TextInput(
+                      hint: "Telephone", textController: telephoneController),
+                  Row(
+                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                    children: [
+                      const Text("Date of Birth"),
+                      ElevatedButton(
+                        onPressed: () async {
+                          final DateTime? dateTime = await showDatePicker(
+                            context: context,
+                            firstDate: DateTime(1900),
+                            lastDate: DateTime(2050),
+                          );
+                        },
+                        style: ElevatedButton.styleFrom(
+                          foregroundColor: Colors.black,
+                          shape: const RoundedRectangleBorder(
+                            borderRadius: BorderRadius.all(Radius.circular(10)),
+                            side: BorderSide(color: Colors.black),
+                          ),
+                        ),
+                        child: const Text("Pick a Date"),
+                      )
+                    ],
+                  ),
+                  ElevatedButton(
+                    onPressed: () {},
+                    style: ElevatedButton.styleFrom(
+                      backgroundColor: const Color(0xFF1F41BB),
+                      foregroundColor: Colors.white,
+                      minimumSize: const Size.fromHeight(50),
+                      shape: const RoundedRectangleBorder(
+                        borderRadius: BorderRadius.all(Radius.circular(10)),
+                      ),
+                    ),
+                    child: const Text(
+                      "Save Member",
+                      style: TextStyle(
+                        fontWeight: FontWeight.w600,
+                      ),
+                    ),
+                  ),
+                ],
+              ),
+            ),
+          ),
+        );
+      },
+    );
+  }
+
+  @override
+  Widget build(BuildContext context) {
+    return Container(
+      alignment: Alignment.bottomRight,
+      padding: const EdgeInsets.only(bottom: 20),
+      child: FloatingActionButton(
+        backgroundColor: const Color.fromRGBO(31, 65, 187, 1),
+        child: const Icon(
+          Icons.add,
+          color: Colors.white,
+        ),
+        onPressed: () {
+          addMemberDialog(context);
+        },
       ),
     );
   }
