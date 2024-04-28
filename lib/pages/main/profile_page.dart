@@ -91,7 +91,7 @@ class _ProfilePageState extends State<ProfilePage> {
               padding: EdgeInsets.only(top: 16, bottom: 8),
               child: Divider(),
             ),
-            const LogoutButton(),
+            LogoutButton(),
           ],
         ),
         const AddMemberButton(),
@@ -311,8 +311,34 @@ class AddMemberButton extends StatelessWidget {
   }
 }
 
-class LogoutButton extends StatelessWidget {
+class LogoutButton extends StatefulWidget {
   const LogoutButton({super.key});
+
+  static const String _apiUrl = "https://mobileapis.manpits.xyz/api";
+
+  @override
+  State<LogoutButton> createState() => _LogoutButtonState();
+}
+
+class _LogoutButtonState extends State<LogoutButton> {
+  final _localStorage = GetStorage();
+
+  void onLogoutTap() async {
+    try {
+      final response = await Dio().get(
+        "${LogoutButton._apiUrl}/logout",
+        options: Options(headers: {
+          'Authorization': "Bearer ${_localStorage.read("token")}"
+        }),
+      );
+
+      if (mounted) {
+        Navigator.of(context).pushNamedAndRemoveUntil("/", (route) => false);
+      }
+    } on DioException catch (e) {
+      print("${e.response} = ${e.response?.statusCode}");
+    }
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -387,7 +413,9 @@ class LogoutButton extends StatelessWidget {
                         ),
                       ),
                       ElevatedButton(
-                        onPressed: () {},
+                        onPressed: () {
+                          onLogoutTap();
+                        },
                         style: ElevatedButton.styleFrom(
                           backgroundColor: Colors.blue[50],
                           foregroundColor: const Color(0xFF1F41BB),
