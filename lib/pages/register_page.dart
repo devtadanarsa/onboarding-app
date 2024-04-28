@@ -1,5 +1,6 @@
 import 'dart:async';
 
+import 'package:dio/dio.dart';
 import 'package:email_validator/email_validator.dart';
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
@@ -16,11 +17,24 @@ class _RegisterPageState extends State<RegisterPage> {
   bool _confirmPasswordHidden = true;
   bool _invalidInput = false;
 
+  final TextEditingController _nameController = TextEditingController();
   final TextEditingController _emailController = TextEditingController();
   final TextEditingController _passwordController = TextEditingController();
   final TextEditingController _confirmPasswordController =
       TextEditingController();
   String _warningText = "";
+
+  void onInvalidInput(String message) {
+    setState(() {
+      _invalidInput = true;
+      Timer(const Duration(seconds: 3), () {
+        setState(() {
+          _invalidInput = false;
+        });
+      });
+      _warningText = message;
+    });
+  }
 
   void onPasswordOpenTap() {
     setState(() {
@@ -35,29 +49,41 @@ class _RegisterPageState extends State<RegisterPage> {
   }
 
   void onRegisterTap() {
-    if (!EmailValidator.validate(_emailController.text)) {
-      setState(() {
-        _invalidInput = true;
-        Timer(const Duration(seconds: 3), () {
-          setState(() {
-            _invalidInput = false;
-          });
-        });
-        _warningText = "Please enter a valid email";
-      });
+    if (_nameController.text.isEmpty) {
+      onInvalidInput("Name can't be empty!");
+    } else if (!EmailValidator.validate(_emailController.text)) {
+      onInvalidInput("Please enter a valid email");
     } else if (_passwordController.text.isEmpty ||
         _confirmPasswordController.text.isEmpty) {
-      setState(() {
-        _invalidInput = true;
-        Timer(const Duration(seconds: 3), () {
-          setState(() {
-            _invalidInput = false;
-          });
-        });
-        _warningText = "Password can't be empty!";
-      });
+      onInvalidInput("Password can't be empty!");
+    } else if (_passwordController.text != _confirmPasswordController.text) {
+      onInvalidInput("Password doesn't match!");
     } else {
-      Navigator.pushNamed(context, "/login");
+      signUp();
+    }
+  }
+
+  void signUp() async {
+    const String apiUrl = "https://mobileapis.manpits.xyz/api";
+
+    final dio = Dio();
+    try {
+      final response = await dio.post("$apiUrl/register", data: {
+        "name": _nameController.text,
+        "email": _emailController.text,
+        "password": _passwordController.text
+      });
+
+      if (response.statusCode != 200) {
+        throw DioException.connectionTimeout;
+      }
+
+      if (mounted) {
+        Navigator.pushNamed(context, "/login");
+      }
+    } on DioException catch (e) {
+      print("Error ${e.response?.statusCode} - ${e.response?.data}");
+      onInvalidInput("Some error occurred, please try again!");
     }
   }
 
@@ -99,7 +125,28 @@ class _RegisterPageState extends State<RegisterPage> {
                 ),
               ),
               Padding(
-                padding: const EdgeInsets.only(top: 60),
+                padding: const EdgeInsets.only(top: 30),
+                child: TextField(
+                  controller: _nameController,
+                  decoration: const InputDecoration(
+                    hintText: "Name",
+                    contentPadding: EdgeInsets.all(20),
+                    enabledBorder: OutlineInputBorder(
+                      borderSide: BorderSide(color: Colors.white),
+                      borderRadius: BorderRadius.all(Radius.circular(10)),
+                    ),
+                    focusedBorder: OutlineInputBorder(
+                      borderSide:
+                          BorderSide(color: Color(0xFF1F41BB), width: 2),
+                      borderRadius: BorderRadius.all(Radius.circular(10)),
+                    ),
+                    filled: true,
+                    fillColor: Color(0xFFF1F4FF),
+                  ),
+                ),
+              ),
+              Padding(
+                padding: const EdgeInsets.only(top: 20),
                 child: TextField(
                   controller: _emailController,
                   decoration: const InputDecoration(
@@ -239,51 +286,6 @@ class _RegisterPageState extends State<RegisterPage> {
                       fontWeight: FontWeight.bold,
                     ),
                   ),
-                ),
-              ),
-              Container(
-                padding: const EdgeInsets.only(top: 70),
-                child: const Text(
-                  "Or continue with",
-                  style: TextStyle(
-                    color: Color(0xFF1F41BB),
-                    fontWeight: FontWeight.bold,
-                  ),
-                ),
-              ),
-              Padding(
-                padding: const EdgeInsets.only(top: 20),
-                child: Row(
-                  mainAxisAlignment: MainAxisAlignment.center,
-                  children: [
-                    Container(
-                      decoration: const BoxDecoration(
-                        borderRadius: BorderRadius.all(Radius.circular(8)),
-                        color: Color(0xFFECECEC),
-                      ),
-                      padding: const EdgeInsets.all(10),
-                      margin: const EdgeInsets.only(left: 10, right: 10),
-                      child: const Icon(Icons.apple),
-                    ),
-                    Container(
-                      decoration: const BoxDecoration(
-                        borderRadius: BorderRadius.all(Radius.circular(8)),
-                        color: Color(0xFFECECEC),
-                      ),
-                      margin: const EdgeInsets.only(left: 10, right: 10),
-                      padding: const EdgeInsets.all(10),
-                      child: const Icon(Icons.facebook),
-                    ),
-                    Container(
-                      decoration: const BoxDecoration(
-                        borderRadius: BorderRadius.all(Radius.circular(8)),
-                        color: Color(0xFFECECEC),
-                      ),
-                      margin: const EdgeInsets.only(left: 10, right: 10),
-                      padding: const EdgeInsets.all(10),
-                      child: const Icon(Icons.android),
-                    ),
-                  ],
                 ),
               ),
             ],

@@ -332,11 +332,15 @@ class _LogoutButtonState extends State<LogoutButton> {
         }),
       );
 
+      if (response.statusCode != 200) {
+        throw DioException.connectionTimeout;
+      }
+    } on DioException catch (e) {
+      print("${e.response} - ${e.response?.statusCode}");
+    } finally {
       if (mounted) {
         Navigator.of(context).pushNamedAndRemoveUntil("/", (route) => false);
       }
-    } on DioException catch (e) {
-      print("${e.response} = ${e.response?.statusCode}");
     }
   }
 
