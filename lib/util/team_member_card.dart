@@ -13,15 +13,21 @@ class TeamMemberCard extends StatelessWidget {
       padding: const EdgeInsets.only(top: 16),
       child: Slidable(
         endActionPane: const ActionPane(
-          extentRatio: 0.3,
           motion: ScrollMotion(),
           children: [
             SlidableAction(
               onPressed: null,
               backgroundColor: Color.fromRGBO(31, 65, 187, 1),
               foregroundColor: Colors.white,
-              icon: Icons.find_in_page_outlined,
-              label: 'Detail',
+              icon: Icons.info_outline_rounded,
+              label: 'Info',
+            ),
+            SlidableAction(
+              onPressed: null,
+              backgroundColor: Colors.red,
+              foregroundColor: Colors.white,
+              icon: Icons.delete_outline_outlined,
+              label: 'Delete',
             ),
           ],
         ),
@@ -35,26 +41,26 @@ class TeamMemberCard extends StatelessWidget {
           child: Row(
             mainAxisAlignment: MainAxisAlignment.spaceBetween,
             children: [
-              const Row(
+              Row(
                 children: [
-                  CircleAvatar(
+                  const CircleAvatar(
                     backgroundImage: AssetImage("assets/default-profile.png"),
                   ),
                   Padding(
-                    padding: EdgeInsets.only(left: 12),
+                    padding: const EdgeInsets.only(left: 12),
                     child: Column(
                       crossAxisAlignment: CrossAxisAlignment.start,
                       children: [
                         Text(
-                          "Devta Danarsa",
-                          style: TextStyle(
+                          name,
+                          style: const TextStyle(
                             fontSize: 14,
                             fontWeight: FontWeight.w600,
                           ),
                         ),
                         Text(
-                          "Badung, Indonesia",
-                          style: TextStyle(
+                          address,
+                          style: const TextStyle(
                             fontSize: 10,
                             color: Colors.grey,
                           ),

@@ -3,6 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:get_storage/get_storage.dart';
 import 'package:onboarding_app/data/source/remote_source.dart';
+import 'package:onboarding_app/feature/member/bloc/member_bloc.dart';
 import 'package:onboarding_app/feature/user/bloc/user_bloc.dart';
 import 'package:onboarding_app/util/team_member_card.dart';
 
@@ -11,80 +12,125 @@ class ProfilePage extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return BlocProvider(
-      create: (context) =>
-          UserBloc(remoteDataSource: RemoteDataSource())..add(LoadUser()),
-      child: ListView(
-        children: [
-          BlocBuilder<UserBloc, UserState>(
-            builder: (context, state) {
-              if (state is UserLoading) {
-                return const Center(
-                  child: CircularProgressIndicator(),
-                );
-              } else if (state is UserLoaded) {
-                final user = state.user;
-                return Column(
-                  children: [
-                    Container(
-                      alignment: Alignment.center,
-                      child: const Column(
-                        children: [
-                          CircleAvatar(
-                            backgroundImage:
-                                AssetImage("assets/default-profile.png"),
-                            radius: 30,
-                          ),
-                          Padding(
-                            padding: EdgeInsets.only(top: 8, bottom: 8),
-                            child: Text(
-                              "Edit Profile Photo",
-                              style: TextStyle(
-                                fontWeight: FontWeight.bold,
-                                fontSize: 14,
-                                color: Color.fromRGBO(31, 65, 187, 1),
+    return MultiBlocProvider(
+      providers: [
+        BlocProvider<UserBloc>(
+            create: (context) => UserBloc(remoteDataSource: RemoteDataSource())
+              ..add(LoadUser())),
+        BlocProvider<MemberBloc>(
+            create: (context) =>
+                MemberBloc(remoteDataSource: RemoteDataSource())
+                  ..add(LoadMember()))
+      ],
+      child: SafeArea(
+        child: Column(
+          children: [
+            BlocBuilder<UserBloc, UserState>(
+              builder: (context, state) {
+                if (state is UserLoading) {
+                  return const Center(
+                    child: CircularProgressIndicator(),
+                  );
+                } else if (state is UserLoaded) {
+                  final user = state.user;
+                  return Column(
+                    children: [
+                      Container(
+                        alignment: Alignment.center,
+                        child: const Column(
+                          children: [
+                            CircleAvatar(
+                              backgroundImage:
+                                  AssetImage("assets/default-profile.png"),
+                              radius: 30,
+                            ),
+                            Padding(
+                              padding: EdgeInsets.only(top: 8, bottom: 8),
+                              child: Text(
+                                "Edit Profile Photo",
+                                style: TextStyle(
+                                  fontWeight: FontWeight.bold,
+                                  fontSize: 14,
+                                  color: Color.fromRGBO(31, 65, 187, 1),
+                                ),
                               ),
                             ),
-                          ),
-                        ],
+                          ],
+                        ),
+                      ),
+                      const Divider(),
+                      const HeadingText(heading: "Profile Info"),
+                      InformationField(
+                        label: "Name",
+                        value: user.name,
+                      ),
+                      InformationField(
+                        label: "Email",
+                        value: user.email,
+                      ),
+                    ],
+                  );
+                } else if (state is UserError) {
+                  return Center(
+                    child: Text(state.error),
+                  );
+                }
+                return Container();
+              },
+            ),
+            const Padding(
+              padding: EdgeInsets.only(top: 8),
+              child: Divider(),
+            ),
+            const HeadingText(
+              heading: "Team Members",
+              href: "See All Members",
+            ),
+            BlocBuilder<MemberBloc, MemberState>(
+              builder: (context, state) {
+                if (state is MemberLoading) {
+                  return const Padding(
+                    padding: EdgeInsets.only(top: 8),
+                    child: Text(
+                      "Loading member data...",
+                      style: TextStyle(color: Colors.grey),
+                    ),
+                  );
+                } else if (state is MemberLoaded) {
+                  final members = state.members;
+                  return SizedBox(
+                    child: SingleChildScrollView(
+                      physics: const NeverScrollableScrollPhysics(),
+                      child: Column(
+                        children: List.generate(
+                          members.length > 3 ? 3 : members.length,
+                          (index) {
+                            return TeamMemberCard(
+                              name: members[index].name,
+                              address: "${members[index].address}, Indonesia",
+                            );
+                          },
+                        ),
                       ),
                     ),
-                    const Divider(),
-                    const HeadingText(heading: "Profile Info"),
-                    InformationField(
-                      label: "Name",
-                      value: user.name,
-                    ),
-                    InformationField(
-                      label: "Email",
-                      value: user.email,
-                    ),
-                  ],
-                );
-              } else if (state is UserError) {
-                return Center(
-                  child: Text(state.error),
-                );
-              }
-              return Container();
-            },
-          ),
-          const Padding(
-            padding: EdgeInsets.only(top: 8),
-            child: Divider(),
-          ),
-          const HeadingText(heading: "Team Members"),
-          const TeamMemberCard(
-            name: "Devta Danarsa",
-            address: "Denpasar, Indonesia",
-          ),
-          const Padding(
-            padding: EdgeInsets.only(top: 16, bottom: 8),
-            child: Divider(),
-          ),
-          const LogoutButton(),
-          const AddMemberButton(),
-        ],
+                  );
+                } else if (state is MemberError) {
+                  return Center(
+                    child: Text(state.error),
+                  );
+                } else {
+                  return Container();
+                }
+              },
+            ),
+            const Padding(
+              padding: EdgeInsets.only(top: 16, bottom: 8),
+              child: Divider(),
+            ),
+            const LogoutButton(),
+            // const AddMemberButton(),
+          ],
+        ),
       ),
     );
   }
@@ -129,30 +175,45 @@ class InformationField extends StatelessWidget {
 }
 
 class HeadingText extends StatelessWidget {
-  const HeadingText({super.key, required this.heading});
+  const HeadingText({super.key, required this.heading, this.href});
 
   final String heading;
+  final String? href;
 
   @override
   Widget build(BuildContext context) {
     return Padding(
       padding: const EdgeInsets.only(top: 12),
       child: Row(
+        mainAxisAlignment: MainAxisAlignment.spaceBetween,
         children: [
-          Text(
-            heading,
-            style: const TextStyle(
-              fontWeight: FontWeight.bold,
-              fontSize: 15,
-            ),
+          Row(
+            children: [
+              Text(
+                heading,
+                style: const TextStyle(
+                  fontWeight: FontWeight.bold,
+                  fontSize: 15,
+                ),
+              ),
+              const Padding(
+                padding: EdgeInsets.only(left: 8),
+                child: Icon(
+                  Icons.info_outline,
+                  size: 20,
+                ),
+              ),
+            ],
           ),
-          const Padding(
-            padding: EdgeInsets.only(left: 8),
-            child: Icon(
-              Icons.info_outline,
-              size: 20,
-            ),
-          ),
+          if (href != null)
+            Text(
+              "All Members",
+              style: TextStyle(
+                fontSize: 12,
+                fontWeight: FontWeight.bold,
+                color: Colors.blue[900],
+              ),
+            )
         ],
       ),
     );
