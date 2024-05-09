@@ -1,101 +1,91 @@
 import 'package:dio/dio.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:get_storage/get_storage.dart';
+import 'package:onboarding_app/data/source/remote_source.dart';
+import 'package:onboarding_app/feature/user/bloc/user_bloc.dart';
 import 'package:onboarding_app/util/team_member_card.dart';
 
-class ProfilePage extends StatefulWidget {
+class ProfilePage extends StatelessWidget {
   const ProfilePage({super.key});
 
   @override
-  State<ProfilePage> createState() => _ProfilePageState();
-}
-
-class _ProfilePageState extends State<ProfilePage> {
-  static const String _apiUrl = "https://mobileapis.manpits.xyz/api";
-  final _localStorage = GetStorage();
-  dynamic userData;
-
-  void getUserData() async {
-    try {
-      var response = await Dio().get("$_apiUrl/user",
-          options: Options(headers: {
-            'Authorization': "Bearer ${_localStorage.read("token")}"
-          }));
-
-      if (response.statusCode == 200) {
-        setState(() {
-          userData = response.data["data"]["user"];
-        });
-      } else {
-        throw DioException.connectionTimeout;
-      }
-    } on DioException catch (e) {
-      print("Error ${e.response?.statusCode} - ${e.response?.data}");
-    }
-  }
-
-  @override
-  void initState() {
-    super.initState();
-    getUserData();
-  }
-
-  @override
   Widget build(BuildContext context) {
-    return Stack(
-      children: [
-        ListView(
-          children: [
-            Container(
-              alignment: Alignment.center,
-              child: const Column(
-                children: [
-                  CircleAvatar(
-                    backgroundImage: AssetImage("assets/default-profile.png"),
-                    radius: 30,
-                  ),
-                  Padding(
-                    padding: EdgeInsets.only(top: 8, bottom: 8),
-                    child: Text(
-                      "Edit Profile Photo",
-                      style: TextStyle(
-                        fontWeight: FontWeight.bold,
-                        fontSize: 14,
-                        color: Color.fromRGBO(31, 65, 187, 1),
+    return BlocProvider(
+      create: (context) =>
+          UserBloc(remoteDataSource: RemoteDataSource())..add(LoadUser()),
+      child: ListView(
+        children: [
+          BlocBuilder<UserBloc, UserState>(
+            builder: (context, state) {
+              if (state is UserLoading) {
+                return const Center(
+                  child: CircularProgressIndicator(),
+                );
+              } else if (state is UserLoaded) {
+                final user = state.user;
+                return Column(
+                  children: [
+                    Container(
+                      alignment: Alignment.center,
+                      child: const Column(
+                        children: [
+                          CircleAvatar(
+                            backgroundImage:
+                                AssetImage("assets/default-profile.png"),
+                            radius: 30,
+                          ),
+                          Padding(
+                            padding: EdgeInsets.only(top: 8, bottom: 8),
+                            child: Text(
+                              "Edit Profile Photo",
+                              style: TextStyle(
+                                fontWeight: FontWeight.bold,
+                                fontSize: 14,
+                                color: Color.fromRGBO(31, 65, 187, 1),
+                              ),
+                            ),
+                          ),
+                        ],
                       ),
                     ),
-                  ),
-                ],
-              ),
-            ),
-            const Divider(),
-            const HeadingText(heading: "Profile Info"),
-            InformationField(
-              label: "Name",
-              value: (userData != null ? userData["name"] : "Loading..."),
-            ),
-            InformationField(
-              label: "Email",
-              value: (userData != null ? userData["email"] : "Loading..."),
-            ),
-            const Padding(
-              padding: EdgeInsets.only(top: 8),
-              child: Divider(),
-            ),
-            const HeadingText(heading: "Team Members"),
-            const TeamMemberCard(
-              name: "Devta Danarsa",
-              address: "Denpasar, Indonesia",
-            ),
-            const Padding(
-              padding: EdgeInsets.only(top: 16, bottom: 8),
-              child: Divider(),
-            ),
-            LogoutButton(),
-          ],
-        ),
-        const AddMemberButton(),
-      ],
+                    const Divider(),
+                    const HeadingText(heading: "Profile Info"),
+                    InformationField(
+                      label: "Name",
+                      value: user.name,
+                    ),
+                    InformationField(
+                      label: "Email",
+                      value: user.email,
+                    ),
+                  ],
+                );
+              } else if (state is UserError) {
+                return Center(
+                  child: Text(state.error),
+                );
+              }
+              return Container();
+            },
+          ),
+          const Padding(
+            padding: EdgeInsets.only(top: 8),
+            child: Divider(),
+          ),
+          const HeadingText(heading: "Team Members"),
+          const TeamMemberCard(
+            name: "Devta Danarsa",
+            address: "Denpasar, Indonesia",
+          ),
+          const Padding(
+            padding: EdgeInsets.only(top: 16, bottom: 8),
+            child: Divider(),
+          ),
+          const LogoutButton(),
+          const AddMemberButton(),
+        ],
+      ),
     );
   }
 }
