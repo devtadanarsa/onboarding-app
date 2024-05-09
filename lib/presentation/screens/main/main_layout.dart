@@ -1,8 +1,8 @@
 import 'package:flutter/material.dart';
-import 'package:onboarding_app/pages/main/home_page.dart';
-import 'package:onboarding_app/pages/main/profile_page.dart';
-import 'package:onboarding_app/pages/main/search_page.dart';
-import 'package:onboarding_app/pages/main/unfinished_page.dart';
+import 'package:onboarding_app/presentation/screens/main/home_page.dart';
+import 'package:onboarding_app/presentation/screens/main/profile_page.dart';
+import 'package:onboarding_app/presentation/screens/main/search_page.dart';
+import 'package:onboarding_app/presentation/screens/main/unfinished_page.dart';
 
 class MainLayout extends StatefulWidget {
   const MainLayout({super.key});

@@ -1,10 +1,10 @@
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
-import 'package:onboarding_app/pages/login_page.dart';
-import 'package:onboarding_app/pages/main/main_layout.dart';
-import 'package:onboarding_app/pages/otp_page.dart';
-import 'package:onboarding_app/pages/register_page.dart';
-import 'package:onboarding_app/pages/welcome_page.dart';
+import 'package:onboarding_app/presentation/screens/home/login_page.dart';
+import 'package:onboarding_app/presentation/screens/main/main_layout.dart';
+import 'package:onboarding_app/presentation/screens/home/otp_page.dart';
+import 'package:onboarding_app/presentation/screens/home/register_page.dart';
+import 'package:onboarding_app/presentation/screens/home/welcome_page.dart';
 import 'package:get_storage/get_storage.dart';
 
 Future<void> main() async {

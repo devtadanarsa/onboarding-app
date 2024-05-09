@@ -3,9 +3,9 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:get_storage/get_storage.dart';
 import 'package:onboarding_app/data/source/remote_source.dart';
-import 'package:onboarding_app/feature/member/bloc/member_bloc.dart';
-import 'package:onboarding_app/feature/user/bloc/user_bloc.dart';
-import 'package:onboarding_app/util/team_member_card.dart';
+import 'package:onboarding_app/bloc/member_bloc/member_bloc.dart';
+import 'package:onboarding_app/bloc/user_bloc/user_bloc.dart';
+import 'package:onboarding_app/presentation/widget/team_member_card.dart';
 
 class ProfilePage extends StatelessWidget {
   const ProfilePage({super.key});
@@ -94,6 +94,7 @@ class ProfilePage extends StatelessWidget {
                     child: Text(
                       "Loading member data...",
                       style: TextStyle(color: Colors.grey),
+                      textAlign: TextAlign.left,
                     ),
                   );
                 } else if (state is MemberLoaded) {

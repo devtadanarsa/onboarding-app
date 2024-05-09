@@ -9,7 +9,7 @@ part 'member_state.dart';
 class MemberBloc extends Bloc<MemberEvent, MemberState> {
   final RemoteDataSource remoteDataSource;
   MemberBloc({required this.remoteDataSource}) : super(MemberInitial()) {
-    on<MemberEvent>((event, emit) async {
+    on<LoadMember>((event, emit) async {
       emit(MemberLoading());
       try {
         final result = await remoteDataSource.getMembers();

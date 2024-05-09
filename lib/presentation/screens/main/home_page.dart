@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
-import 'package:onboarding_app/util/featured_card.dart';
-import 'package:onboarding_app/util/recommendation_card.dart';
+import 'package:onboarding_app/presentation/widget/featured_card.dart';
+import 'package:onboarding_app/presentation/widget/recommendation_card.dart';
 
 class HomePage extends StatelessWidget {
   HomePage({super.key});
