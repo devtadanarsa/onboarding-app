@@ -1,0 +1,376 @@
+import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:onboarding_app/bloc/member_bloc/member_bloc.dart';
+import 'package:onboarding_app/data/source/remote_source.dart';
+import 'package:onboarding_app/presentation/widget/team_member_card.dart';
+
+class MemberPage extends StatelessWidget {
+  const MemberPage({super.key});
+
+  @override
+  Widget build(BuildContext context) {
+    return BlocProvider(
+      create: (context) => MemberBloc(remoteDataSource: RemoteDataSource()),
+      child: BlocBuilder<MemberBloc, MemberState>(
+        builder: (context, memberState) {
+          if (memberState is MemberInitial) {
+            BlocProvider.of<MemberBloc>(context).add(LoadMember());
+            return const Center(
+              child: CircularProgressIndicator(),
+            );
+          } else if (memberState is MemberLoading) {
+            return const Center(
+              child: CircularProgressIndicator(),
+            );
+          } else if (memberState is MemberLoaded) {
+            final members = memberState.members;
+            return Stack(
+              children: [
+                ListView(
+                  children: [
+                    const Row(
+                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                      children: [
+                        Row(
+                          children: [
+                            Icon(
+                              Icons.account_circle_outlined,
+                              size: 25,
+                            ),
+                            Padding(
+                              padding: EdgeInsets.only(left: 8),
+                              child: Text(
+                                "Unknown User",
+                                style: TextStyle(
+                                  fontSize: 16,
+                                  fontWeight: FontWeight.bold,
+                                ),
+                              ),
+                            ),
+                          ],
+                        ),
+                        Text(
+                          "Edit",
+                          style: TextStyle(
+                            fontSize: 16,
+                            fontWeight: FontWeight.bold,
+                            color: Color.fromRGBO(31, 65, 187, 1),
+                          ),
+                        ),
+                      ],
+                    ),
+                    const Padding(
+                      padding: EdgeInsets.only(top: 25),
+                      child: TextField(
+                        decoration: InputDecoration(
+                          contentPadding: EdgeInsets.all(1),
+                          hintText: "Search by name...",
+                          filled: true,
+                          fillColor: Colors.white,
+                          prefixIcon: Icon(Icons.search),
+                          suffixIcon: Icon(Icons.mic_none_outlined),
+                          enabledBorder: OutlineInputBorder(
+                            borderSide: BorderSide(color: Colors.grey),
+                            borderRadius: BorderRadius.all(Radius.circular(10)),
+                          ),
+                          focusedBorder: OutlineInputBorder(
+                            borderSide: BorderSide(
+                              color: Color.fromRGBO(31, 65, 187, 1),
+                            ),
+                            borderRadius: BorderRadius.all(
+                              Radius.circular(10),
+                            ),
+                          ),
+                        ),
+                      ),
+                    ),
+                    Padding(
+                      padding: const EdgeInsets.only(top: 15),
+                      child: Row(
+                        mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                        children: [
+                          Container(
+                            padding: const EdgeInsets.only(
+                                left: 15, right: 15, top: 5, bottom: 5),
+                            decoration: BoxDecoration(
+                              borderRadius:
+                                  const BorderRadius.all(Radius.circular(100)),
+                              border: Border.all(
+                                width: 2,
+                                color: const Color.fromRGBO(31, 65, 187, 1),
+                              ),
+                            ),
+                            child: const Row(
+                              children: [
+                                Icon(
+                                  Icons.tune,
+                                  color: Color.fromRGBO(31, 65, 187, 1),
+                                ),
+                                Padding(
+                                  padding: EdgeInsets.only(left: 5),
+                                  child: Text(
+                                    "Filter",
+                                    style: TextStyle(
+                                      fontSize: 13,
+                                      color: Color.fromRGBO(31, 65, 187, 1),
+                                      fontWeight: FontWeight.bold,
+                                    ),
+                                  ),
+                                ),
+                              ],
+                            ),
+                          ),
+                          Container(
+                            padding: const EdgeInsets.only(
+                                left: 15, right: 15, top: 5, bottom: 5),
+                            decoration: BoxDecoration(
+                              borderRadius:
+                                  const BorderRadius.all(Radius.circular(100)),
+                              border: Border.all(
+                                width: 2,
+                                color: const Color.fromRGBO(31, 65, 187, 1),
+                              ),
+                            ),
+                            child: const Row(
+                              children: [
+                                Padding(
+                                  padding: EdgeInsets.only(right: 5),
+                                  child: Text(
+                                    "Sorts",
+                                    style: TextStyle(
+                                      fontSize: 13,
+                                      color: Color.fromRGBO(31, 65, 187, 1),
+                                      fontWeight: FontWeight.bold,
+                                    ),
+                                  ),
+                                ),
+                                Icon(
+                                  Icons.keyboard_arrow_down,
+                                  color: Color.fromRGBO(31, 65, 187, 1),
+                                ),
+                              ],
+                            ),
+                          ),
+                          Container(
+                            padding: const EdgeInsets.only(
+                                left: 15, right: 15, top: 5, bottom: 5),
+                            decoration: BoxDecoration(
+                              borderRadius:
+                                  const BorderRadius.all(Radius.circular(100)),
+                              border: Border.all(
+                                width: 2,
+                                color: const Color.fromRGBO(31, 65, 187, 1),
+                              ),
+                            ),
+                            child: const Row(
+                              children: [
+                                Padding(
+                                  padding: EdgeInsets.only(right: 5),
+                                  child: Text(
+                                    "Categories",
+                                    style: TextStyle(
+                                      fontSize: 13,
+                                      color: Color.fromRGBO(31, 65, 187, 1),
+                                      fontWeight: FontWeight.bold,
+                                    ),
+                                  ),
+                                ),
+                                Icon(
+                                  Icons.keyboard_arrow_down,
+                                  color: Color.fromRGBO(31, 65, 187, 1),
+                                ),
+                              ],
+                            ),
+                          ),
+                        ],
+                      ),
+                    ),
+                    const Padding(
+                      padding: EdgeInsets.only(top: 25),
+                      child: Text(
+                        "Member List",
+                        style: TextStyle(
+                          fontSize: 16,
+                          fontWeight: FontWeight.bold,
+                        ),
+                      ),
+                    ),
+                    Padding(
+                      padding: const EdgeInsets.only(top: 5),
+                      child: SizedBox(
+                        child: SingleChildScrollView(
+                          physics: const NeverScrollableScrollPhysics(),
+                          child: Column(
+                            children: List.generate(
+                              members.length,
+                              (index) {
+                                return TeamMemberCard(
+                                  name: members[index].name,
+                                  address:
+                                      "${members[index].address}, Indonesia",
+                                );
+                              },
+                            ),
+                          ),
+                        ),
+                      ),
+                    ),
+                  ],
+                ),
+                const AddMemberButton()
+              ],
+            );
+          } else if (memberState is MemberError) {
+            return Center(
+              child: Text(memberState.error),
+            );
+          } else {
+            return Container();
+          }
+        },
+      ),
+    );
+  }
+}
+
+class TextInput extends StatelessWidget {
+  const TextInput({
+    super.key,
+    required this.hint,
+    required this.textController,
+  });
+
+  final String hint;
+  final TextEditingController textController;
+
+  @override
+  Widget build(BuildContext context) {
+    return TextField(
+      controller: textController,
+      decoration: InputDecoration(
+        border: const OutlineInputBorder(),
+        hintText: hint,
+        enabledBorder: const OutlineInputBorder(
+          borderSide: BorderSide(color: Colors.black),
+        ),
+        focusedBorder: const OutlineInputBorder(
+          borderSide:
+              BorderSide(color: Color.fromRGBO(31, 65, 187, 1), width: 2),
+        ),
+      ),
+    );
+  }
+}
+
+class AddMemberButton extends StatelessWidget {
+  const AddMemberButton({super.key});
+
+  void addMemberDialog(BuildContext context) {
+    final TextEditingController idController = TextEditingController();
+    final TextEditingController nameController = TextEditingController();
+    final TextEditingController addressController = TextEditingController();
+    final TextEditingController telephoneController = TextEditingController();
+
+    showDialog(
+      context: context,
+      builder: (context) {
+        return Dialog(
+          insetPadding: EdgeInsets.zero,
+          child: Container(
+            decoration: BoxDecoration(
+              color: Colors.white,
+              borderRadius: BorderRadius.circular(10),
+            ),
+            height: 550,
+            width: 350,
+            child: Padding(
+              padding: const EdgeInsets.only(
+                top: 20,
+                bottom: 20,
+                right: 20,
+                left: 20,
+              ),
+              child: Column(
+                mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                children: [
+                  const Text(
+                    "New Team Member",
+                    style: TextStyle(
+                      fontSize: 18,
+                      color: Color(0xFF1F41BB),
+                      fontWeight: FontWeight.bold,
+                    ),
+                  ),
+                  TextInput(hint: "ID Number", textController: idController),
+                  TextInput(hint: "Name", textController: nameController),
+                  TextInput(hint: "Address", textController: addressController),
+                  TextInput(
+                      hint: "Telephone", textController: telephoneController),
+                  Row(
+                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                    children: [
+                      const Text("Date of Birth"),
+                      ElevatedButton(
+                        onPressed: () async {
+                          final DateTime? dateTime = await showDatePicker(
+                            context: context,
+                            firstDate: DateTime(1900),
+                            lastDate: DateTime(2050),
+                          );
+                        },
+                        style: ElevatedButton.styleFrom(
+                          backgroundColor: Colors.white,
+                          foregroundColor: Colors.black,
+                          shape: const RoundedRectangleBorder(
+                            borderRadius: BorderRadius.all(Radius.circular(10)),
+                            side: BorderSide(color: Colors.black),
+                          ),
+                        ),
+                        child: const Text("Pick a Date"),
+                      )
+                    ],
+                  ),
+                  ElevatedButton(
+                    onPressed: () {},
+                    style: ElevatedButton.styleFrom(
+                      backgroundColor: const Color(0xFF1F41BB),
+                      foregroundColor: Colors.white,
+                      minimumSize: const Size.fromHeight(50),
+                      shape: const RoundedRectangleBorder(
+                        borderRadius: BorderRadius.all(Radius.circular(10)),
+                      ),
+                    ),
+                    child: const Text(
+                      "Save Member",
+                      style: TextStyle(
+                        fontWeight: FontWeight.w600,
+                      ),
+                    ),
+                  ),
+                ],
+              ),
+            ),
+          ),
+        );
+      },
+    );
+  }
+
+  @override
+  Widget build(BuildContext context) {
+    return Container(
+      alignment: Alignment.bottomRight,
+      padding: const EdgeInsets.only(bottom: 20),
+      child: FloatingActionButton(
+        backgroundColor: const Color.fromRGBO(31, 65, 187, 1),
+        child: const Icon(
+          Icons.add,
+          color: Colors.white,
+        ),
+        onPressed: () {
+          addMemberDialog(context);
+        },
+      ),
+    );
+  }
+}
