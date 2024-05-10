@@ -15,123 +15,119 @@ class ProfilePage extends StatelessWidget {
     return MultiBlocProvider(
       providers: [
         BlocProvider<UserBloc>(
-            create: (context) => UserBloc(remoteDataSource: RemoteDataSource())
-              ..add(LoadUser())),
+          create: (context) => UserBloc(remoteDataSource: RemoteDataSource()),
+        ),
         BlocProvider<MemberBloc>(
-            create: (context) =>
-                MemberBloc(remoteDataSource: RemoteDataSource())
-                  ..add(LoadMember()))
+          create: (context) => MemberBloc(remoteDataSource: RemoteDataSource()),
+        ),
       ],
-      child: SafeArea(
-        child: Column(
-          children: [
-            BlocBuilder<UserBloc, UserState>(
-              builder: (context, state) {
-                if (state is UserLoading) {
+      child: BlocBuilder<UserBloc, UserState>(
+        builder: (context, userState) {
+          if (userState is UserInitial) {
+            BlocProvider.of<UserBloc>(context).add(LoadUser());
+            return const Center(
+              child: CircularProgressIndicator(),
+            );
+          } else if (userState is UserLoading) {
+            return const Center(
+              child: CircularProgressIndicator(),
+            );
+          } else if (userState is UserLoaded) {
+            final user = userState.user;
+            return BlocBuilder<MemberBloc, MemberState>(
+              builder: (context, memberState) {
+                if (memberState is MemberLoading) {
                   return const Center(
                     child: CircularProgressIndicator(),
                   );
-                } else if (state is UserLoaded) {
-                  final user = state.user;
-                  return Column(
-                    children: [
-                      Container(
-                        alignment: Alignment.center,
-                        child: const Column(
-                          children: [
-                            CircleAvatar(
-                              backgroundImage:
-                                  AssetImage("assets/default-profile.png"),
-                              radius: 30,
-                            ),
-                            Padding(
-                              padding: EdgeInsets.only(top: 8, bottom: 8),
-                              child: Text(
-                                "Edit Profile Photo",
-                                style: TextStyle(
-                                  fontWeight: FontWeight.bold,
-                                  fontSize: 14,
-                                  color: Color.fromRGBO(31, 65, 187, 1),
+                } else if (memberState is MemberInitial) {
+                  BlocProvider.of<MemberBloc>(context).add(LoadMember());
+                  return const Center(
+                    child: CircularProgressIndicator(),
+                  );
+                } else if (memberState is MemberLoaded) {
+                  final members = memberState.members;
+                  return SafeArea(
+                    child: Column(
+                      children: [
+                        Container(
+                          alignment: Alignment.center,
+                          child: const Column(
+                            children: [
+                              CircleAvatar(
+                                backgroundImage:
+                                    AssetImage("assets/default-profile.png"),
+                                radius: 30,
+                              ),
+                              Padding(
+                                padding: EdgeInsets.only(top: 8, bottom: 8),
+                                child: Text(
+                                  "Edit Profile Photo",
+                                  style: TextStyle(
+                                    fontWeight: FontWeight.bold,
+                                    fontSize: 14,
+                                    color: Color.fromRGBO(31, 65, 187, 1),
+                                  ),
                                 ),
                               ),
+                            ],
+                          ),
+                        ),
+                        const Divider(),
+                        const HeadingText(heading: "Profile Info"),
+                        InformationField(
+                          label: "Name",
+                          value: user.name,
+                        ),
+                        InformationField(
+                          label: "Email",
+                          value: user.email,
+                        ),
+                        const Padding(
+                          padding: EdgeInsets.only(top: 8),
+                          child: Divider(),
+                        ),
+                        const HeadingText(
+                          heading: "Team Members",
+                          href: "See All Members",
+                        ),
+                        SizedBox(
+                          child: SingleChildScrollView(
+                            physics: const NeverScrollableScrollPhysics(),
+                            child: Column(
+                              children: List.generate(
+                                members.length > 3 ? 3 : members.length,
+                                (index) {
+                                  return TeamMemberCard(
+                                    name: members[index].name,
+                                    address:
+                                        "${members[index].address}, Indonesia",
+                                  );
+                                },
+                              ),
                             ),
-                          ],
-                        ),
-                      ),
-                      const Divider(),
-                      const HeadingText(heading: "Profile Info"),
-                      InformationField(
-                        label: "Name",
-                        value: user.name,
-                      ),
-                      InformationField(
-                        label: "Email",
-                        value: user.email,
-                      ),
-                    ],
-                  );
-                } else if (state is UserError) {
-                  return Center(
-                    child: Text(state.error),
-                  );
-                }
-                return Container();
-              },
-            ),
-            const Padding(
-              padding: EdgeInsets.only(top: 8),
-              child: Divider(),
-            ),
-            const HeadingText(
-              heading: "Team Members",
-              href: "See All Members",
-            ),
-            BlocBuilder<MemberBloc, MemberState>(
-              builder: (context, state) {
-                if (state is MemberLoading) {
-                  return const Padding(
-                    padding: EdgeInsets.only(top: 8),
-                    child: Text(
-                      "Loading member data...",
-                      style: TextStyle(color: Colors.grey),
-                      textAlign: TextAlign.left,
+                          ),
+                        )
+                      ],
                     ),
                   );
-                } else if (state is MemberLoaded) {
-                  final members = state.members;
-                  return SizedBox(
-                    child: SingleChildScrollView(
-                      physics: const NeverScrollableScrollPhysics(),
-                      child: Column(
-                        children: List.generate(
-                          members.length > 3 ? 3 : members.length,
-                          (index) {
-                            return TeamMemberCard(
-                              name: members[index].name,
-                              address: "${members[index].address}, Indonesia",
-                            );
-                          },
-                        ),
-                      ),
-                    ),
-                  );
-                } else if (state is MemberError) {
+                } else if (memberState is MemberError) {
                   return Center(
-                    child: Text(state.error),
+                    child: Text(memberState.error),
                   );
                 } else {
-                  return Container();
+                  return Container(); // Handle other states if needed
                 }
               },
-            ),
-            const Padding(
-              padding: EdgeInsets.only(top: 16, bottom: 8),
-              child: Divider(),
-            ),
-            const LogoutButton(),
-            // const AddMemberButton(),
-          ],
-        ),
+            );
+          } else if (userState is UserError) {
+            return Center(
+              child: Text(userState.error),
+            );
+          } else {
+            return Container(); // Handle other states if needed
+          }
+        },
       ),
     );
   }
