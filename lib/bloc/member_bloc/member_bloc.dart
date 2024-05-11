@@ -27,7 +27,6 @@ class MemberBloc extends Bloc<MemberEvent, MemberState> {
   void _addMember(AddMember event, Emitter<MemberState> emit) async {
     try {
       await remoteDataSource.addMember(event.member);
-      print("Member added");
     } catch (error) {
       emit(MemberError(error.toString()));
     }

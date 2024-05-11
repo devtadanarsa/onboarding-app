@@ -12,24 +12,24 @@ class DataMember {
 }
 
 class Member {
-  final int id;
+  final int? id;
   final int nomorInduk;
   final String name;
   final String address;
   final String dateOfBirth;
   final String phoneNumber;
   final String? imageUrl;
-  final int isActive;
+  final int? isActive;
 
   Member({
-    required this.id,
+    this.id,
     required this.nomorInduk,
     required this.name,
     required this.address,
     required this.dateOfBirth,
     required this.phoneNumber,
-    required this.imageUrl,
-    required this.isActive,
+    this.imageUrl,
+    this.isActive,
   });
 
   factory Member.fromModel(Map<String, dynamic> json) => Member(

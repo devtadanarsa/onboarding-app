@@ -107,6 +107,10 @@ class ProfilePage extends StatelessWidget {
                               ),
                             ),
                           ),
+                        ),
+                        const Padding(
+                          padding: EdgeInsets.only(top: 25),
+                          child: LogoutButton(),
                         )
                       ],
                     ),

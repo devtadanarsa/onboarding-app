@@ -1,3 +1,5 @@
+import 'dart:async';
+
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:onboarding_app/bloc/member_bloc/member_bloc.dart';
@@ -263,14 +265,9 @@ class TextInput extends StatelessWidget {
   }
 }
 
-class AddMemberButton extends StatefulWidget {
+class AddMemberButton extends StatelessWidget {
   const AddMemberButton({super.key});
 
-  @override
-  State<AddMemberButton> createState() => _AddMemberButtonState();
-}
-
-class _AddMemberButtonState extends State<AddMemberButton> {
   void addMemberDialog(BuildContext context) {
     final TextEditingController nomorIndukController = TextEditingController();
     final TextEditingController nameController = TextEditingController();
@@ -278,16 +275,25 @@ class _AddMemberButtonState extends State<AddMemberButton> {
     final TextEditingController phoneController = TextEditingController();
     String selectedDate = "";
 
-    void onSaveTap() {
+    bool areAnyFieldsEmpty() {
+      final List<TextEditingController> controllers = [
+        nomorIndukController,
+        nameController,
+        addressController,
+        phoneController,
+      ];
+
+      return controllers.any((controller) => controller.text.isEmpty) ||
+          selectedDate.isEmpty;
+    }
+
+    void addMember() {
       Member member = Member(
-        id: 99,
         nomorInduk: int.tryParse(nomorIndukController.text) ?? 0,
         name: nameController.text,
         address: addressController.text,
         dateOfBirth: selectedDate,
         phoneNumber: phoneController.text,
-        imageUrl: "",
-        isActive: 1,
       );
 
       BlocProvider.of<MemberBloc>(context).add(AddMember(member: member));
@@ -298,7 +304,23 @@ class _AddMemberButtonState extends State<AddMemberButton> {
     showDialog(
       context: context,
       builder: (context) {
+        bool invalidInput = false;
         return StatefulBuilder(builder: (dialogContext, dialogSetState) {
+          void onSaveTap() {
+            if (areAnyFieldsEmpty()) {
+              dialogSetState(() {
+                invalidInput = true;
+                Timer(const Duration(seconds: 3), () {
+                  dialogSetState(() {
+                    invalidInput = false;
+                  });
+                });
+              });
+            } else {
+              addMember();
+            }
+          }
+
           return Dialog(
             insetPadding: EdgeInsets.zero,
             child: Container(
@@ -327,12 +349,21 @@ class _AddMemberButtonState extends State<AddMemberButton> {
                       ),
                     ),
                     TextInput(
-                        hint: "Nomor Induk",
-                        textController: nomorIndukController),
-                    TextInput(hint: "Nama", textController: nameController),
+                      hint: "Nomor Induk",
+                      textController: nomorIndukController,
+                    ),
                     TextInput(
-                        hint: "Alamat", textController: addressController),
-                    TextInput(hint: "Telepon", textController: phoneController),
+                      hint: "Nama",
+                      textController: nameController,
+                    ),
+                    TextInput(
+                      hint: "Alamat",
+                      textController: addressController,
+                    ),
+                    TextInput(
+                      hint: "Telepon",
+                      textController: phoneController,
+                    ),
                     Row(
                       mainAxisAlignment: MainAxisAlignment.spaceBetween,
                       children: [
@@ -367,6 +398,21 @@ class _AddMemberButtonState extends State<AddMemberButton> {
                               : selectedDate.split(" ")[0]),
                         )
                       ],
+                    ),
+                    Visibility(
+                      visible: invalidInput,
+                      child: Container(
+                        padding: const EdgeInsets.only(top: 10),
+                        child: const Center(
+                          child: Text(
+                            "Input is invalid!",
+                            style: TextStyle(
+                              color: Colors.red,
+                              fontWeight: FontWeight.bold,
+                            ),
+                          ),
+                        ),
+                      ),
                     ),
                     ElevatedButton(
                       onPressed: () {
