@@ -208,9 +208,10 @@ class MemberPage extends StatelessWidget {
                               members.length,
                               (index) {
                                 return TeamMemberCard(
+                                  id: members[index].id!,
                                   name: members[index].name,
                                   address:
-                                      "${members[index].address}, Indonesia",
+                                      "ID${members[index].nomorInduk} - ${members[index].address}",
                                 );
                               },
                             ),

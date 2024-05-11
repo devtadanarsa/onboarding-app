@@ -10,3 +10,9 @@ final class AddMember extends MemberEvent {
 
   AddMember({required this.member});
 }
+
+final class DeleteMember extends MemberEvent {
+  final int memberId;
+
+  DeleteMember({required this.memberId});
+}

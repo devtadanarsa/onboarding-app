@@ -12,6 +12,7 @@ class MemberBloc extends Bloc<MemberEvent, MemberState> {
   MemberBloc({required this.remoteDataSource}) : super(MemberInitial()) {
     on<LoadMember>(_loadMember);
     on<AddMember>(_addMember);
+    on<DeleteMember>(_deleteMember);
   }
 
   void _loadMember(LoadMember event, Emitter<MemberState> emit) async {
@@ -27,6 +28,14 @@ class MemberBloc extends Bloc<MemberEvent, MemberState> {
   void _addMember(AddMember event, Emitter<MemberState> emit) async {
     try {
       await remoteDataSource.addMember(event.member);
+    } catch (error) {
+      emit(MemberError(error.toString()));
+    }
+  }
+
+  void _deleteMember(DeleteMember event, Emitter<MemberState> emit) async {
+    try {
+      await remoteDataSource.deleteMember(event.memberId);
     } catch (error) {
       emit(MemberError(error.toString()));
     }

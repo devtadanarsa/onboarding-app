@@ -48,4 +48,15 @@ class RemoteDataSource {
 
     return response;
   }
+
+  Future deleteMember(int memberId) async {
+    final response = await dio.delete(
+      "/anggota/$memberId",
+      options: Options(
+        headers: {"Authorization": "Bearer ${_localStorage.read("token")}"},
+      ),
+    );
+
+    return response;
+  }
 }
