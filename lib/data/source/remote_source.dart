@@ -59,4 +59,23 @@ class RemoteDataSource {
 
     return response;
   }
+
+  Future editMember(Member member) async {
+    final response = await dio.put(
+      "/anggota/${member.id}",
+      data: {
+        "nomor_induk": member.nomorInduk,
+        "nama": member.name,
+        "alamat": member.address,
+        "tgl_lahir": member.dateOfBirth,
+        "telepon": member.phoneNumber,
+        "status_aktif": member.isActive,
+      },
+      options: Options(
+        headers: {"Authorization": "Bearer ${_localStorage.read("token")}"},
+      ),
+    );
+
+    return response;
+  }
 }

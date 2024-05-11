@@ -16,3 +16,9 @@ final class DeleteMember extends MemberEvent {
 
   DeleteMember({required this.memberId});
 }
+
+final class EditMember extends MemberEvent {
+  final Member member;
+
+  EditMember({required this.member});
+}

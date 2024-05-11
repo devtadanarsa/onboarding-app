@@ -100,9 +100,12 @@ class ProfilePage extends StatelessWidget {
                                 (index) {
                                   return TeamMemberCard(
                                     id: members[index].id!,
+                                    nomorInduk: members[index].nomorInduk,
                                     name: members[index].name,
-                                    address:
-                                        "ID${members[index].nomorInduk} - ${members[index].address}",
+                                    address: members[index].address,
+                                    dateOfBirth: members[index].dateOfBirth,
+                                    telephone: members[index].phoneNumber,
+                                    isActive: members[index].isActive!,
                                   );
                                 },
                               ),
