@@ -16,3 +16,9 @@ final class MemberError extends MemberState {
   final String error;
   MemberError(this.error);
 }
+
+final class MemberAdded extends MemberState {}
+
+final class MemberEdited extends MemberState {}
+
+final class MemberDeleted extends MemberState {}

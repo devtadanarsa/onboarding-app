@@ -31,6 +31,9 @@ class TeamMemberCard extends StatelessWidget {
     void onDeleteTap() {
       deleteConfirmed = true;
       BlocProvider.of<MemberBloc>(context).add(DeleteMember(memberId: id));
+      Timer(const Duration(seconds: 1), () {
+        BlocProvider.of<MemberBloc>(context).add(LoadMember());
+      });
       BlocProvider.of<MemberBloc>(context).add(LoadMember());
       Navigator.pop(context);
     }
@@ -294,7 +297,10 @@ class EditMemberButton extends StatelessWidget {
       );
 
       BlocProvider.of<MemberBloc>(context).add(EditMember(member: member));
-      BlocProvider.of<MemberBloc>(context).add(LoadMember());
+      Timer(const Duration(seconds: 1), () {
+        BlocProvider.of<MemberBloc>(context).add(LoadMember());
+      });
+      // BlocProvider.of<MemberBloc>(context).add(LoadMember());
       Navigator.pop(context);
     }
 

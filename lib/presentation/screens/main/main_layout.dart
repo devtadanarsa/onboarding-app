@@ -2,7 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:onboarding_app/presentation/screens/main/home_page.dart';
 import 'package:onboarding_app/presentation/screens/main/member_page.dart';
 import 'package:onboarding_app/presentation/screens/main/profile_page.dart';
-import 'package:onboarding_app/presentation/screens/main/search_page.dart';
+import 'package:onboarding_app/presentation/screens/main/unfinished_page.dart';
 
 class MainLayout extends StatefulWidget {
   const MainLayout({super.key});
@@ -16,7 +16,7 @@ class _MainLayoutState extends State<MainLayout> {
 
   final List _pages = [
     HomePage(),
-    SearchPage(),
+    const UnfinishedPage(),
     const MemberPage(),
     const ProfilePage(),
   ];
@@ -107,7 +107,7 @@ class _MainLayoutState extends State<MainLayout> {
                     mainAxisAlignment: MainAxisAlignment.center,
                     children: [
                       Icon(
-                        Icons.picture_in_picture_alt_outlined,
+                        Icons.theater_comedy_outlined,
                         color: (_selectedIdx == 2
                             ? const Color.fromRGBO(31, 65, 187, 1)
                             : Colors.black),
