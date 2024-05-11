@@ -30,4 +30,22 @@ class RemoteDataSource {
 
     return DataMember.fromJson(response.data);
   }
+
+  Future addMember(Member member) async {
+    final response = await dio.post(
+      "/anggota",
+      data: {
+        "nomor_induk": member.nomorInduk,
+        "nama": member.name,
+        "alamat": member.address,
+        "tgl_lahir": member.dateOfBirth,
+        "telepon": member.phoneNumber,
+      },
+      options: Options(
+        headers: {"Authorization": "Bearer ${_localStorage.read("token")}"},
+      ),
+    );
+
+    return response;
+  }
 }

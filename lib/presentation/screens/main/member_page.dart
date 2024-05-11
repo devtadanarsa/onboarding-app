@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:onboarding_app/bloc/member_bloc/member_bloc.dart';
+import 'package:onboarding_app/data/model/member.dart';
 import 'package:onboarding_app/data/source/remote_source.dart';
 import 'package:onboarding_app/presentation/widget/team_member_card.dart';
 
@@ -196,7 +197,7 @@ class MemberPage extends StatelessWidget {
                       ),
                     ),
                     Padding(
-                      padding: const EdgeInsets.only(top: 5),
+                      padding: const EdgeInsets.only(top: 5, bottom: 20),
                       child: SizedBox(
                         child: SingleChildScrollView(
                           physics: const NeverScrollableScrollPhysics(),
@@ -262,96 +263,136 @@ class TextInput extends StatelessWidget {
   }
 }
 
-class AddMemberButton extends StatelessWidget {
+class AddMemberButton extends StatefulWidget {
   const AddMemberButton({super.key});
 
+  @override
+  State<AddMemberButton> createState() => _AddMemberButtonState();
+}
+
+class _AddMemberButtonState extends State<AddMemberButton> {
   void addMemberDialog(BuildContext context) {
-    final TextEditingController idController = TextEditingController();
+    final TextEditingController nomorIndukController = TextEditingController();
     final TextEditingController nameController = TextEditingController();
     final TextEditingController addressController = TextEditingController();
-    final TextEditingController telephoneController = TextEditingController();
+    final TextEditingController phoneController = TextEditingController();
+    String selectedDate = "";
+
+    void onSaveTap() {
+      Member member = Member(
+        id: 99,
+        nomorInduk: int.tryParse(nomorIndukController.text) ?? 0,
+        name: nameController.text,
+        address: addressController.text,
+        dateOfBirth: selectedDate,
+        phoneNumber: phoneController.text,
+        imageUrl: "",
+        isActive: 1,
+      );
+
+      BlocProvider.of<MemberBloc>(context).add(AddMember(member: member));
+      BlocProvider.of<MemberBloc>(context).add(LoadMember());
+      Navigator.pop(context);
+    }
 
     showDialog(
       context: context,
       builder: (context) {
-        return Dialog(
-          insetPadding: EdgeInsets.zero,
-          child: Container(
-            decoration: BoxDecoration(
-              color: Colors.white,
-              borderRadius: BorderRadius.circular(10),
-            ),
-            height: 550,
-            width: 350,
-            child: Padding(
-              padding: const EdgeInsets.only(
-                top: 20,
-                bottom: 20,
-                right: 20,
-                left: 20,
+        return StatefulBuilder(builder: (dialogContext, dialogSetState) {
+          return Dialog(
+            insetPadding: EdgeInsets.zero,
+            child: Container(
+              decoration: BoxDecoration(
+                color: Colors.white,
+                borderRadius: BorderRadius.circular(10),
               ),
-              child: Column(
-                mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-                children: [
-                  const Text(
-                    "New Team Member",
-                    style: TextStyle(
-                      fontSize: 18,
-                      color: Color(0xFF1F41BB),
-                      fontWeight: FontWeight.bold,
-                    ),
-                  ),
-                  TextInput(hint: "ID Number", textController: idController),
-                  TextInput(hint: "Name", textController: nameController),
-                  TextInput(hint: "Address", textController: addressController),
-                  TextInput(
-                      hint: "Telephone", textController: telephoneController),
-                  Row(
-                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                    children: [
-                      const Text("Date of Birth"),
-                      ElevatedButton(
-                        onPressed: () async {
-                          final DateTime? dateTime = await showDatePicker(
-                            context: context,
-                            firstDate: DateTime(1900),
-                            lastDate: DateTime(2050),
-                          );
-                        },
-                        style: ElevatedButton.styleFrom(
-                          backgroundColor: Colors.white,
-                          foregroundColor: Colors.black,
-                          shape: const RoundedRectangleBorder(
-                            borderRadius: BorderRadius.all(Radius.circular(10)),
-                            side: BorderSide(color: Colors.black),
-                          ),
-                        ),
-                        child: const Text("Pick a Date"),
-                      )
-                    ],
-                  ),
-                  ElevatedButton(
-                    onPressed: () {},
-                    style: ElevatedButton.styleFrom(
-                      backgroundColor: const Color(0xFF1F41BB),
-                      foregroundColor: Colors.white,
-                      minimumSize: const Size.fromHeight(50),
-                      shape: const RoundedRectangleBorder(
-                        borderRadius: BorderRadius.all(Radius.circular(10)),
-                      ),
-                    ),
-                    child: const Text(
-                      "Save Member",
+              height: 550,
+              width: 350,
+              child: Padding(
+                padding: const EdgeInsets.only(
+                  top: 20,
+                  bottom: 20,
+                  right: 20,
+                  left: 20,
+                ),
+                child: Column(
+                  mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                  children: [
+                    const Text(
+                      "New Team Member",
                       style: TextStyle(
-                        fontWeight: FontWeight.w600,
+                        fontSize: 18,
+                        color: Color(0xFF1F41BB),
+                        fontWeight: FontWeight.bold,
                       ),
                     ),
-                  ),
-                ],
+                    TextInput(
+                        hint: "Nomor Induk",
+                        textController: nomorIndukController),
+                    TextInput(hint: "Nama", textController: nameController),
+                    TextInput(
+                        hint: "Alamat", textController: addressController),
+                    TextInput(hint: "Telepon", textController: phoneController),
+                    Row(
+                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                      children: [
+                        const Text("Tanggal Lahir"),
+                        ElevatedButton(
+                          onPressed: () async {
+                            final DateTime? dateTime = await showDatePicker(
+                              context: context,
+                              firstDate: DateTime(1900),
+                              lastDate: DateTime(2050),
+                            );
+
+                            if (dateTime != null) {
+                              dialogSetState(() {
+                                selectedDate = DateTime(dateTime.year,
+                                        dateTime.month, dateTime.day)
+                                    .toString();
+                              });
+                            }
+                          },
+                          style: ElevatedButton.styleFrom(
+                            backgroundColor: Colors.white,
+                            foregroundColor: Colors.black,
+                            shape: const RoundedRectangleBorder(
+                              borderRadius:
+                                  BorderRadius.all(Radius.circular(10)),
+                              side: BorderSide(color: Colors.black),
+                            ),
+                          ),
+                          child: Text(selectedDate.isEmpty
+                              ? "Pick a Date"
+                              : selectedDate.split(" ")[0]),
+                        )
+                      ],
+                    ),
+                    ElevatedButton(
+                      onPressed: () {
+                        onSaveTap();
+                      },
+                      style: ElevatedButton.styleFrom(
+                        backgroundColor: const Color(0xFF1F41BB),
+                        foregroundColor: Colors.white,
+                        minimumSize: const Size.fromHeight(50),
+                        shape: const RoundedRectangleBorder(
+                          borderRadius: BorderRadius.all(Radius.circular(10)),
+                        ),
+                      ),
+                      child: const Text(
+                        "Save Member",
+                        style: TextStyle(
+                          fontWeight: FontWeight.w600,
+                        ),
+                      ),
+                    ),
+                  ],
+                ),
               ),
             ),
-          ),
-        );
+          );
+        });
       },
     );
   }
