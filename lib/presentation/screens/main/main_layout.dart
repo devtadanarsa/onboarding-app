@@ -222,7 +222,6 @@ class _MainLayoutState extends State<MainLayout> {
                         padding: const EdgeInsets.only(top: 15),
                         child: ElevatedButton(
                           onPressed: () {
-                            BlocProvider.of<UserBloc>(context).add(InitUser());
                             Navigator.of(context)
                                 .pushNamedAndRemoveUntil("/", (route) => false);
                           },

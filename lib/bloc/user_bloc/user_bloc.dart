@@ -10,6 +10,7 @@ class UserBloc extends Bloc<UserEvent, UserState> {
   final RemoteDataSource remoteDataSource;
   UserBloc({required this.remoteDataSource}) : super(UserInitial()) {
     on<LoadUser>((event, emit) async {
+      print("Load User");
       emit(UserLoading());
       try {
         final result = await remoteDataSource.getUser();
