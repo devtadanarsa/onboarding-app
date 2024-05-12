@@ -111,7 +111,7 @@ class ProfilePage extends StatelessWidget {
                 );
               } else if (memberState is MemberError) {
                 return Center(
-                  child: Text(memberState.error),
+                  child: Text(memberState.errorDescription),
                 );
               } else {
                 return Container(); // Handle other states if needed
@@ -119,8 +119,75 @@ class ProfilePage extends StatelessWidget {
             },
           );
         } else if (userState is UserError) {
-          return Center(
-            child: Text(userState.error),
+          return Dialog(
+            insetPadding: EdgeInsets.zero,
+            child: Container(
+              decoration: BoxDecoration(
+                color: Colors.white,
+                borderRadius: BorderRadius.circular(10),
+              ),
+              height: 420,
+              width: 350,
+              child: Padding(
+                padding: const EdgeInsets.only(
+                  top: 20,
+                  bottom: 20,
+                  right: 20,
+                  left: 20,
+                ),
+                child: Column(
+                  children: [
+                    const Image(
+                      image: AssetImage("assets/session-expired.jpg"),
+                    ),
+                    const Padding(
+                      padding: EdgeInsets.only(top: 20),
+                      child: Text(
+                        "Whoops, Your session has expired",
+                        style: TextStyle(
+                          fontWeight: FontWeight.bold,
+                          fontSize: 16,
+                        ),
+                        textAlign: TextAlign.center,
+                      ),
+                    ),
+                    Padding(
+                      padding: const EdgeInsets.only(top: 10),
+                      child: Text(
+                        "Your session has expired due to your inactivity. No worry, simply login again",
+                        style: TextStyle(
+                          fontSize: 13,
+                          color: Colors.grey[700],
+                        ),
+                        textAlign: TextAlign.center,
+                      ),
+                    ),
+                    Padding(
+                      padding: const EdgeInsets.only(top: 15),
+                      child: ElevatedButton(
+                        onPressed: () {
+                          Navigator.pushNamed(context, "/");
+                        },
+                        style: ElevatedButton.styleFrom(
+                          backgroundColor: const Color(0xFF1F41BB),
+                          foregroundColor: Colors.white,
+                          minimumSize: const Size.fromHeight(40),
+                          shape: const RoundedRectangleBorder(
+                            borderRadius: BorderRadius.all(Radius.circular(10)),
+                          ),
+                        ),
+                        child: const Text(
+                          "Login",
+                          style: TextStyle(
+                            fontWeight: FontWeight.bold,
+                          ),
+                        ),
+                      ),
+                    )
+                  ],
+                ),
+              ),
+            ),
           );
         } else {
           return Container(); // Handle other states if needed
@@ -340,7 +407,9 @@ class _LogoutButtonState extends State<LogoutButton> {
                             borderRadius: BorderRadius.all(Radius.circular(10)),
                           ),
                         ),
-                        onPressed: () {},
+                        onPressed: () {
+                          Navigator.of(context).pop();
+                        },
                         child: const Text(
                           "Cancel",
                           style: TextStyle(

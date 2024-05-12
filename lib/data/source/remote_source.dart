@@ -4,35 +4,33 @@ import 'package:onboarding_app/data/model/member.dart';
 import 'package:onboarding_app/data/model/user.dart';
 
 class RemoteDataSource {
-  final dio = Dio(BaseOptions(baseUrl: "https://mobileapis.manpits.xyz/api"));
-  final _localStorage = GetStorage();
+  final Dio _dio;
+  final GetStorage _localStorage;
+
+  RemoteDataSource()
+      : _dio = Dio(BaseOptions(baseUrl: "https://mobileapis.manpits.xyz/api")),
+        _localStorage = GetStorage();
+
+  Options _getOptions() {
+    return Options(
+      headers: {
+        "Authorization": "Bearer ${_localStorage.read("token")}",
+      },
+    );
+  }
 
   Future<User> getUser() async {
-    final response = await dio.get(
-      '/user',
-      options: Options(
-        headers: {
-          "Authorization": "Bearer ${_localStorage.read("token")}",
-        },
-      ),
-    );
-
+    final response = await _dio.get('/user', options: _getOptions());
     return User.fromModel(response.data);
   }
 
   Future<DataMember> getMembers() async {
-    final response = await dio.get(
-      "/anggota",
-      options: Options(
-        headers: {"Authorization": "Bearer ${_localStorage.read("token")}"},
-      ),
-    );
-
+    final response = await _dio.get("/anggota", options: _getOptions());
     return DataMember.fromJson(response.data);
   }
 
   Future addMember(Member member) async {
-    final response = await dio.post(
+    final response = await _dio.post(
       "/anggota",
       data: {
         "nomor_induk": member.nomorInduk,
@@ -41,27 +39,20 @@ class RemoteDataSource {
         "tgl_lahir": member.dateOfBirth,
         "telepon": member.phoneNumber,
       },
-      options: Options(
-        headers: {"Authorization": "Bearer ${_localStorage.read("token")}"},
-      ),
+      options: _getOptions(),
     );
 
     return response;
   }
 
   Future deleteMember(int memberId) async {
-    final response = await dio.delete(
-      "/anggota/$memberId",
-      options: Options(
-        headers: {"Authorization": "Bearer ${_localStorage.read("token")}"},
-      ),
-    );
-
+    final response =
+        await _dio.delete("/anggota/$memberId", options: _getOptions());
     return response;
   }
 
   Future editMember(Member member) async {
-    final response = await dio.put(
+    final response = await _dio.put(
       "/anggota/${member.id}",
       data: {
         "nomor_induk": member.nomorInduk,
@@ -71,9 +62,7 @@ class RemoteDataSource {
         "telepon": member.phoneNumber,
         "status_aktif": member.isActive,
       },
-      options: Options(
-        headers: {"Authorization": "Bearer ${_localStorage.read("token")}"},
-      ),
+      options: _getOptions(),
     );
 
     return response;

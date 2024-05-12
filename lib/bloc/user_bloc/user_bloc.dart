@@ -9,7 +9,7 @@ part 'user_state.dart';
 class UserBloc extends Bloc<UserEvent, UserState> {
   final RemoteDataSource remoteDataSource;
   UserBloc({required this.remoteDataSource}) : super(UserInitial()) {
-    on<UserEvent>((event, emit) async {
+    on<LoadUser>((event, emit) async {
       emit(UserLoading());
       try {
         final result = await remoteDataSource.getUser();
@@ -17,6 +17,11 @@ class UserBloc extends Bloc<UserEvent, UserState> {
       } catch (error) {
         emit(UserError(error.toString()));
       }
+    });
+
+    on<InitUser>((event, emit) {
+      print("Initial State");
+      emit(UserInitial());
     });
   }
 }

@@ -41,7 +41,6 @@ dependencies:
   timer_count_down: ^2.2.0
 
 dev_dependencies:
-
   # The "flutter_lints" package below contains a set of recommended lints to
   # encourage good coding practices. The lint set provided by the package is
   # activated in the `analysis_options.yaml` file located at the root of your
@@ -62,6 +61,7 @@ flutter:
     - assets/profile-image.jpeg
     - assets/site-under-construction.png
     - assets/default-profile.png
+    - assets/session-expired.jpg
     - assets/companies/gojek-icon.png
     - assets/companies/elux-icon.png
     - assets/companies/djitugo-icon.jpeg

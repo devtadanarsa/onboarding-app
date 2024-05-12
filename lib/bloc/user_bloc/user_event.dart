@@ -4,3 +4,5 @@ part of 'user_bloc.dart';
 sealed class UserEvent {}
 
 final class LoadUser extends UserEvent {}
+
+final class InitUser extends UserEvent {}

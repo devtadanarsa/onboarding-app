@@ -1,3 +1,4 @@
+import 'package:dio/dio.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:onboarding_app/data/model/member.dart';
@@ -21,8 +22,11 @@ class MemberBloc extends Bloc<MemberEvent, MemberState> {
     try {
       final result = await remoteDataSource.getMembers();
       emit(MemberLoaded(result.data));
-    } catch (error) {
-      emit(MemberError(error.toString()));
+    } on DioException catch (error) {
+      emit(MemberError(
+        error.response?.statusCode as int,
+        error.response?.data,
+      ));
     }
   }
 
@@ -30,8 +34,11 @@ class MemberBloc extends Bloc<MemberEvent, MemberState> {
     try {
       await remoteDataSource.addMember(event.member);
       emit(MemberAdded());
-    } catch (error) {
-      emit(MemberError(error.toString()));
+    } on DioException catch (error) {
+      emit(MemberError(
+        error.response?.statusCode as int,
+        error.response?.data,
+      ));
     }
   }
 
@@ -39,8 +46,11 @@ class MemberBloc extends Bloc<MemberEvent, MemberState> {
     try {
       await remoteDataSource.deleteMember(event.memberId);
       emit(MemberDeleted());
-    } catch (error) {
-      emit(MemberError(error.toString()));
+    } on DioException catch (error) {
+      emit(MemberError(
+        error.response?.statusCode as int,
+        error.response?.data,
+      ));
     }
   }
 
@@ -48,8 +58,11 @@ class MemberBloc extends Bloc<MemberEvent, MemberState> {
     try {
       await remoteDataSource.editMember(event.member);
       emit(MemberEdited());
-    } catch (error) {
-      emit(MemberError(error.toString()));
+    } on DioException catch (error) {
+      emit(MemberError(
+        error.response?.statusCode as int,
+        error.response?.data,
+      ));
     }
   }
 }

@@ -34,7 +34,6 @@ class TeamMemberCard extends StatelessWidget {
       Timer(const Duration(seconds: 1), () {
         BlocProvider.of<MemberBloc>(context).add(LoadMember());
       });
-      BlocProvider.of<MemberBloc>(context).add(LoadMember());
       Navigator.pop(context);
     }
 

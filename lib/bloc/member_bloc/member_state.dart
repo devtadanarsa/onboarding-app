@@ -13,8 +13,9 @@ final class MemberLoaded extends MemberState {
 }
 
 final class MemberError extends MemberState {
-  final String error;
-  MemberError(this.error);
+  final int errorCode;
+  final String errorDescription;
+  MemberError(this.errorCode, this.errorDescription);
 }
 
 final class MemberAdded extends MemberState {}

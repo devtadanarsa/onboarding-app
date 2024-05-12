@@ -37,7 +37,7 @@ class WelcomePage extends StatelessWidget {
               const Padding(
                 padding: EdgeInsets.only(top: 30),
                 child: Text(
-                  "Explore all the existing job roles based on your \ninterest and study major",
+                  "Explore all the existing job roles based on your interest and study major",
                   textAlign: TextAlign.center,
                   style: TextStyle(fontSize: 14),
                 ),

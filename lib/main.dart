@@ -39,7 +39,7 @@ class MyApp extends StatelessWidget {
           "/otp": (context) => const OTPPage(),
           "/home": (context) => const MainLayout(),
         },
-        initialRoute: "/",
+        initialRoute: "/home",
       ),
     );
   }

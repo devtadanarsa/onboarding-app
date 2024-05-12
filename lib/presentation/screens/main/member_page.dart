@@ -229,7 +229,7 @@ class MemberPage extends StatelessWidget {
           );
         } else if (memberState is MemberError) {
           return Center(
-            child: Text(memberState.error),
+            child: Text(memberState.errorDescription),
           );
         } else {
           return Container();

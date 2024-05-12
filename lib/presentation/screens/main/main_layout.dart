@@ -1,4 +1,6 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:onboarding_app/bloc/user_bloc/user_bloc.dart';
 import 'package:onboarding_app/presentation/screens/main/home_page.dart';
 import 'package:onboarding_app/presentation/screens/main/member_page.dart';
 import 'package:onboarding_app/presentation/screens/main/profile_page.dart';
@@ -156,9 +158,100 @@ class _MainLayoutState extends State<MainLayout> {
           ),
         ),
       ),
-      body: Container(
-        padding: const EdgeInsets.only(top: 20, left: 25, right: 25),
-        child: _pages[_selectedIdx],
+      body: BlocBuilder<UserBloc, UserState>(
+        builder: (context, userState) {
+          if (userState is UserInitial) {
+            BlocProvider.of<UserBloc>(context).add(LoadUser());
+            return const Center(
+              child: CircularProgressIndicator(),
+            );
+          } else if (userState is UserLoading) {
+            return const Center(
+              child: CircularProgressIndicator(),
+            );
+          } else if (userState is UserLoaded) {
+            return Container(
+              padding: const EdgeInsets.only(top: 20, left: 25, right: 25),
+              child: _pages[_selectedIdx],
+            );
+          } else if (userState is UserError) {
+            return Dialog(
+              insetPadding: EdgeInsets.zero,
+              child: Container(
+                decoration: BoxDecoration(
+                  color: Colors.white,
+                  borderRadius: BorderRadius.circular(10),
+                ),
+                height: 420,
+                width: 350,
+                child: Padding(
+                  padding: const EdgeInsets.only(
+                    top: 20,
+                    bottom: 20,
+                    right: 20,
+                    left: 20,
+                  ),
+                  child: Column(
+                    children: [
+                      const Image(
+                        image: AssetImage("assets/session-expired.jpg"),
+                      ),
+                      const Padding(
+                        padding: EdgeInsets.only(top: 20),
+                        child: Text(
+                          "Whoops, Your session has expired",
+                          style: TextStyle(
+                            fontWeight: FontWeight.bold,
+                            fontSize: 16,
+                          ),
+                          textAlign: TextAlign.center,
+                        ),
+                      ),
+                      Padding(
+                        padding: const EdgeInsets.only(top: 10),
+                        child: Text(
+                          "Your session has expired due to your inactivity. No worry, simply login again",
+                          style: TextStyle(
+                            fontSize: 13,
+                            color: Colors.grey[700],
+                          ),
+                          textAlign: TextAlign.center,
+                        ),
+                      ),
+                      Padding(
+                        padding: const EdgeInsets.only(top: 15),
+                        child: ElevatedButton(
+                          onPressed: () {
+                            BlocProvider.of<UserBloc>(context).add(InitUser());
+                            Navigator.of(context)
+                                .pushNamedAndRemoveUntil("/", (route) => false);
+                          },
+                          style: ElevatedButton.styleFrom(
+                            backgroundColor: const Color(0xFF1F41BB),
+                            foregroundColor: Colors.white,
+                            minimumSize: const Size.fromHeight(40),
+                            shape: const RoundedRectangleBorder(
+                              borderRadius:
+                                  BorderRadius.all(Radius.circular(10)),
+                            ),
+                          ),
+                          child: const Text(
+                            "Login",
+                            style: TextStyle(
+                              fontWeight: FontWeight.bold,
+                            ),
+                          ),
+                        ),
+                      )
+                    ],
+                  ),
+                ),
+              ),
+            );
+          } else {
+            return Container(); // Handle other states if needed
+          }
+        },
       ),
     );
   }
