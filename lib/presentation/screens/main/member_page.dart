@@ -4,6 +4,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:onboarding_app/bloc/member_bloc/member_bloc.dart';
 import 'package:onboarding_app/data/model/member.dart';
+import 'package:onboarding_app/presentation/widget/custom_snackbar.dart';
 import 'package:onboarding_app/presentation/widget/team_member_card.dart';
 
 class MemberPage extends StatelessWidget {
@@ -11,230 +12,244 @@ class MemberPage extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return BlocBuilder<MemberBloc, MemberState>(
-      builder: (context, memberState) {
-        if (memberState is MemberInitial ||
-            memberState is MemberEdited ||
-            memberState is MemberAdded ||
-            memberState is MemberDeleted) {
-          BlocProvider.of<MemberBloc>(context).add(LoadMember());
-          return const Center(
-            child: CircularProgressIndicator(),
-          );
-        } else if (memberState is MemberLoading) {
-          return const Center(
-            child: CircularProgressIndicator(),
-          );
-        } else if (memberState is MemberLoaded) {
-          final members = memberState.members;
-          return Stack(
-            children: [
-              ListView(
-                children: [
-                  const Row(
-                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                    children: [
-                      Row(
-                        children: [
-                          Icon(
-                            Icons.account_circle_outlined,
-                            size: 25,
-                          ),
-                          Padding(
-                            padding: EdgeInsets.only(left: 8),
-                            child: Text(
-                              "Member List",
-                              style: TextStyle(
-                                fontSize: 16,
-                                fontWeight: FontWeight.bold,
-                              ),
-                            ),
-                          ),
-                        ],
-                      ),
-                      Text(
-                        "Edit",
-                        style: TextStyle(
-                          fontSize: 16,
-                          fontWeight: FontWeight.bold,
-                          color: Color.fromRGBO(31, 65, 187, 1),
-                        ),
-                      ),
-                    ],
-                  ),
-                  const Padding(
-                    padding: EdgeInsets.only(top: 25),
-                    child: TextField(
-                      decoration: InputDecoration(
-                        contentPadding: EdgeInsets.all(1),
-                        hintText: "Search by name...",
-                        filled: true,
-                        fillColor: Colors.white,
-                        prefixIcon: Icon(Icons.search),
-                        suffixIcon: Icon(Icons.mic_none_outlined),
-                        enabledBorder: OutlineInputBorder(
-                          borderSide: BorderSide(color: Colors.grey),
-                          borderRadius: BorderRadius.all(Radius.circular(10)),
-                        ),
-                        focusedBorder: OutlineInputBorder(
-                          borderSide: BorderSide(
-                            color: Color.fromRGBO(31, 65, 187, 1),
-                          ),
-                          borderRadius: BorderRadius.all(
-                            Radius.circular(10),
-                          ),
-                        ),
-                      ),
-                    ),
-                  ),
-                  Padding(
-                    padding: const EdgeInsets.only(top: 15),
-                    child: Row(
+    return BlocListener<MemberBloc, MemberState>(
+      listener: (context, state) {
+        if (state is MemberAdded) {
+          CustomSnackBar.show(context, "success", "Member added successfully");
+        } else if (state is MemberEdited) {
+          CustomSnackBar.show(context, "success", "Member edited successfully");
+        } else if (state is MemberDeleted) {
+          CustomSnackBar.show(
+              context, "success", "Member deleted successfully");
+        } else if (state is MemberError) {
+          CustomSnackBar.show(context, "error", state.errorDescription);
+        }
+      },
+      child: BlocBuilder<MemberBloc, MemberState>(
+        builder: (context, memberState) {
+          if (memberState is MemberInitial ||
+              memberState is MemberEdited ||
+              memberState is MemberAdded ||
+              memberState is MemberDeleted) {
+            BlocProvider.of<MemberBloc>(context).add(LoadMember());
+            return const Center(
+              child: CircularProgressIndicator(),
+            );
+          } else if (memberState is MemberLoading) {
+            return const Center(
+              child: CircularProgressIndicator(),
+            );
+          } else if (memberState is MemberLoaded) {
+            final members = memberState.members;
+            return Stack(
+              children: [
+                ListView(
+                  children: [
+                    const Row(
                       mainAxisAlignment: MainAxisAlignment.spaceBetween,
                       children: [
-                        Container(
-                          padding: const EdgeInsets.only(
-                              left: 15, right: 15, top: 5, bottom: 5),
-                          decoration: BoxDecoration(
-                            borderRadius:
-                                const BorderRadius.all(Radius.circular(100)),
-                            border: Border.all(
-                              width: 2,
-                              color: const Color.fromRGBO(31, 65, 187, 1),
+                        Row(
+                          children: [
+                            Icon(
+                              Icons.account_circle_outlined,
+                              size: 25,
                             ),
-                          ),
-                          child: const Row(
-                            children: [
-                              Icon(
-                                Icons.tune,
-                                color: Color.fromRGBO(31, 65, 187, 1),
-                              ),
-                              Padding(
-                                padding: EdgeInsets.only(left: 5),
-                                child: Text(
-                                  "Filter",
-                                  style: TextStyle(
-                                    fontSize: 13,
-                                    color: Color.fromRGBO(31, 65, 187, 1),
-                                    fontWeight: FontWeight.bold,
-                                  ),
+                            Padding(
+                              padding: EdgeInsets.only(left: 8),
+                              child: Text(
+                                "Member List",
+                                style: TextStyle(
+                                  fontSize: 16,
+                                  fontWeight: FontWeight.bold,
                                 ),
                               ),
-                            ],
-                          ),
+                            ),
+                          ],
                         ),
-                        Container(
-                          padding: const EdgeInsets.only(
-                              left: 15, right: 15, top: 5, bottom: 5),
-                          decoration: BoxDecoration(
-                            borderRadius:
-                                const BorderRadius.all(Radius.circular(100)),
-                            border: Border.all(
-                              width: 2,
-                              color: const Color.fromRGBO(31, 65, 187, 1),
-                            ),
-                          ),
-                          child: const Row(
-                            children: [
-                              Padding(
-                                padding: EdgeInsets.only(right: 5),
-                                child: Text(
-                                  "Sorts",
-                                  style: TextStyle(
-                                    fontSize: 13,
-                                    color: Color.fromRGBO(31, 65, 187, 1),
-                                    fontWeight: FontWeight.bold,
-                                  ),
-                                ),
-                              ),
-                              Icon(
-                                Icons.keyboard_arrow_down,
-                                color: Color.fromRGBO(31, 65, 187, 1),
-                              ),
-                            ],
-                          ),
-                        ),
-                        Container(
-                          padding: const EdgeInsets.only(
-                              left: 15, right: 15, top: 5, bottom: 5),
-                          decoration: BoxDecoration(
-                            borderRadius:
-                                const BorderRadius.all(Radius.circular(100)),
-                            border: Border.all(
-                              width: 2,
-                              color: const Color.fromRGBO(31, 65, 187, 1),
-                            ),
-                          ),
-                          child: const Row(
-                            children: [
-                              Padding(
-                                padding: EdgeInsets.only(right: 5),
-                                child: Text(
-                                  "Categories",
-                                  style: TextStyle(
-                                    fontSize: 13,
-                                    color: Color.fromRGBO(31, 65, 187, 1),
-                                    fontWeight: FontWeight.bold,
-                                  ),
-                                ),
-                              ),
-                              Icon(
-                                Icons.keyboard_arrow_down,
-                                color: Color.fromRGBO(31, 65, 187, 1),
-                              ),
-                            ],
+                        Text(
+                          "Edit",
+                          style: TextStyle(
+                            fontSize: 16,
+                            fontWeight: FontWeight.bold,
+                            color: Color.fromRGBO(31, 65, 187, 1),
                           ),
                         ),
                       ],
                     ),
-                  ),
-                  const Padding(
-                    padding: EdgeInsets.only(top: 25),
-                    child: Text(
-                      "Member List",
-                      style: TextStyle(
-                        fontSize: 16,
-                        fontWeight: FontWeight.bold,
-                      ),
-                    ),
-                  ),
-                  Padding(
-                    padding: const EdgeInsets.only(top: 5, bottom: 90),
-                    child: SizedBox(
-                      child: SingleChildScrollView(
-                        physics: const NeverScrollableScrollPhysics(),
-                        child: Column(
-                          children: List.generate(
-                            members.length,
-                            (index) {
-                              return TeamMemberCard(
-                                id: members[index].id!,
-                                nomorInduk: members[index].nomorInduk,
-                                name: members[index].name,
-                                address: members[index].address,
-                                dateOfBirth: members[index].dateOfBirth,
-                                telephone: members[index].phoneNumber,
-                                isActive: members[index].isActive!,
-                              );
-                            },
+                    const Padding(
+                      padding: EdgeInsets.only(top: 25),
+                      child: TextField(
+                        decoration: InputDecoration(
+                          contentPadding: EdgeInsets.all(1),
+                          hintText: "Search by name...",
+                          filled: true,
+                          fillColor: Colors.white,
+                          prefixIcon: Icon(Icons.search),
+                          suffixIcon: Icon(Icons.mic_none_outlined),
+                          enabledBorder: OutlineInputBorder(
+                            borderSide: BorderSide(color: Colors.grey),
+                            borderRadius: BorderRadius.all(Radius.circular(10)),
+                          ),
+                          focusedBorder: OutlineInputBorder(
+                            borderSide: BorderSide(
+                              color: Color.fromRGBO(31, 65, 187, 1),
+                            ),
+                            borderRadius: BorderRadius.all(
+                              Radius.circular(10),
+                            ),
                           ),
                         ),
                       ),
                     ),
-                  ),
-                ],
-              ),
-              const AddMemberButton()
-            ],
-          );
-        } else if (memberState is MemberError) {
-          return Center(
-            child: Text(memberState.errorDescription),
-          );
-        } else {
-          return Container();
-        }
-      },
+                    Padding(
+                      padding: const EdgeInsets.only(top: 15),
+                      child: Row(
+                        mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                        children: [
+                          Container(
+                            padding: const EdgeInsets.only(
+                                left: 15, right: 15, top: 5, bottom: 5),
+                            decoration: BoxDecoration(
+                              borderRadius:
+                                  const BorderRadius.all(Radius.circular(100)),
+                              border: Border.all(
+                                width: 2,
+                                color: const Color.fromRGBO(31, 65, 187, 1),
+                              ),
+                            ),
+                            child: const Row(
+                              children: [
+                                Icon(
+                                  Icons.tune,
+                                  color: Color.fromRGBO(31, 65, 187, 1),
+                                ),
+                                Padding(
+                                  padding: EdgeInsets.only(left: 5),
+                                  child: Text(
+                                    "Filter",
+                                    style: TextStyle(
+                                      fontSize: 13,
+                                      color: Color.fromRGBO(31, 65, 187, 1),
+                                      fontWeight: FontWeight.bold,
+                                    ),
+                                  ),
+                                ),
+                              ],
+                            ),
+                          ),
+                          Container(
+                            padding: const EdgeInsets.only(
+                                left: 15, right: 15, top: 5, bottom: 5),
+                            decoration: BoxDecoration(
+                              borderRadius:
+                                  const BorderRadius.all(Radius.circular(100)),
+                              border: Border.all(
+                                width: 2,
+                                color: const Color.fromRGBO(31, 65, 187, 1),
+                              ),
+                            ),
+                            child: const Row(
+                              children: [
+                                Padding(
+                                  padding: EdgeInsets.only(right: 5),
+                                  child: Text(
+                                    "Sorts",
+                                    style: TextStyle(
+                                      fontSize: 13,
+                                      color: Color.fromRGBO(31, 65, 187, 1),
+                                      fontWeight: FontWeight.bold,
+                                    ),
+                                  ),
+                                ),
+                                Icon(
+                                  Icons.keyboard_arrow_down,
+                                  color: Color.fromRGBO(31, 65, 187, 1),
+                                ),
+                              ],
+                            ),
+                          ),
+                          Container(
+                            padding: const EdgeInsets.only(
+                                left: 15, right: 15, top: 5, bottom: 5),
+                            decoration: BoxDecoration(
+                              borderRadius:
+                                  const BorderRadius.all(Radius.circular(100)),
+                              border: Border.all(
+                                width: 2,
+                                color: const Color.fromRGBO(31, 65, 187, 1),
+                              ),
+                            ),
+                            child: const Row(
+                              children: [
+                                Padding(
+                                  padding: EdgeInsets.only(right: 5),
+                                  child: Text(
+                                    "Categories",
+                                    style: TextStyle(
+                                      fontSize: 13,
+                                      color: Color.fromRGBO(31, 65, 187, 1),
+                                      fontWeight: FontWeight.bold,
+                                    ),
+                                  ),
+                                ),
+                                Icon(
+                                  Icons.keyboard_arrow_down,
+                                  color: Color.fromRGBO(31, 65, 187, 1),
+                                ),
+                              ],
+                            ),
+                          ),
+                        ],
+                      ),
+                    ),
+                    const Padding(
+                      padding: EdgeInsets.only(top: 25),
+                      child: Text(
+                        "Member List",
+                        style: TextStyle(
+                          fontSize: 16,
+                          fontWeight: FontWeight.bold,
+                        ),
+                      ),
+                    ),
+                    Padding(
+                      padding: const EdgeInsets.only(top: 5, bottom: 90),
+                      child: SizedBox(
+                        child: SingleChildScrollView(
+                          physics: const NeverScrollableScrollPhysics(),
+                          child: Column(
+                            children: List.generate(
+                              members.length,
+                              (index) {
+                                return TeamMemberCard(
+                                  id: members[index].id!,
+                                  nomorInduk: members[index].nomorInduk,
+                                  name: members[index].name,
+                                  address: members[index].address,
+                                  dateOfBirth: members[index].dateOfBirth,
+                                  telephone: members[index].phoneNumber,
+                                  isActive: members[index].isActive!,
+                                );
+                              },
+                            ),
+                          ),
+                        ),
+                      ),
+                    ),
+                  ],
+                ),
+                const AddMemberButton()
+              ],
+            );
+          } else if (memberState is MemberError) {
+            return Center(
+              child: Text(memberState.errorDescription),
+            );
+          } else {
+            return Container();
+          }
+        },
+      ),
     );
   }
 }
