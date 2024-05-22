@@ -50,7 +50,7 @@ class UnfinishedPage extends StatelessWidget {
             onPressed: () {
               // ScaffoldMessenger.of(context)
               //     .showSnackBar(const SnackBar(content: Text("Test")));
-              CustomSnackBar.show(context, "success", "hello");
+              CustomSnackBar.show(context, "error", "hello");
             },
             child: const Text("Test")),
       ],

@@ -17,7 +17,7 @@ class CustomSnackBar {
         title = "Success";
         break;
       case "error":
-        backgroundColor = Colors.red.withAlpha(80);
+        backgroundColor = Colors.red[100]!;
         borderColor = Colors.red.withAlpha(90);
         iconColor = Colors.redAccent;
         icon = Icons.error;
