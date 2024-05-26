@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:intl/intl.dart';
 
 class TransactionCard extends StatelessWidget {
   final int transactionId;
@@ -14,27 +15,9 @@ class TransactionCard extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    String transactionLabel = "Transaksi";
-    switch (transactionId) {
-      case 1:
-        transactionLabel = "Saldo Awal";
-        break;
-      case 2:
-        transactionLabel = "Trans. Simpanan";
-        break;
-      case 3:
-        transactionLabel = "Trans. Penarikan";
-        break;
-      case 4:
-        transactionLabel = "Bunga Simpanan";
-        break;
-      case 5:
-        transactionLabel = "Koreksi Penambahan";
-        break;
-      case 6:
-        transactionLabel = "Koreksi Pengurangan";
-        break;
-    }
+    String transactionLabel = getTransactionLabel(transactionId);
+    String formattedDate = formatDate(date);
+    IconData transactionIcon = getTransactionIcon(transactionId);
 
     return Container(
       margin: const EdgeInsets.only(bottom: 15, right: 15, left: 15),
@@ -58,10 +41,10 @@ class TransactionCard extends StatelessWidget {
         children: [
           Row(
             children: [
-              const Icon(
-                Icons.monetization_on,
+              Icon(
+                transactionIcon,
                 size: 40,
-                color: Color.fromRGBO(31, 65, 187, 1),
+                color: const Color.fromRGBO(31, 65, 187, 1),
               ),
               Padding(
                 padding: const EdgeInsets.only(left: 8),
@@ -76,7 +59,7 @@ class TransactionCard extends StatelessWidget {
                       ),
                     ),
                     Text(
-                      "July 30, 2024",
+                      formattedDate,
                       style: TextStyle(
                         fontSize: 12,
                         color: Colors.grey[600],
@@ -109,5 +92,43 @@ class TransactionCard extends StatelessWidget {
         ],
       ),
     );
+  }
+
+  String getTransactionLabel(int transactionId) {
+    const transactionLabels = {
+      1: "Saldo Awal",
+      2: "Trans. Simpanan",
+      3: "Trans. Penarikan",
+      4: "Bunga Simpanan",
+      5: "Koreksi Penambahan",
+      6: "Koreksi Pengurangan",
+    };
+
+    return transactionLabels[transactionId] ?? "Transaksi";
+  }
+
+  String formatDate(String date) {
+    DateTime dateTime = DateTime.parse(date);
+    DateFormat outputFormat = DateFormat('dd MMM yyyy');
+    return outputFormat.format(dateTime);
+  }
+
+  IconData getTransactionIcon(int transactionId) {
+    switch (transactionId) {
+      case 1:
+        return Icons.account_balance;
+      case 2:
+        return Icons.savings_outlined;
+      case 3:
+        return Icons.money_off;
+      case 4:
+        return Icons.interests;
+      case 5:
+        return Icons.add;
+      case 6:
+        return Icons.remove;
+      default:
+        return Icons.monetization_on;
+    }
   }
 }

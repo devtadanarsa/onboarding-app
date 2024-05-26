@@ -7,7 +7,6 @@ import 'package:onboarding_app/bloc/bloc/tabungan_bloc.dart';
 class ServicesCard extends StatefulWidget {
   final String label;
   final IconData icon;
-  final VoidCallback onTap;
 
   final int memberId;
   final int idTransaksi;
@@ -16,7 +15,6 @@ class ServicesCard extends StatefulWidget {
     super.key,
     required this.icon,
     required this.label,
-    required this.onTap,
     required this.memberId,
     required this.idTransaksi,
   });
@@ -29,6 +27,7 @@ class _ServicesCardState extends State<ServicesCard> {
   void servicesDialog(BuildContext context) {
     final TextEditingController _nominalController = TextEditingController();
     bool invalidInput = false;
+    String formLabel = getTransactionLabel(widget.idTransaksi);
 
     void onSaveTap() {
       if (_nominalController.text.isEmpty) {
@@ -46,9 +45,6 @@ class _ServicesCardState extends State<ServicesCard> {
             memberId: widget.memberId,
             idTransaksi: widget.idTransaksi,
             nominal: nominal));
-        // BlocProvider.of<TabunganBloc>(context).add(LoadTabungan(
-        //   memberId: widget.memberId,
-        // ));
         Navigator.pop(context);
       }
     }
@@ -75,9 +71,9 @@ class _ServicesCardState extends State<ServicesCard> {
                 child: Column(
                   mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                   children: [
-                    const Text(
-                      "Transaksi Simpanan",
-                      style: TextStyle(
+                    Text(
+                      formLabel,
+                      style: const TextStyle(
                         fontSize: 18,
                         color: Color(0xFF1F41BB),
                         fontWeight: FontWeight.bold,
@@ -187,5 +183,18 @@ class _ServicesCardState extends State<ServicesCard> {
         ),
       ),
     );
+  }
+
+  String getTransactionLabel(int transactionId) {
+    const transactionLabels = {
+      1: "Saldo Awal",
+      2: "Transaksi Simpanan",
+      3: "Transaksi Penarikan",
+      4: "Bunga Simpanan",
+      5: "Koreksi Penambahan",
+      6: "Koreksi Pengurangan",
+    };
+
+    return transactionLabels[transactionId] ?? "Transaksi";
   }
 }

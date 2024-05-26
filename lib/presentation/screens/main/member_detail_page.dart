@@ -352,106 +352,6 @@ class MemberDetailPage extends StatelessWidget {
                                 ],
                               ),
                             ),
-                            // const Padding(
-                            //   padding: EdgeInsets.only(top: 20),
-                            //   child: Column(
-                            //     children: [
-                            //       Text(
-                            //         "Other Details",
-                            //         textAlign: TextAlign.start,
-                            //         style: TextStyle(
-                            //           fontSize: 16,
-                            //           fontWeight: FontWeight.bold,
-                            //         ),
-                            //       ),
-                            //     ],
-                            //   ),
-                            // ),
-                            // Padding(
-                            //   padding: const EdgeInsets.only(top: 10),
-                            //   child: Container(
-                            //     padding: const EdgeInsets.symmetric(
-                            //         horizontal: 10, vertical: 10),
-                            //     decoration: BoxDecoration(
-                            //       color: Colors.white,
-                            //       borderRadius: BorderRadius.circular(5),
-                            //       boxShadow: [
-                            //         BoxShadow(
-                            //             color: Colors.grey.withOpacity(0.5),
-                            //             spreadRadius: 2,
-                            //             blurRadius: 7,
-                            //             offset: const Offset(0, 3)),
-                            //       ],
-                            //     ),
-                            //     child: Column(
-                            //       children: [
-                            //         Row(
-                            //           children: [
-                            //             Icon(
-                            //               Icons.phone,
-                            //               color: Colors.grey[800],
-                            //             ),
-                            //             Padding(
-                            //               padding:
-                            //                   const EdgeInsets.only(left: 10),
-                            //               child: Text(
-                            //                 telephone,
-                            //                 style: const TextStyle(
-                            //                   fontSize: 14,
-                            //                   fontWeight: FontWeight.bold,
-                            //                 ),
-                            //               ),
-                            //             ),
-                            //           ],
-                            //         ),
-                            //         Padding(
-                            //           padding: const EdgeInsets.only(top: 10),
-                            //           child: Row(
-                            //             children: [
-                            //               Icon(
-                            //                 Icons.cake,
-                            //                 color: Colors.grey[800],
-                            //               ),
-                            //               Padding(
-                            //                 padding:
-                            //                     const EdgeInsets.only(left: 10),
-                            //                 child: Text(
-                            //                   dateOfBirth,
-                            //                   style: const TextStyle(
-                            //                     fontSize: 14,
-                            //                     fontWeight: FontWeight.bold,
-                            //                   ),
-                            //                 ),
-                            //               ),
-                            //             ],
-                            //           ),
-                            //         ),
-                            //         Padding(
-                            //           padding: const EdgeInsets.only(top: 10),
-                            //           child: Row(
-                            //             children: [
-                            //               Icon(
-                            //                 Icons.location_on,
-                            //                 color: Colors.grey[800],
-                            //               ),
-                            //               Padding(
-                            //                 padding:
-                            //                     const EdgeInsets.only(left: 10),
-                            //                 child: Text(
-                            //                   address,
-                            //                   style: const TextStyle(
-                            //                     fontSize: 14,
-                            //                     fontWeight: FontWeight.bold,
-                            //                   ),
-                            //                 ),
-                            //               ),
-                            //             ],
-                            //           ),
-                            //         ),
-                            //       ],
-                            //     ),
-                            //   ),
-                            // ),
                             const Padding(
                               padding: EdgeInsets.only(top: 20),
                               child: Column(
@@ -468,7 +368,7 @@ class MemberDetailPage extends StatelessWidget {
                               ),
                             ),
                             Padding(
-                              padding: const EdgeInsets.only(top: 10),
+                              padding: const EdgeInsets.only(top: 20),
                               child: Row(
                                 mainAxisAlignment:
                                     MainAxisAlignment.spaceBetween,
@@ -533,14 +433,39 @@ class MemberDetailPage extends StatelessWidget {
                                     idTransaksi: 2,
                                     icon: Icons.savings_outlined,
                                     label: "Simpan",
-                                    onTap: () {},
                                   ),
                                   ServicesCard(
                                     memberId: id,
                                     idTransaksi: 3,
-                                    icon: Icons.attach_money,
+                                    icon: Icons.call_received_rounded,
                                     label: "Tarik",
-                                    onTap: () {},
+                                  ),
+                                ],
+                              ),
+                            ),
+                            Padding(
+                              padding: const EdgeInsets.only(top: 16),
+                              child: Row(
+                                mainAxisAlignment:
+                                    MainAxisAlignment.spaceBetween,
+                                children: [
+                                  ServicesCard(
+                                    memberId: id,
+                                    idTransaksi: 4,
+                                    icon: Icons.query_stats_sharp,
+                                    label: "Bunga",
+                                  ),
+                                  ServicesCard(
+                                    memberId: id,
+                                    idTransaksi: 5,
+                                    icon: Icons.change_circle_outlined,
+                                    label: "Koreksi",
+                                  ),
+                                  ServicesCard(
+                                    memberId: id,
+                                    idTransaksi: 1,
+                                    icon: Icons.restart_alt,
+                                    label: "Saldo Awal",
                                   ),
                                 ],
                               ),
