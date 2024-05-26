@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:onboarding_app/presentation/widget/suggested_card.dart';
+import 'package:onboarding_app/presentation/widgets/suggested_card.dart';
 
 class SearchPage extends StatelessWidget {
   SearchPage({super.key});

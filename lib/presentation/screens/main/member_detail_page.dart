@@ -1,6 +1,6 @@
-import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/widgets.dart';
+import 'package:onboarding_app/presentation/widgets/services_card.dart';
 
 class MemberDetailPage extends StatelessWidget {
   const MemberDetailPage({super.key});
@@ -297,7 +297,7 @@ class MemberDetailPage extends StatelessWidget {
                     child: Column(
                       children: [
                         Text(
-                          "Other Details",
+                          "Other Services",
                           textAlign: TextAlign.start,
                           style: TextStyle(
                             fontSize: 16,
@@ -312,131 +312,20 @@ class MemberDetailPage extends StatelessWidget {
                     child: Row(
                       mainAxisAlignment: MainAxisAlignment.spaceBetween,
                       children: [
-                        Container(
-                          width: 100,
-                          height: 100,
-                          decoration: BoxDecoration(
-                            color: Colors.white,
-                            borderRadius: BorderRadius.circular(5),
-                            boxShadow: [
-                              BoxShadow(
-                                  color: Colors.grey.withOpacity(0.5),
-                                  spreadRadius: 1,
-                                  blurRadius: 5,
-                                  offset: const Offset(0, 2)),
-                            ],
-                          ),
-                          child: Column(
-                            mainAxisAlignment: MainAxisAlignment.center,
-                            children: [
-                              Container(
-                                padding: const EdgeInsets.all(5),
-                                decoration: BoxDecoration(
-                                  color: Colors.grey[200],
-                                  borderRadius: BorderRadius.circular(100),
-                                ),
-                                child: const Icon(
-                                  Icons.history,
-                                  size: 35,
-                                  color: Color.fromRGBO(31, 65, 187, 1),
-                                ),
-                              ),
-                              const Padding(
-                                padding: EdgeInsets.only(top: 5),
-                                child: Text(
-                                  "Histori",
-                                  style: TextStyle(
-                                    fontSize: 14,
-                                    fontWeight: FontWeight.bold,
-                                  ),
-                                ),
-                              ),
-                            ],
-                          ),
+                        ServicesCard(
+                          icon: Icons.history,
+                          label: "History",
+                          onTap: () {},
                         ),
-                        Container(
-                          width: 100,
-                          height: 100,
-                          decoration: BoxDecoration(
-                            color: Colors.white,
-                            borderRadius: BorderRadius.circular(5),
-                            boxShadow: [
-                              BoxShadow(
-                                  color: Colors.grey.withOpacity(0.5),
-                                  spreadRadius: 1,
-                                  blurRadius: 5,
-                                  offset: const Offset(0, 2)),
-                            ],
-                          ),
-                          child: Column(
-                            mainAxisAlignment: MainAxisAlignment.center,
-                            children: [
-                              Container(
-                                padding: const EdgeInsets.all(5),
-                                decoration: BoxDecoration(
-                                  color: Colors.grey[200],
-                                  borderRadius: BorderRadius.circular(100),
-                                ),
-                                child: const Icon(
-                                  Icons.savings_outlined,
-                                  size: 35,
-                                  color: Color.fromRGBO(31, 65, 187, 1),
-                                ),
-                              ),
-                              const Padding(
-                                padding: EdgeInsets.only(top: 5),
-                                child: Text(
-                                  "Setor",
-                                  style: TextStyle(
-                                    fontSize: 14,
-                                    fontWeight: FontWeight.bold,
-                                  ),
-                                ),
-                              ),
-                            ],
-                          ),
+                        ServicesCard(
+                          icon: Icons.savings_outlined,
+                          label: "Setor",
+                          onTap: () {},
                         ),
-                        Container(
-                          width: 100,
-                          height: 100,
-                          decoration: BoxDecoration(
-                            color: Colors.white,
-                            borderRadius: BorderRadius.circular(5),
-                            boxShadow: [
-                              BoxShadow(
-                                  color: Colors.grey.withOpacity(0.5),
-                                  spreadRadius: 1,
-                                  blurRadius: 5,
-                                  offset: const Offset(0, 2)),
-                            ],
-                          ),
-                          child: Column(
-                            mainAxisAlignment: MainAxisAlignment.center,
-                            children: [
-                              Container(
-                                padding: const EdgeInsets.all(5),
-                                decoration: BoxDecoration(
-                                  color: Colors.grey[200],
-                                  borderRadius: BorderRadius.circular(100),
-                                ),
-                                child: const Icon(
-                                  Icons.switch_access_shortcut_add_rounded,
-                                  size: 35,
-                                  color: Color.fromRGBO(31, 65, 187, 1),
-                                ),
-                              ),
-                              const Padding(
-                                padding: EdgeInsets.only(top: 5),
-                                child: Text(
-                                  "Tarik",
-                                  style: TextStyle(
-                                    fontSize: 14,
-                                    fontWeight: FontWeight.bold,
-                                  ),
-                                ),
-                              ),
-                            ],
-                          ),
+                        ServicesCard(
+                          icon: Icons.attach_money,
+                          label: "Tarik",
+                          onTap: () {},
                         ),
                       ],
                     ),
