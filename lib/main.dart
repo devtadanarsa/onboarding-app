@@ -10,7 +10,6 @@ import 'package:onboarding_app/presentation/screens/home/otp_page.dart';
 import 'package:onboarding_app/presentation/screens/home/register_page.dart';
 import 'package:onboarding_app/presentation/screens/home/welcome_page.dart';
 import 'package:get_storage/get_storage.dart';
-import 'package:onboarding_app/presentation/screens/main/member_detail_page.dart';
 
 Future<void> main() async {
   await GetStorage.init();
@@ -39,9 +38,8 @@ class MyApp extends StatelessWidget {
           "/register": (context) => const RegisterPage(),
           "/otp": (context) => const OTPPage(),
           "/home": (context) => const MainLayout(),
-          "/detail": (context) => MemberDetailPage(),
         },
-        initialRoute: "/detail",
+        initialRoute: "/home",
       ),
     );
   }

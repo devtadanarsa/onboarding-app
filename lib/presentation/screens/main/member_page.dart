@@ -65,9 +65,9 @@ class MemberPage extends StatelessWidget {
 
   Widget _buildHeader() {
     return const Padding(
-      padding: EdgeInsets.only(top: 25),
+      padding: EdgeInsets.only(top: 0),
       child: Text(
-        "Member List",
+        "Manage Member",
         style: TextStyle(
           fontSize: 16,
           fontWeight: FontWeight.bold,
@@ -110,7 +110,36 @@ class MemberPage extends StatelessWidget {
       child: Row(
         mainAxisAlignment: MainAxisAlignment.spaceBetween,
         children: [
-          _buildFilterButton("Filter"),
+          Container(
+            padding:
+                const EdgeInsets.only(left: 15, right: 15, top: 5, bottom: 5),
+            decoration: BoxDecoration(
+              borderRadius: const BorderRadius.all(Radius.circular(100)),
+              border: Border.all(
+                width: 2,
+                color: const Color.fromRGBO(31, 65, 187, 1),
+              ),
+            ),
+            child: const Row(
+              children: [
+                Icon(
+                  Icons.tune,
+                  color: Color.fromRGBO(31, 65, 187, 1),
+                ),
+                Padding(
+                  padding: EdgeInsets.only(left: 5),
+                  child: Text(
+                    "Filter",
+                    style: TextStyle(
+                      fontSize: 13,
+                      color: Color.fromRGBO(31, 65, 187, 1),
+                      fontWeight: FontWeight.bold,
+                    ),
+                  ),
+                ),
+              ],
+            ),
+          ),
           _buildFilterButton("Sorts"),
           _buildFilterButton("Categories"),
         ],

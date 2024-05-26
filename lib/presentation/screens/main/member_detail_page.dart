@@ -3,7 +3,22 @@ import 'package:flutter/widgets.dart';
 import 'package:onboarding_app/presentation/widgets/services_card.dart';
 
 class MemberDetailPage extends StatelessWidget {
-  const MemberDetailPage({super.key});
+  final int id;
+  final int nomorInduk;
+  final String name;
+  final String address;
+  final String dateOfBirth;
+  final String telephone;
+
+  const MemberDetailPage({
+    super.key,
+    required this.id,
+    required this.nomorInduk,
+    required this.name,
+    required this.address,
+    required this.dateOfBirth,
+    required this.telephone,
+  });
 
   @override
   Widget build(BuildContext context) {
@@ -36,17 +51,22 @@ class MemberDetailPage extends StatelessWidget {
                     children: [
                       Row(
                         children: [
-                          Container(
-                            padding: const EdgeInsets.all(4),
-                            decoration: const BoxDecoration(
-                              color: Colors.white,
-                              shape: BoxShape
-                                  .circle, // Ensure the background is circular
-                            ),
-                            child: const Icon(
-                              color: Color.fromRGBO(31, 65, 187, 1),
-                              Icons.arrow_back,
-                              size: 20,
+                          GestureDetector(
+                            onTap: () {
+                              Navigator.pop(context);
+                            },
+                            child: Container(
+                              padding: const EdgeInsets.all(4),
+                              decoration: const BoxDecoration(
+                                color: Colors.white,
+                                shape: BoxShape
+                                    .circle, // Ensure the background is circular
+                              ),
+                              child: const Icon(
+                                color: Color.fromRGBO(31, 65, 187, 1),
+                                Icons.arrow_back,
+                                size: 20,
+                              ),
                             ),
                           ),
                           const Padding(
@@ -100,13 +120,14 @@ class MemberDetailPage extends StatelessWidget {
                               child: SizedBox.fromSize(
                                 size: const Size.fromRadius(48),
                                 child: const Image(
-                                  image:
-                                      AssetImage("assets/profile-image.jpeg"),
+                                  image: AssetImage(
+                                    "assets/default-profile.png",
+                                  ),
                                 ),
                               ),
                             ),
-                            const Padding(
-                              padding: EdgeInsets.only(left: 8),
+                            Padding(
+                              padding: const EdgeInsets.only(left: 8),
                               child: Column(
                                 mainAxisAlignment:
                                     MainAxisAlignment.spaceBetween,
@@ -117,29 +138,22 @@ class MemberDetailPage extends StatelessWidget {
                                         CrossAxisAlignment.start,
                                     children: [
                                       Text(
-                                        "Leandro Trossard",
-                                        style: TextStyle(
+                                        name,
+                                        style: const TextStyle(
                                           fontSize: 14,
                                           fontWeight: FontWeight.bold,
                                         ),
                                       ),
                                       Text(
-                                        "Nomor Induk: 10",
-                                        style: TextStyle(
+                                        "Nomor Induk: $nomorInduk",
+                                        style: const TextStyle(
                                           fontSize: 10,
                                           color: Colors.black,
                                         ),
                                       ),
-                                      // Text(
-                                      //   "Indonesia - 0814123123",
-                                      //   style: TextStyle(
-                                      //     fontSize: 10,
-                                      //     color: Colors.black,
-                                      //   ),
-                                      // ),
                                     ],
                                   ),
-                                  Padding(
+                                  const Padding(
                                     padding: EdgeInsets.only(top: 35),
                                     child: Text(
                                       "Edit Profile",
@@ -297,7 +311,104 @@ class MemberDetailPage extends StatelessWidget {
                     child: Column(
                       children: [
                         Text(
-                          "Other Services",
+                          "Other Details",
+                          textAlign: TextAlign.start,
+                          style: TextStyle(
+                            fontSize: 16,
+                            fontWeight: FontWeight.bold,
+                          ),
+                        ),
+                      ],
+                    ),
+                  ),
+                  Padding(
+                    padding: const EdgeInsets.only(top: 10),
+                    child: Container(
+                      padding: const EdgeInsets.symmetric(
+                          horizontal: 10, vertical: 10),
+                      decoration: BoxDecoration(
+                        color: Colors.white,
+                        borderRadius: BorderRadius.circular(5),
+                        boxShadow: [
+                          BoxShadow(
+                              color: Colors.grey.withOpacity(0.5),
+                              spreadRadius: 2,
+                              blurRadius: 7,
+                              offset: const Offset(0, 3)),
+                        ],
+                      ),
+                      child: Column(
+                        children: [
+                          Row(
+                            children: [
+                              Icon(
+                                Icons.phone,
+                                color: Colors.grey[800],
+                              ),
+                              Padding(
+                                padding: const EdgeInsets.only(left: 10),
+                                child: Text(
+                                  telephone,
+                                  style: const TextStyle(
+                                    fontSize: 14,
+                                    fontWeight: FontWeight.bold,
+                                  ),
+                                ),
+                              ),
+                            ],
+                          ),
+                          Padding(
+                            padding: const EdgeInsets.only(top: 10),
+                            child: Row(
+                              children: [
+                                Icon(
+                                  Icons.cake,
+                                  color: Colors.grey[800],
+                                ),
+                                Padding(
+                                  padding: const EdgeInsets.only(left: 10),
+                                  child: Text(
+                                    dateOfBirth,
+                                    style: const TextStyle(
+                                      fontSize: 14,
+                                      fontWeight: FontWeight.bold,
+                                    ),
+                                  ),
+                                ),
+                              ],
+                            ),
+                          ),
+                          Padding(
+                            padding: const EdgeInsets.only(top: 10),
+                            child: Row(
+                              children: [
+                                Icon(
+                                  Icons.location_on,
+                                  color: Colors.grey[800],
+                                ),
+                                Padding(
+                                  padding: const EdgeInsets.only(left: 10),
+                                  child: Text(
+                                    address,
+                                    style: const TextStyle(
+                                      fontSize: 14,
+                                      fontWeight: FontWeight.bold,
+                                    ),
+                                  ),
+                                ),
+                              ],
+                            ),
+                          ),
+                        ],
+                      ),
+                    ),
+                  ),
+                  const Padding(
+                    padding: EdgeInsets.only(top: 20),
+                    child: Column(
+                      children: [
+                        Text(
+                          "Account Services",
                           textAlign: TextAlign.start,
                           style: TextStyle(
                             fontSize: 16,

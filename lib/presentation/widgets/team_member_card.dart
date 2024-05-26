@@ -4,6 +4,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:onboarding_app/bloc/member_bloc/member_bloc.dart';
 import 'package:onboarding_app/data/model/member.dart';
+import 'package:onboarding_app/presentation/screens/main/member_detail_page.dart';
 
 class TeamMemberCard extends StatelessWidget {
   const TeamMemberCard({
@@ -158,55 +159,71 @@ class TeamMemberCard extends StatelessWidget {
           bool deleteConfirmed = await deleteMemberDialog(context);
           return deleteConfirmed;
         },
-        child: Container(
-          decoration: BoxDecoration(
-            borderRadius: BorderRadius.circular(5),
-            color: Colors.white,
-            border: Border.all(color: Colors.black, width: 2),
-          ),
-          padding:
-              const EdgeInsets.only(left: 10, right: 10, top: 15, bottom: 15),
-          child: Row(
-            mainAxisAlignment: MainAxisAlignment.spaceBetween,
-            children: [
-              Row(
-                children: [
-                  const CircleAvatar(
-                    backgroundImage: AssetImage("assets/default-profile.png"),
-                  ),
-                  Padding(
-                    padding: const EdgeInsets.only(left: 12),
-                    child: Column(
-                      crossAxisAlignment: CrossAxisAlignment.start,
-                      children: [
-                        Text(
-                          name,
-                          style: const TextStyle(
-                            fontSize: 14,
-                            fontWeight: FontWeight.w600,
-                          ),
-                        ),
-                        Text(
-                          "$nomorInduk - $address",
-                          style: TextStyle(
-                            fontSize: 10,
-                            color: Colors.grey[700],
-                          ),
-                        ),
-                      ],
-                    ),
-                  ),
-                ],
+        child: GestureDetector(
+          onTap: () {
+            Navigator.push(
+              context,
+              MaterialPageRoute(
+                builder: (context) => MemberDetailPage(
+                    id: id,
+                    nomorInduk: nomorInduk,
+                    name: name,
+                    address: address,
+                    dateOfBirth: dateOfBirth,
+                    telephone: telephone),
               ),
-              EditMemberButton(
-                id: id,
-                nomorInduk: nomorInduk,
-                name: name,
-                address: address,
-                dateOfBirth: dateOfBirth,
-                telephone: telephone,
-              )
-            ],
+            );
+          },
+          child: Container(
+            decoration: BoxDecoration(
+              borderRadius: BorderRadius.circular(5),
+              color: Colors.white,
+              border: Border.all(color: Colors.black, width: 2),
+            ),
+            padding:
+                const EdgeInsets.only(left: 10, right: 10, top: 15, bottom: 15),
+            child: Row(
+              mainAxisAlignment: MainAxisAlignment.spaceBetween,
+              children: [
+                Row(
+                  children: [
+                    const CircleAvatar(
+                      backgroundImage: AssetImage("assets/default-profile.png"),
+                    ),
+                    Padding(
+                      padding: const EdgeInsets.only(left: 12),
+                      child: Column(
+                        crossAxisAlignment: CrossAxisAlignment.start,
+                        children: [
+                          Text(
+                            name,
+                            style: const TextStyle(
+                              fontSize: 14,
+                              fontWeight: FontWeight.w600,
+                            ),
+                          ),
+                          Text(
+                            "$nomorInduk - $address",
+                            style: TextStyle(
+                              fontSize: 10,
+                              color: Colors.grey[700],
+                            ),
+                          ),
+                        ],
+                      ),
+                    ),
+                  ],
+                ),
+                EditMemberButton(
+                  id: id,
+                  nomorInduk: nomorInduk,
+                  name: name,
+                  address: address,
+                  dateOfBirth: dateOfBirth,
+                  telephone: telephone,
+                )
+              ],
+            ),
           ),
         ),
       ),
