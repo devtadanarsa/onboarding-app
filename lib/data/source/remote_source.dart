@@ -1,6 +1,7 @@
 import 'package:dio/dio.dart';
 import 'package:get_storage/get_storage.dart';
 import 'package:onboarding_app/data/model/member.dart';
+import 'package:onboarding_app/data/model/tabungan.dart';
 import 'package:onboarding_app/data/model/user.dart';
 
 class RemoteDataSource {
@@ -66,5 +67,23 @@ class RemoteDataSource {
     );
 
     return response;
+  }
+
+  Future getTabungan(int memberId) async {
+    final response = await _dio.get(
+      "/tabungan/$memberId",
+      options: _getOptions(),
+    );
+    // final saldo = await getSaldo(memberId);
+
+    return DataTabungan.fromJson(response.data);
+  }
+
+  Future getSaldo(int memberId) async {
+    final response = await _dio.get(
+      "/saldo/$memberId",
+      options: _getOptions(),
+    );
+    return response.data;
   }
 }
