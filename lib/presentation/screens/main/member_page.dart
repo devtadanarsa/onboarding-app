@@ -30,7 +30,8 @@ class MemberPage extends StatelessWidget {
           if (memberState is MemberInitial ||
               memberState is MemberEdited ||
               memberState is MemberAdded ||
-              memberState is MemberDeleted) {
+              memberState is MemberDeleted ||
+              memberState is MemberError) {
             BlocProvider.of<MemberBloc>(context).add(LoadMember());
             return const Center(child: CircularProgressIndicator());
           } else if (memberState is MemberLoading) {
