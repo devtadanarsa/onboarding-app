@@ -26,14 +26,17 @@ class MemberDetailPage extends StatelessWidget {
   Widget build(BuildContext context) {
     double height = MediaQuery.of(context).size.height;
     return BlocProvider(
-      create: (context) => TabunganBloc(remoteDataSource: RemoteDataSource())
-        ..add(LoadTabungan(memberId: id)),
+      create: (context) => TabunganBloc(remoteDataSource: RemoteDataSource()),
       child: Scaffold(
         backgroundColor: Colors.white,
         body: BlocBuilder<TabunganBloc, TabunganState>(
           builder: (context, state) {
+            if (state is TabunganInitial || state is TabunganAdded) {
+              BlocProvider.of<TabunganBloc>(context)
+                  .add(LoadTabungan(memberId: id));
+            }
             if (state is TabunganLoading) {
-              return const CircularProgressIndicator();
+              return const Center(child: CircularProgressIndicator());
             } else if (state is TabunganLoaded) {
               final tabungan = state.tabungan;
               return Stack(
@@ -456,16 +459,22 @@ class MemberDetailPage extends StatelessWidget {
                               mainAxisAlignment: MainAxisAlignment.spaceBetween,
                               children: [
                                 ServicesCard(
+                                  memberId: id,
+                                  idTransaksi: 2,
                                   icon: Icons.history,
                                   label: "History",
                                   onTap: () {},
                                 ),
                                 ServicesCard(
+                                  memberId: id,
+                                  idTransaksi: 2,
                                   icon: Icons.savings_outlined,
-                                  label: "Setor",
+                                  label: "Simpan",
                                   onTap: () {},
                                 ),
                                 ServicesCard(
+                                  memberId: id,
+                                  idTransaksi: 3,
                                   icon: Icons.attach_money,
                                   label: "Tarik",
                                   onTap: () {},

@@ -18,3 +18,5 @@ final class TabunganError extends TabunganState {
   final String errorDescription;
   TabunganError(this.errorCode, this.errorDescription);
 }
+
+final class TabunganAdded extends TabunganState {}

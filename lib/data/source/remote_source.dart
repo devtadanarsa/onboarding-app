@@ -74,7 +74,6 @@ class RemoteDataSource {
       "/tabungan/$memberId",
       options: _getOptions(),
     );
-    // final saldo = await getSaldo(memberId);
 
     return DataTabungan.fromJson(response.data);
   }
@@ -85,5 +84,19 @@ class RemoteDataSource {
       options: _getOptions(),
     );
     return response.data;
+  }
+
+  Future transaksiTabungan(int memberId, int idTransaksi, int nominal) async {
+    final response = await _dio.post(
+      "/tabungan",
+      data: {
+        "anggota_id": memberId,
+        "trx_id": idTransaksi,
+        "trx_nominal": nominal,
+      },
+      options: _getOptions(),
+    );
+
+    return response;
   }
 }

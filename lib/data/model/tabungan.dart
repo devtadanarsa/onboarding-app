@@ -9,13 +9,12 @@ class DataTabungan {
             (tabungan) => Tabungan.fromModel(tabungan),
           ),
         ),
-        // saldo: saldoJson["data"]["saldo"],
       );
 }
 
 class Tabungan {
   final int id;
-  final DateTime tanggal;
+  final String tanggal;
   final int idTransaksi;
   final int nominalTransaksi;
 
@@ -27,8 +26,8 @@ class Tabungan {
   });
 
   factory Tabungan.fromModel(Map<String, dynamic> json) => Tabungan(
-      id: json["data"]["tabungan"]["id"],
-      tanggal: json["data"]["tabungan"]["trx_tanggal"],
-      idTransaksi: json["data"]["tabungan"]["trx_id"],
-      nominalTransaksi: json["data"]["tabungan"]["trx_nominal"]);
+      id: json["id"],
+      tanggal: json["trx_tanggal"],
+      idTransaksi: json["trx_id"],
+      nominalTransaksi: json["trx_nominal"]);
 }
