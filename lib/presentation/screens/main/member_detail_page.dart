@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:onboarding_app/bloc/bloc/tabungan_bloc.dart';
+import 'package:onboarding_app/bloc/tabungan_bloc/tabungan_bloc.dart';
 import 'package:onboarding_app/data/source/remote_source.dart';
 import 'package:onboarding_app/presentation/screens/main/transaction_history_page.dart';
 import 'package:onboarding_app/presentation/widgets/custom_snackbar.dart';
@@ -446,8 +446,7 @@ class MemberDetailPage extends StatelessWidget {
                             Padding(
                               padding: const EdgeInsets.only(top: 16),
                               child: Row(
-                                mainAxisAlignment:
-                                    MainAxisAlignment.spaceBetween,
+                                mainAxisAlignment: MainAxisAlignment.start,
                                 children: [
                                   ServicesCard(
                                     memberId: id,
@@ -455,21 +454,56 @@ class MemberDetailPage extends StatelessWidget {
                                     icon: Icons.query_stats_sharp,
                                     label: "Bunga",
                                   ),
-                                  ServicesCard(
-                                    memberId: id,
-                                    idTransaksi: 5,
-                                    icon: Icons.change_circle_outlined,
-                                    label: "Koreksi",
-                                  ),
-                                  ServicesCard(
-                                    memberId: id,
-                                    idTransaksi: 1,
-                                    icon: Icons.restart_alt,
-                                    label: "Saldo Awal",
+                                  Padding(
+                                    padding: const EdgeInsets.only(left: 36),
+                                    child: ServicesCard(
+                                      memberId: id,
+                                      idTransaksi: 1,
+                                      icon: Icons.restart_alt,
+                                      label: "Saldo Awal",
+                                    ),
                                   ),
                                 ],
                               ),
-                            )
+                            ),
+                            const Padding(
+                              padding: EdgeInsets.only(top: 20),
+                              child: Column(
+                                children: [
+                                  Text(
+                                    "Koreksi Transaksi",
+                                    textAlign: TextAlign.start,
+                                    style: TextStyle(
+                                      fontSize: 16,
+                                      fontWeight: FontWeight.bold,
+                                    ),
+                                  ),
+                                ],
+                              ),
+                            ),
+                            Padding(
+                              padding: const EdgeInsets.only(top: 16),
+                              child: Row(
+                                mainAxisAlignment: MainAxisAlignment.start,
+                                children: [
+                                  ServicesCard(
+                                    memberId: id,
+                                    idTransaksi: 5,
+                                    icon: Icons.addchart,
+                                    label: "Tambah",
+                                  ),
+                                  Padding(
+                                    padding: const EdgeInsets.only(left: 36),
+                                    child: ServicesCard(
+                                      memberId: id,
+                                      idTransaksi: 6,
+                                      icon: Icons.delete_sweep_outlined,
+                                      label: "Kurang",
+                                    ),
+                                  ),
+                                ],
+                              ),
+                            ),
                           ],
                         ),
                       ),

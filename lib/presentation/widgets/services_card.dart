@@ -2,7 +2,7 @@ import 'dart:async';
 
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:onboarding_app/bloc/bloc/tabungan_bloc.dart';
+import 'package:onboarding_app/bloc/tabungan_bloc/tabungan_bloc.dart';
 
 class ServicesCard extends StatefulWidget {
   final String label;
@@ -142,8 +142,8 @@ class _ServicesCardState extends State<ServicesCard> {
         servicesDialog(context);
       },
       child: Container(
-        width: 100,
-        height: 100,
+        width: 95,
+        height: 95,
         decoration: BoxDecoration(
           color: Colors.white,
           borderRadius: BorderRadius.circular(5),
