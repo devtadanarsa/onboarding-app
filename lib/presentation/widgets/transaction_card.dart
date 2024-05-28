@@ -17,6 +17,7 @@ class TransactionCard extends StatelessWidget {
   Widget build(BuildContext context) {
     String transactionLabel = getTransactionLabel(transactionId);
     String formattedDate = formatDate(date);
+    String formattedAmount = formatCurrency(amount);
     IconData transactionIcon = getTransactionIcon(transactionId);
 
     return Container(
@@ -47,7 +48,7 @@ class TransactionCard extends StatelessWidget {
                 color: const Color.fromRGBO(31, 65, 187, 1),
               ),
               Padding(
-                padding: const EdgeInsets.only(left: 8),
+                padding: const EdgeInsets.only(left: 12),
                 child: Column(
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
@@ -58,11 +59,14 @@ class TransactionCard extends StatelessWidget {
                         fontWeight: FontWeight.bold,
                       ),
                     ),
-                    Text(
-                      formattedDate,
-                      style: TextStyle(
-                        fontSize: 12,
-                        color: Colors.grey[600],
+                    Padding(
+                      padding: const EdgeInsets.only(top: 1),
+                      child: Text(
+                        formattedDate,
+                        style: TextStyle(
+                          fontSize: 11,
+                          color: Colors.grey[600],
+                        ),
                       ),
                     ),
                   ],
@@ -70,24 +74,16 @@ class TransactionCard extends StatelessWidget {
               ),
             ],
           ),
-          Column(
-            crossAxisAlignment: CrossAxisAlignment.end,
-            children: [
-              Text(
-                "${(transactionId == 3 || transactionId == 6) ? "-" : "+"} Rp ${amount.toString()}",
-                style: const TextStyle(
-                  fontSize: 14,
-                  fontWeight: FontWeight.bold,
-                ),
-              ),
-              Text(
-                "Success",
-                style: TextStyle(
-                  fontSize: 10,
-                  color: Colors.green[600],
-                ),
-              ),
-            ],
+          Text(
+            "${(transactionId == 3 || transactionId == 6) ? "-" : "+"} $formattedAmount",
+            style: TextStyle(
+              fontSize: 14,
+              color: (transactionId == 3 || transactionId == 6)
+                  ? Colors.red
+                  : Colors.green,
+              // color: Colors.green,
+              fontWeight: FontWeight.bold,
+            ),
           ),
         ],
       ),
@@ -100,8 +96,8 @@ class TransactionCard extends StatelessWidget {
       2: "Trans. Simpanan",
       3: "Trans. Penarikan",
       4: "Bunga Simpanan",
-      5: "Koreksi Penambahan",
-      6: "Koreksi Pengurangan",
+      5: "Koreksi Tambah",
+      6: "Koreksi Kurang",
     };
 
     return transactionLabels[transactionId] ?? "Transaksi";
@@ -109,18 +105,18 @@ class TransactionCard extends StatelessWidget {
 
   String formatDate(String date) {
     DateTime dateTime = DateTime.parse(date);
-    DateFormat outputFormat = DateFormat('dd MMM yyyy');
+    DateFormat outputFormat = DateFormat('MMM dd, yyyy - HH:mm');
     return outputFormat.format(dateTime);
   }
 
   IconData getTransactionIcon(int transactionId) {
     switch (transactionId) {
       case 1:
-        return Icons.account_balance;
+        return Icons.account_balance_wallet_outlined;
       case 2:
-        return Icons.savings_outlined;
+        return Icons.auto_graph_sharp;
       case 3:
-        return Icons.money_off;
+        return Icons.clean_hands_outlined;
       case 4:
         return Icons.interests;
       case 5:
@@ -130,5 +126,15 @@ class TransactionCard extends StatelessWidget {
       default:
         return Icons.monetization_on;
     }
+  }
+
+  String formatCurrency(dynamic number) {
+    NumberFormat currencyFormat = NumberFormat.currency(
+      locale: 'id',
+      symbol: 'Rp. ',
+      decimalDigits: 0,
+    );
+
+    return currencyFormat.format(number);
   }
 }

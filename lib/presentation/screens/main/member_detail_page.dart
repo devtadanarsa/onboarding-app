@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:intl/intl.dart';
 import 'package:onboarding_app/bloc/tabungan_bloc/tabungan_bloc.dart';
 import 'package:onboarding_app/data/source/remote_source.dart';
 import 'package:onboarding_app/presentation/screens/main/transaction_history_page.dart';
@@ -245,7 +246,8 @@ class MemberDetailPage extends StatelessWidget {
                                                         const EdgeInsets.only(
                                                             top: 7),
                                                     child: Text(
-                                                      "Rp. ${state.saldo.toString()}",
+                                                      formatCurrency(
+                                                          state.saldo),
                                                       style: const TextStyle(
                                                         fontSize: 13,
                                                         fontWeight:
@@ -520,5 +522,15 @@ class MemberDetailPage extends StatelessWidget {
         ),
       ),
     );
+  }
+
+  String formatCurrency(dynamic number) {
+    NumberFormat currencyFormat = NumberFormat.currency(
+      locale: 'id',
+      symbol: 'Rp. ',
+      decimalDigits: 0,
+    );
+
+    return currencyFormat.format(number);
   }
 }
