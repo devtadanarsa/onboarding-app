@@ -38,8 +38,7 @@ class MemberDetailPage extends StatelessWidget {
               CustomSnackBar.show(
                   context, "success", "Transaksi Tabungan Berhasil!");
             } else if (state is TabunganError) {
-              CustomSnackBar.show(
-                  context, "error", "Transaksi Tabungan Gagal!");
+              CustomSnackBar.show(context, "error", state.errorDescription);
             }
           },
           child: BlocBuilder<TabunganBloc, TabunganState>(
@@ -515,8 +514,10 @@ class MemberDetailPage extends StatelessWidget {
                     )
                   ],
                 );
-              } else if (TabunganState is TabunganError) {
-                return const Center(child: Text("Error"));
+              } else if (state is TabunganError) {
+                BlocProvider.of<TabunganBloc>(context)
+                    .add(LoadTabungan(memberId: id));
+                return const Center(child: CircularProgressIndicator());
               } else {
                 return const Center(child: Text("Unknown Error"));
               }

@@ -33,9 +33,14 @@ class TabunganBloc extends Bloc<TabunganEvent, TabunganState> {
   void _transaksiTabungan(
       TransaksiTabungan event, Emitter<TabunganState> emit) async {
     try {
-      await remoteDataSource.transaksiTabungan(
+      final result = await remoteDataSource.transaksiTabungan(
           event.memberId, event.idTransaksi, event.nominal);
-      emit(TabunganAdded());
+
+      if (result.data["success"] == false) {
+        emit(TabunganError(400, result.data["message"]));
+      } else {
+        emit(TabunganAdded());
+      }
     } on DioException catch (error) {
       emit(TabunganError(
         error.response?.statusCode as int,
