@@ -378,12 +378,15 @@ class MemberDetailPage extends StatelessWidget {
                                   GestureDetector(
                                     onTap: () {
                                       Navigator.push(
-                                          context,
-                                          MaterialPageRoute(
-                                              builder: (context) =>
-                                                  TransactionHistoryPage(
-                                                      tabunganList:
-                                                          state.tabungan)));
+                                        context,
+                                        MaterialPageRoute(
+                                          builder: (context) =>
+                                              TransactionHistoryPage(
+                                            tabunganList: state.tabungan,
+                                            saldoAkhir: state.saldo,
+                                          ),
+                                        ),
+                                      );
                                     },
                                     child: Container(
                                       width: 100,
