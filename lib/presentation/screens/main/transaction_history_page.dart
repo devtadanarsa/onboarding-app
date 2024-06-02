@@ -19,10 +19,8 @@ class TransactionHistoryPage extends StatelessWidget {
       backgroundColor: Colors.white,
       bottomNavigationBar: BottomAppBar(
         color: const Color.fromRGBO(31, 65, 187, 1),
-        // color: Colors.blue,
         padding: const EdgeInsets.all(0),
         elevation: 100,
-        // shadowColor: Colors.black,
         child: Container(
           padding: const EdgeInsets.symmetric(horizontal: 25),
           child: Row(
@@ -69,64 +67,63 @@ class TransactionHistoryPage extends StatelessWidget {
           ),
         ),
       ),
-      body: Column(
-        children: [
-          Container(
-            padding: const EdgeInsets.only(
-              top: 60,
-              bottom: 20,
-              left: 15,
-              right: 15,
-            ),
-            color: const Color.fromRGBO(31, 65, 187, 1),
-            child: Row(
-              children: [
-                GestureDetector(
-                  onTap: () {
-                    Navigator.pop(context);
-                  },
-                  child: Container(
-                    padding: const EdgeInsets.all(4),
-                    decoration: const BoxDecoration(
-                      color: Colors.white,
-                      shape:
-                          BoxShape.circle, // Ensure the background is circular
-                    ),
-                    child: const Icon(
-                      color: Color.fromRGBO(31, 65, 187, 1),
-                      Icons.arrow_back,
-                      size: 20,
-                    ),
-                  ),
-                ),
-                const Padding(
-                  padding: EdgeInsets.only(left: 13),
-                  child: Text(
-                    "Transaction History",
-                    style: TextStyle(
-                      color: Colors.white,
-                      fontSize: 18,
-                      fontWeight: FontWeight.bold,
+      body: CustomScrollView(
+        slivers: [
+          SliverAppBar(
+            backgroundColor: const Color.fromRGBO(31, 65, 187, 1),
+            pinned: true,
+            expandedHeight: 0.0,
+            automaticallyImplyLeading: false,
+            flexibleSpace: FlexibleSpaceBar(
+              titlePadding:
+                  const EdgeInsets.symmetric(horizontal: 15.0, vertical: 20.0),
+              title: Row(
+                children: [
+                  GestureDetector(
+                    onTap: () {
+                      Navigator.pop(context);
+                    },
+                    child: Container(
+                      padding: const EdgeInsets.all(4),
+                      decoration: const BoxDecoration(
+                        color: Colors.white,
+                        shape: BoxShape.circle,
+                      ),
+                      child: const Icon(
+                        Icons.arrow_back,
+                        color: Color.fromRGBO(31, 65, 187, 1),
+                        size: 20,
+                      ),
                     ),
                   ),
-                ),
-              ],
+                  const Padding(
+                    padding: EdgeInsets.only(left: 13),
+                    child: Text(
+                      "Transaction History",
+                      style: TextStyle(
+                        color: Colors.white,
+                        fontSize: 18,
+                        fontWeight: FontWeight.bold,
+                      ),
+                    ),
+                  ),
+                ],
+              ),
             ),
           ),
-          Padding(
-            padding: const EdgeInsets.only(top: 15),
-            child: SizedBox(
-              child: SingleChildScrollView(
-                physics: const NeverScrollableScrollPhysics(),
-                child: Column(
-                  children: List.generate(tabunganList.length, (index) {
-                    return TransactionCard(
-                        transactionId: tabunganList[index].idTransaksi,
-                        date: tabunganList[index].tanggal,
-                        amount: tabunganList[index].nominalTransaksi);
-                  }),
-                ),
-              ),
+          SliverList(
+            delegate: SliverChildBuilderDelegate(
+              (BuildContext context, int index) {
+                return Padding(
+                  padding: EdgeInsets.only(top: (index == 0) ? 20 : 0),
+                  child: TransactionCard(
+                    transactionId: tabunganList[index].idTransaksi,
+                    date: tabunganList[index].tanggal,
+                    amount: tabunganList[index].nominalTransaksi,
+                  ),
+                );
+              },
+              childCount: tabunganList.length,
             ),
           ),
         ],
