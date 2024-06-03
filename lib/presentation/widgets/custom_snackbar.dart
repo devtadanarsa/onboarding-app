@@ -39,7 +39,7 @@ class CustomSnackBar {
       behavior: SnackBarBehavior.floating,
       content: Container(
         width: double.infinity,
-        height: 80,
+        height: 90,
         padding: const EdgeInsets.symmetric(horizontal: 16),
         decoration: BoxDecoration(
           borderRadius: BorderRadius.circular(15),
