@@ -39,7 +39,7 @@ class MyApp extends StatelessWidget {
           "/register": (context) => const RegisterPage(),
           "/otp": (context) => const OTPPage(),
           "/home": (context) => const MainLayout(),
-          "/test": (context) => const TestPage()
+          "/test": (context) => TestPage()
         },
         initialRoute: "/home",
       ),

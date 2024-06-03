@@ -37,7 +37,7 @@ class MemberBloc extends Bloc<MemberEvent, MemberState> {
     } on DioException catch (error) {
       emit(MemberError(
         error.response?.statusCode as int,
-        error.response?.data,
+        "Failed to add member - Nomor Induk is duplicated!",
       ));
     }
   }

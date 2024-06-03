@@ -1,15 +1,27 @@
+import 'dart:async';
+
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:intl/intl.dart';
+import 'package:onboarding_app/bloc/member_bloc/member_bloc.dart';
+import 'package:onboarding_app/data/model/member.dart';
 
-class TestPage extends StatelessWidget {
-  TestPage({super.key});
+class AddMemberPage extends StatefulWidget {
+  const AddMemberPage({super.key});
 
+  @override
+  State<AddMemberPage> createState() => _AddMemberPageState();
+}
+
+class _AddMemberPageState extends State<AddMemberPage> {
   final nameController = TextEditingController();
   final nomorIndukController = TextEditingController();
   final addressController = TextEditingController();
   final phoneController = TextEditingController();
   final dobController = TextEditingController();
+  String selectedDate = "";
+  bool isInputValid = false;
 
   final ValueNotifier<bool> isNameValid = ValueNotifier<bool>(false);
   final ValueNotifier<bool> isNomorIndukValid = ValueNotifier<bool>(false);
@@ -19,13 +31,36 @@ class TestPage extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    void onSaveTap() {
+      if (_allInputsValid()) {
+        Member member = Member(
+          nomorInduk: int.tryParse(nomorIndukController.text) ?? 0,
+          name: nameController.text,
+          address: addressController.text,
+          dateOfBirth: selectedDate,
+          phoneNumber: phoneController.text,
+        );
+        BlocProvider.of<MemberBloc>(context).add(AddMember(member: member));
+        Navigator.pop(context);
+      } else {
+        setState(() {
+          isInputValid = true;
+          Timer(const Duration(seconds: 3), () {
+            setState(() {
+              isInputValid = false;
+            });
+          });
+        });
+      }
+    }
+
     return Scaffold(
       body: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
           _buildHeader(context),
           Padding(
-            padding: const EdgeInsets.only(top: 20, left: 30, right: 30),
+            padding: const EdgeInsets.only(top: 10, left: 30, right: 30),
             child: Column(
               children: [
                 _buildTextInput(
@@ -39,9 +74,11 @@ class TestPage extends StatelessWidget {
                 _buildDateInput(
                     context, dobController, "Date of Birth", isDobValid),
                 Padding(
-                  padding: const EdgeInsets.only(top: 50),
+                  padding: const EdgeInsets.only(top: 30),
                   child: ElevatedButton(
-                    onPressed: () {},
+                    onPressed: () {
+                      onSaveTap();
+                    },
                     style: ElevatedButton.styleFrom(
                       backgroundColor: const Color(0xFF1F41BB),
                       foregroundColor: Colors.white,
@@ -58,6 +95,19 @@ class TestPage extends StatelessWidget {
                           fontWeight: FontWeight.w600,
                           fontSize: 15,
                         ),
+                      ),
+                    ),
+                  ),
+                ),
+                Visibility(
+                  visible: isInputValid,
+                  child: Container(
+                    padding: const EdgeInsets.only(top: 10),
+                    child: const Text(
+                      "Please fill all the fields",
+                      style: TextStyle(
+                        color: Colors.red,
+                        fontSize: 12,
                       ),
                     ),
                   ),
@@ -102,7 +152,7 @@ class TestPage extends StatelessWidget {
             ),
           ),
           Padding(
-            padding: const EdgeInsets.only(top: 30),
+            padding: const EdgeInsets.only(top: 20),
             child: Text(
               "Create new member",
               style: GoogleFonts.poppins(
@@ -117,7 +167,7 @@ class TestPage extends StatelessWidget {
           const Padding(
             padding: EdgeInsets.only(top: 10),
             child: Text(
-              "Organizing your customers help you create quicker quotes and keep track of them easier",
+              "Organizing your members allows you to generate quotes faster and track them more efficiently.",
               style: TextStyle(
                 color: Colors.white,
                 fontSize: 12,
@@ -132,7 +182,7 @@ class TestPage extends StatelessWidget {
   Widget _buildTextInput(TextEditingController inputController, String label,
       String hintText, ValueNotifier<bool> isValid) {
     return Padding(
-      padding: const EdgeInsets.only(top: 10),
+      padding: const EdgeInsets.only(top: 15),
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
@@ -208,7 +258,7 @@ class TestPage extends StatelessWidget {
   Widget _buildDateInput(BuildContext context, TextEditingController controller,
       String label, ValueNotifier<bool> isValid) {
     return Padding(
-      padding: const EdgeInsets.only(top: 10),
+      padding: const EdgeInsets.only(top: 15),
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
@@ -287,6 +337,7 @@ class TestPage extends StatelessWidget {
 
     if (pickedDate != null) {
       controller.text = formatDate(pickedDate.toString());
+      selectedDate = pickedDate.toString();
       isValid.value = true;
     }
   }
@@ -295,5 +346,13 @@ class TestPage extends StatelessWidget {
     DateTime dateTime = DateTime.parse(date);
     DateFormat outputFormat = DateFormat('MMM dd, yyyy');
     return outputFormat.format(dateTime);
+  }
+
+  bool _allInputsValid() {
+    return isNameValid.value &&
+        isNomorIndukValid.value &&
+        isAddressValid.value &&
+        isPhoneValid.value &&
+        isDobValid.value;
   }
 }

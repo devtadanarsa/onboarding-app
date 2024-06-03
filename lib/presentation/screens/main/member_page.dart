@@ -4,6 +4,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:onboarding_app/bloc/member_bloc/member_bloc.dart';
 import 'package:onboarding_app/data/model/member.dart';
+import 'package:onboarding_app/presentation/screens/main/add_member.page.dart';
 import 'package:onboarding_app/presentation/widgets/custom_snackbar.dart';
 import 'package:onboarding_app/presentation/widgets/team_member_card.dart';
 
@@ -433,7 +434,8 @@ class AddMemberButton extends StatelessWidget {
           color: Colors.white,
         ),
         onPressed: () {
-          addMemberDialog(context);
+          Navigator.push(context,
+              MaterialPageRoute(builder: (context) => const AddMemberPage()));
         },
       ),
     );
