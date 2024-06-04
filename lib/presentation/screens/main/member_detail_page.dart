@@ -165,14 +165,14 @@ class MemberDetailPage extends StatelessWidget {
                                                   CrossAxisAlignment.start,
                                               children: [
                                                 Text(
-                                                  "No $nomorInduk - $name",
+                                                  name,
                                                   style: const TextStyle(
                                                     fontSize: 14,
                                                     fontWeight: FontWeight.bold,
                                                   ),
                                                 ),
                                                 Text(
-                                                  "$address | Telp : +$telephone",
+                                                  "No Induk : $nomorInduk",
                                                   style: const TextStyle(
                                                     fontSize: 10,
                                                     color: Colors.black,
@@ -183,7 +183,7 @@ class MemberDetailPage extends StatelessWidget {
                                             const Padding(
                                               padding: EdgeInsets.only(top: 20),
                                               child: Text(
-                                                "Edit Profile",
+                                                "Show Details",
                                                 style: TextStyle(
                                                   fontSize: 12,
                                                   color: Color.fromRGBO(

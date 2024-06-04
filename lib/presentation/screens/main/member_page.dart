@@ -6,7 +6,7 @@ import 'package:onboarding_app/bloc/member_bloc/member_bloc.dart';
 import 'package:onboarding_app/data/model/member.dart';
 import 'package:onboarding_app/presentation/screens/main/add_member.page.dart';
 import 'package:onboarding_app/presentation/widgets/custom_snackbar.dart';
-import 'package:onboarding_app/presentation/widgets/team_member_card.dart';
+import 'package:onboarding_app/presentation/widgets/member_card.dart';
 
 class MemberPage extends StatelessWidget {
   const MemberPage({super.key});
@@ -195,17 +195,29 @@ class MemberPage extends StatelessWidget {
           physics: const NeverScrollableScrollPhysics(),
           child: Column(
             children: List.generate(
-              members.length,
-              (index) => TeamMemberCard(
-                id: members[index].id!,
-                nomorInduk: members[index].nomorInduk,
-                name: members[index].name,
-                address: members[index].address,
-                dateOfBirth: members[index].dateOfBirth,
-                telephone: members[index].phoneNumber,
-                isActive: members[index].isActive!,
-              ),
-            ),
+                members.length,
+                ((index) => Padding(
+                      padding: EdgeInsets.only(top: (index == 0) ? 10 : 20),
+                      child: MemberCard(
+                        id: members[index].id!,
+                        nomorInduk: members[index].nomorInduk,
+                        name: members[index].name,
+                        address: members[index].address,
+                        dateOfBirth: members[index].dateOfBirth,
+                        telephone: members[index].phoneNumber,
+                        isActive: members[index].isActive!,
+                      ),
+                    ))
+                // (index) => TeamMemberCard(
+                //   id: members[index].id!,
+                //   nomorInduk: members[index].nomorInduk,
+                //   name: members[index].name,
+                //   address: members[index].address,
+                //   dateOfBirth: members[index].dateOfBirth,
+                //   telephone: members[index].phoneNumber,
+                //   isActive: members[index].isActive!,
+                // ),
+                ),
           ),
         ),
       ),
