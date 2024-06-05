@@ -1,8 +1,11 @@
 import 'dart:async';
 
 import 'package:flutter/material.dart';
+import 'package:flutter/widgets.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:onboarding_app/bloc/member_bloc/member_bloc.dart';
+import 'package:onboarding_app/data/model/member.dart';
+import 'package:onboarding_app/presentation/screens/main/member/pages/edit_member_page.dart';
 import 'package:onboarding_app/presentation/screens/main/member_detail_page.dart';
 
 class MemberCard extends StatelessWidget {
@@ -126,22 +129,43 @@ class MemberCard extends StatelessWidget {
                   ),
                 ],
               ),
-              const Column(
-                children: [
-                  Icon(
-                    Icons.edit,
-                    size: 20,
-                    color: Color.fromRGBO(31, 65, 187, 1),
-                  ),
-                  Text(
-                    "Edit",
-                    style: TextStyle(
-                      fontSize: 12,
-                      fontWeight: FontWeight.bold,
+              GestureDetector(
+                onTap: () {
+                  Navigator.push(
+                    context,
+                    MaterialPageRoute(
+                      builder: (context) {
+                        return EditMemberPage(
+                          member: Member(
+                            id: id,
+                            nomorInduk: nomorInduk,
+                            name: name,
+                            address: address,
+                            dateOfBirth: dateOfBirth,
+                            phoneNumber: telephone,
+                          ),
+                        );
+                      },
+                    ),
+                  );
+                },
+                child: const Column(
+                  children: [
+                    Icon(
+                      Icons.edit,
+                      size: 20,
                       color: Color.fromRGBO(31, 65, 187, 1),
                     ),
-                  )
-                ],
+                    Text(
+                      "Edit",
+                      style: TextStyle(
+                        fontSize: 12,
+                        fontWeight: FontWeight.bold,
+                        color: Color.fromRGBO(31, 65, 187, 1),
+                      ),
+                    )
+                  ],
+                ),
               )
             ],
           ),
