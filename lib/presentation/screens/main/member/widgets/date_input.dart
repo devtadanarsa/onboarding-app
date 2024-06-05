@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:intl/intl.dart';
+import 'package:onboarding_app/utils/date_utils.dart';
 
 Widget buildDateInput(
   BuildContext context,
@@ -90,10 +90,4 @@ Future<void> _selectDate(BuildContext context, TextEditingController controller,
     onDateSelected(pickedDate.toString());
     isValid.value = true;
   }
-}
-
-String formatDate(String date) {
-  DateTime dateTime = DateTime.parse(date);
-  DateFormat outputFormat = DateFormat('MMM dd, yyyy');
-  return outputFormat.format(dateTime);
 }

@@ -7,6 +7,7 @@ import 'package:onboarding_app/data/model/member.dart';
 import 'package:onboarding_app/presentation/screens/main/member/widgets/date_input.dart';
 import 'package:onboarding_app/presentation/screens/main/member/widgets/form_header.dart';
 import 'package:onboarding_app/presentation/screens/main/member/widgets/text_input.dart';
+import 'package:onboarding_app/utils/date_utils.dart';
 
 class EditMemberPage extends StatefulWidget {
   const EditMemberPage({super.key, required this.member});
@@ -40,7 +41,8 @@ class _EditMemberPageState extends State<EditMemberPage> {
         TextEditingController(text: widget.member.nomorInduk.toString());
     addressController = TextEditingController(text: widget.member.address);
     phoneController = TextEditingController(text: widget.member.phoneNumber);
-    dobController = TextEditingController(text: widget.member.dateOfBirth);
+    dobController =
+        TextEditingController(text: formatDate(widget.member.dateOfBirth));
     selectedDate = widget.member.dateOfBirth;
 
     isNameValid.value = nameController.text.isNotEmpty;
@@ -66,7 +68,8 @@ class _EditMemberPageState extends State<EditMemberPage> {
       body: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
-          buildHeader(context),
+          buildHeader(context, "Edit old member",
+              "Organizing your members allows you to generate quotes faster and track them more efficiently."),
           Padding(
             padding: const EdgeInsets.only(top: 10, left: 30, right: 30),
             child: Column(

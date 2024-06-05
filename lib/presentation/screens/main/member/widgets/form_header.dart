@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
 
-Widget buildHeader(BuildContext context) {
+Widget buildHeader(BuildContext context, String title, String subtitle) {
   return Container(
     width: double.infinity,
     decoration: const BoxDecoration(
@@ -35,7 +35,7 @@ Widget buildHeader(BuildContext context) {
         Padding(
           padding: const EdgeInsets.only(top: 20),
           child: Text(
-            "Create new member",
+            title,
             style: GoogleFonts.poppins(
               textStyle: const TextStyle(
                 fontWeight: FontWeight.bold,
@@ -45,11 +45,11 @@ Widget buildHeader(BuildContext context) {
             ),
           ),
         ),
-        const Padding(
-          padding: EdgeInsets.only(top: 10),
+        Padding(
+          padding: const EdgeInsets.only(top: 10),
           child: Text(
-            "Organizing your members allows you to generate quotes faster and track them more efficiently.",
-            style: TextStyle(
+            subtitle,
+            style: const TextStyle(
               color: Colors.white,
               fontSize: 12,
             ),

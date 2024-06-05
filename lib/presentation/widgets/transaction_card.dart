@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
+import 'package:onboarding_app/utils/date_utils.dart';
 
 class TransactionCard extends StatelessWidget {
   final int transactionId;
@@ -16,7 +17,7 @@ class TransactionCard extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     String transactionLabel = getTransactionLabel(transactionId);
-    String formattedDate = formatDate(date);
+    String formattedDate = formatDateTime(date);
     String formattedAmount = formatCurrency(amount);
     IconData transactionIcon = getTransactionIcon(transactionId);
 
@@ -101,12 +102,6 @@ class TransactionCard extends StatelessWidget {
     };
 
     return transactionLabels[transactionId] ?? "Transaksi";
-  }
-
-  String formatDate(String date) {
-    DateTime dateTime = DateTime.parse(date);
-    DateFormat outputFormat = DateFormat('MMM dd, yyyy - HH:mm');
-    return outputFormat.format(dateTime);
   }
 
   IconData getTransactionIcon(int transactionId) {
