@@ -13,8 +13,9 @@ class UserBloc extends Bloc<UserEvent, UserState> {
     on<LoadUser>((event, emit) async {
       emit(UserLoading());
       try {
-        final result = await remoteDataSource.getUser();
-        emit(UserLoaded(result));
+        final userInformation = await remoteDataSource.getUser();
+
+        emit(UserLoaded(userInformation));
       } on DioException catch (error) {
         if (error.response?.statusCode == 406) {
           emit(ExpiredToken());

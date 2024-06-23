@@ -1,5 +1,6 @@
 import 'package:dio/dio.dart';
 import 'package:get_storage/get_storage.dart';
+import 'package:onboarding_app/data/model/bunga.dart';
 import 'package:onboarding_app/data/model/member.dart';
 import 'package:onboarding_app/data/model/tabungan.dart';
 import 'package:onboarding_app/data/model/user.dart';
@@ -98,5 +99,10 @@ class RemoteDataSource {
     );
 
     return response;
+  }
+
+  Future getBunga() async {
+    final response = await _dio.get("/settingbunga", options: _getOptions());
+    return DataBunga.fromJson(response.data);
   }
 }

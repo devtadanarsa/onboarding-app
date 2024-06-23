@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:google_fonts/google_fonts.dart';
+import 'package:onboarding_app/bloc/bunga_bloc/bunga_bloc.dart';
 import 'package:onboarding_app/bloc/member_bloc/member_bloc.dart';
 import 'package:onboarding_app/bloc/user_bloc/user_bloc.dart';
 import 'package:onboarding_app/data/source/remote_source.dart';
@@ -29,6 +30,9 @@ class MyApp extends StatelessWidget {
         ),
         BlocProvider<MemberBloc>(
           create: (context) => MemberBloc(remoteDataSource: RemoteDataSource()),
+        ),
+        BlocProvider<BungaBloc>(
+          create: (context) => BungaBloc(remoteDataSource: RemoteDataSource()),
         ),
       ],
       child: MaterialApp(

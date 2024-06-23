@@ -358,7 +358,7 @@ class MemberDetailPage extends StatelessWidget {
                               child: Column(
                                 children: [
                                   Text(
-                                    "Account Services",
+                                    "Layanan Tabungan",
                                     textAlign: TextAlign.start,
                                     style: TextStyle(
                                       fontSize: 16,

@@ -10,8 +10,8 @@ final class UserLoading extends UserState {}
 final class ExpiredToken extends UserState {}
 
 final class UserLoaded extends UserState {
-  final User user;
-  UserLoaded(this.user);
+  final User userInformation;
+  UserLoaded(this.userInformation);
 }
 
 final class UserError extends UserState {
