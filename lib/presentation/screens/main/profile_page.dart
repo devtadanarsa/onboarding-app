@@ -2,7 +2,6 @@ import 'package:dio/dio.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:get_storage/get_storage.dart';
-import 'package:onboarding_app/bloc/bunga_bloc/bunga_bloc.dart';
 import 'package:onboarding_app/bloc/member_bloc/member_bloc.dart';
 import 'package:onboarding_app/bloc/user_bloc/user_bloc.dart';
 import 'package:onboarding_app/presentation/widgets/team_member_card.dart';
@@ -25,8 +24,6 @@ class ProfilePage extends StatelessWidget {
           );
         } else if (userState is UserLoaded) {
           final user = userState.userInformation;
-          // final listBunga = userState.userBunga;
-          // print(listBunga);
           return BlocBuilder<MemberBloc, MemberState>(
             builder: (context, memberState) {
               if (memberState is MemberLoading) {
@@ -40,152 +37,134 @@ class ProfilePage extends StatelessWidget {
                 );
               } else if (memberState is MemberLoaded) {
                 final members = memberState.members;
-                BlocProvider.of<BungaBloc>(context).add(LoadBunga());
-                return BlocBuilder<BungaBloc, BungaState>(
-                  builder: (context, bungaState) {
-                    if (bungaState is BungaLoaded) {
-                      final bunga = bungaState.activeBunga.persen;
-                      return SafeArea(
-                        child: SingleChildScrollView(
-                          child: Column(
+                return SafeArea(
+                  child: SingleChildScrollView(
+                    child: Column(
+                      children: [
+                        Container(
+                          alignment: Alignment.center,
+                          child: const Column(
                             children: [
-                              Container(
-                                alignment: Alignment.center,
-                                child: const Column(
-                                  children: [
-                                    CircleAvatar(
-                                      backgroundImage: AssetImage(
-                                          "assets/default-profile.png"),
-                                      radius: 30,
-                                    ),
-                                    Padding(
-                                      padding:
-                                          EdgeInsets.only(top: 8, bottom: 8),
-                                      child: Text(
-                                        "Edit Profile Photo",
-                                        style: TextStyle(
-                                          fontWeight: FontWeight.bold,
-                                          fontSize: 14,
-                                          color: Color.fromRGBO(31, 65, 187, 1),
-                                        ),
-                                      ),
-                                    ),
-                                  ],
-                                ),
+                              CircleAvatar(
+                                backgroundImage:
+                                    AssetImage("assets/default-profile.png"),
+                                radius: 30,
                               ),
-                              const Divider(),
-                              const HeadingText(heading: "Profile Info"),
-                              InformationField(
-                                label: "Name",
-                                value: user.name,
-                              ),
-                              InformationField(
-                                label: "Email",
-                                value: user.email,
-                              ),
-                              const Padding(
-                                padding: EdgeInsets.only(top: 8),
-                                child: Divider(),
-                              ),
-                              const HeadingText(
-                                heading: "Team Members",
-                                href: "See All Members",
-                              ),
-                              SizedBox(
-                                child: SingleChildScrollView(
-                                  physics: const NeverScrollableScrollPhysics(),
-                                  child: Column(
-                                    children: List.generate(
-                                      members.length > 3 ? 3 : members.length,
-                                      (index) {
-                                        return TeamMemberCard(
-                                          id: members[index].id!,
-                                          nomorInduk: members[index].nomorInduk,
-                                          name: members[index].name,
-                                          address: members[index].address,
-                                          dateOfBirth:
-                                              members[index].dateOfBirth,
-                                          telephone: members[index].phoneNumber,
-                                          isActive: members[index].isActive!,
-                                        );
-                                      },
-                                    ),
+                              Padding(
+                                padding: EdgeInsets.only(top: 8, bottom: 8),
+                                child: Text(
+                                  "Edit Profile Photo",
+                                  style: TextStyle(
+                                    fontWeight: FontWeight.bold,
+                                    fontSize: 14,
+                                    color: Color.fromRGBO(31, 65, 187, 1),
                                   ),
                                 ),
                               ),
-                              const Padding(
-                                padding: EdgeInsets.only(top: 20),
-                                child: Divider(),
-                              ),
-                              const HeadingText(
-                                heading: "General Setting",
-                              ),
-                              Padding(
-                                padding: const EdgeInsets.only(top: 24),
-                                child: Row(
-                                  mainAxisAlignment:
-                                      MainAxisAlignment.spaceBetween,
-                                  children: [
-                                    SizedBox(
-                                      width: 120,
-                                      child: Text(
-                                        "Setting Bunga",
-                                        style: TextStyle(
-                                          color: Colors.grey[700],
-                                        ),
-                                      ),
-                                    ),
-                                    const SizedBox(
-                                      width: 120,
-                                      child: Text(
-                                        "10% (Saat ini)",
-                                      ),
-                                    ),
-                                    const Icon(
-                                        Icons.keyboard_arrow_right_outlined)
-                                  ],
-                                ),
-                              ),
-                              Padding(
-                                padding: const EdgeInsets.only(top: 24),
-                                child: Row(
-                                  mainAxisAlignment:
-                                      MainAxisAlignment.spaceBetween,
-                                  children: [
-                                    SizedBox(
-                                      width: 120,
-                                      child: Text(
-                                        "Riwayat Bunga",
-                                        style: TextStyle(
-                                          color: Colors.grey[700],
-                                        ),
-                                      ),
-                                    ),
-                                    const SizedBox(
-                                      width: 120,
-                                      child: Text(
-                                        "Lihat Riwayat",
-                                      ),
-                                    ),
-                                    const Icon(
-                                        Icons.keyboard_arrow_right_outlined)
-                                  ],
-                                ),
-                              ),
-                              const Padding(
-                                padding: EdgeInsets.only(top: 60),
-                                child: LogoutButton(),
-                              )
                             ],
                           ),
                         ),
-                      );
-                    } else if (bungaState is BungaError) {
-                      return Text(bungaState.error);
-                    } else {
-                      return Text("Lonte");
-                    }
-                  },
+                        const Divider(),
+                        const HeadingText(heading: "Profile Info"),
+                        InformationField(
+                          label: "Name",
+                          value: user.name,
+                        ),
+                        InformationField(
+                          label: "Email",
+                          value: user.email,
+                        ),
+                        const Padding(
+                          padding: EdgeInsets.only(top: 8),
+                          child: Divider(),
+                        ),
+                        const HeadingText(
+                          heading: "Team Members",
+                          href: "See All Members",
+                        ),
+                        SizedBox(
+                          child: SingleChildScrollView(
+                            physics: const NeverScrollableScrollPhysics(),
+                            child: Column(
+                              children: List.generate(
+                                members.length > 3 ? 3 : members.length,
+                                (index) {
+                                  return TeamMemberCard(
+                                    id: members[index].id!,
+                                    nomorInduk: members[index].nomorInduk,
+                                    name: members[index].name,
+                                    address: members[index].address,
+                                    dateOfBirth: members[index].dateOfBirth,
+                                    telephone: members[index].phoneNumber,
+                                    isActive: members[index].isActive!,
+                                  );
+                                },
+                              ),
+                            ),
+                          ),
+                        ),
+                        const Padding(
+                          padding: EdgeInsets.only(top: 20),
+                          child: Divider(),
+                        ),
+                        const HeadingText(
+                          heading: "General Setting",
+                        ),
+                        Padding(
+                          padding: const EdgeInsets.only(top: 24),
+                          child: Row(
+                            mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                            children: [
+                              SizedBox(
+                                width: 120,
+                                child: Text(
+                                  "Setting Bunga",
+                                  style: TextStyle(
+                                    color: Colors.grey[700],
+                                  ),
+                                ),
+                              ),
+                              const SizedBox(
+                                width: 120,
+                                child: Text(
+                                  "11% (Saat ini)",
+                                ),
+                              ),
+                              const Icon(Icons.keyboard_arrow_right_outlined)
+                            ],
+                          ),
+                        ),
+                        Padding(
+                          padding: const EdgeInsets.only(top: 24),
+                          child: Row(
+                            mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                            children: [
+                              SizedBox(
+                                width: 120,
+                                child: Text(
+                                  "Riwayat Bunga",
+                                  style: TextStyle(
+                                    color: Colors.grey[700],
+                                  ),
+                                ),
+                              ),
+                              const SizedBox(
+                                width: 120,
+                                child: Text(
+                                  "Lihat Riwayat",
+                                ),
+                              ),
+                              const Icon(Icons.keyboard_arrow_right_outlined)
+                            ],
+                          ),
+                        ),
+                        const Padding(
+                          padding: EdgeInsets.only(top: 60),
+                          child: LogoutButton(),
+                        )
+                      ],
+                    ),
+                  ),
                 );
               } else if (memberState is MemberError) {
                 return Center(

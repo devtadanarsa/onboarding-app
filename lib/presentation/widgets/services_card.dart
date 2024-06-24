@@ -1,7 +1,9 @@
 import 'dart:async';
 
+import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
+import 'package:flutter/widgets.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:intl/intl.dart';
 import 'package:onboarding_app/bloc/tabungan_bloc/tabungan_bloc.dart';
@@ -11,11 +13,13 @@ class ServicesCard extends StatefulWidget {
   final IconData icon;
 
   final int memberId;
+  final int saldo;
   final int idTransaksi;
 
   const ServicesCard({
     super.key,
     required this.icon,
+    required this.saldo,
     required this.label,
     required this.memberId,
     required this.idTransaksi,
@@ -26,15 +30,16 @@ class ServicesCard extends StatefulWidget {
 }
 
 class _ServicesCardState extends State<ServicesCard> {
-  void servicesDialog(BuildContext context) {
-    final TextEditingController _nominalController = TextEditingController();
+  @override
+  Widget build(BuildContext context) {
+    final TextEditingController nominalController = TextEditingController();
     bool invalidInput = false;
     String formLabel = getTransactionLabel(widget.idTransaksi);
 
     void onSaveTap(StateSetter setState) {
-      String cleanedText = _nominalController.text.replaceAll(',', '');
+      String cleanedText = nominalController.text.replaceAll(',', '');
 
-      if (_nominalController.text.isEmpty || !_isNumeric(cleanedText)) {
+      if (nominalController.text.isEmpty || !_isNumeric(cleanedText)) {
         setState(() {
           invalidInput = true;
           Timer(const Duration(seconds: 3), () {
@@ -53,59 +58,117 @@ class _ServicesCardState extends State<ServicesCard> {
       }
     }
 
-    showDialog(
-        context: context,
-        builder: (context) {
-          return StatefulBuilder(
-            builder: (context, setState) {
-              return Dialog(
-                insetPadding: EdgeInsets.zero,
-                child: Container(
-                  height: 250,
-                  width: 350,
-                  decoration: BoxDecoration(
-                    color: Colors.white,
-                    borderRadius: BorderRadius.circular(10),
-                  ),
-                  child: Padding(
+    return GestureDetector(
+      onTap: () {
+        // servicesDialog(context);
+        showModalBottomSheet(
+          context: context,
+          builder: (BuildContext context) {
+            return Container(
+              decoration: BoxDecoration(
+                  color: Colors.white, borderRadius: BorderRadius.circular(30)),
+              child: Wrap(
+                children: [
+                  Padding(
                     padding: const EdgeInsets.only(
-                      top: 20,
-                      bottom: 20,
-                      right: 20,
-                      left: 20,
-                    ),
+                        top: 30, left: 20, right: 20, bottom: 40),
                     child: Column(
-                      mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                      crossAxisAlignment: CrossAxisAlignment.start,
                       children: [
-                        Text(
-                          formLabel,
-                          style: const TextStyle(
-                            fontSize: 18,
-                            color: Color(0xFF1F41BB),
-                            fontWeight: FontWeight.bold,
+                        Center(
+                          child: Text(
+                            formLabel,
+                            textAlign: TextAlign.center,
+                            style: const TextStyle(
+                              fontSize: 18,
+                              color: Color(0xFF1F41BB),
+                              fontWeight: FontWeight.bold,
+                            ),
+                          ),
+                        ),
+                        Padding(
+                          padding: const EdgeInsets.only(top: 30),
+                          child: Row(
+                            children: [
+                              const Text(
+                                "Current Balance : ",
+                                style: TextStyle(
+                                  fontSize: 12,
+                                  fontWeight: FontWeight.bold,
+                                ),
+                              ),
+                              Text(
+                                formatCurrency(widget.saldo),
+                                style: const TextStyle(
+                                  fontSize: 12,
+                                  color: Colors.green,
+                                  fontWeight: FontWeight.bold,
+                                ),
+                              ),
+                            ],
                           ),
                         ),
                         Padding(
                           padding: const EdgeInsets.only(top: 5),
                           child: TextField(
-                            controller: _nominalController,
-                            decoration: const InputDecoration(
-                              border: OutlineInputBorder(),
-                              hintText: "Nominal Transaksi",
-                              enabledBorder: OutlineInputBorder(
-                                borderSide: BorderSide(color: Colors.black),
+                              controller: nominalController,
+                              decoration: const InputDecoration(
+                                border: OutlineInputBorder(),
+                                isDense: true,
+                                prefixIcon: Padding(
+                                  padding: EdgeInsets.only(left: 15, right: 8),
+                                  child: Text(
+                                    "Rp.",
+                                    style: TextStyle(fontSize: 15),
+                                  ),
+                                ),
+                                prefixIconConstraints:
+                                    BoxConstraints(minWidth: 0, minHeight: 0),
+                                hintText: "Nominal Transaksi",
+                                enabledBorder: OutlineInputBorder(
+                                  borderSide: BorderSide(color: Colors.black),
+                                ),
+                                focusedBorder: OutlineInputBorder(
+                                  borderSide: BorderSide(
+                                      color: Color.fromRGBO(31, 65, 187, 1),
+                                      width: 2),
+                                ),
                               ),
-                              focusedBorder: OutlineInputBorder(
-                                borderSide: BorderSide(
-                                    color: Color.fromRGBO(31, 65, 187, 1),
-                                    width: 2),
-                              ),
+                              keyboardType: TextInputType.number,
+                              inputFormatters: [
+                                FilteringTextInputFormatter.digitsOnly,
+                                CurrencyInputFormatter(),
+                              ]),
+                        ),
+                        Padding(
+                          padding: const EdgeInsets.only(top: 12),
+                          child: Container(
+                            padding: const EdgeInsets.symmetric(
+                              horizontal: 20,
+                              vertical: 10,
                             ),
-                            keyboardType: TextInputType.number,
-                            inputFormatters: [
-                              FilteringTextInputFormatter.digitsOnly,
-                              CurrencyInputFormatter(),
-                            ],
+                            decoration: BoxDecoration(
+                              color: Colors.grey[300],
+                              borderRadius: BorderRadius.circular(10),
+                            ),
+                            child: const Row(
+                              children: [
+                                Icon(Icons.warning_amber_rounded),
+                                Flexible(
+                                  child: Padding(
+                                    padding: EdgeInsets.only(left: 8),
+                                    child: Text(
+                                      "Make sure your transaction amount is correct. Every transaction is recorded instantly!",
+                                      softWrap: true,
+                                      style: TextStyle(
+                                        fontSize: 11,
+                                        fontWeight: FontWeight.bold,
+                                      ),
+                                    ),
+                                  ),
+                                )
+                              ],
+                            ),
                           ),
                         ),
                         Visibility(
@@ -124,7 +187,7 @@ class _ServicesCardState extends State<ServicesCard> {
                           ),
                         ),
                         Padding(
-                          padding: const EdgeInsets.only(top: 0),
+                          padding: const EdgeInsets.only(top: 20),
                           child: ElevatedButton(
                             onPressed: () {
                               setState(() {
@@ -151,18 +214,11 @@ class _ServicesCardState extends State<ServicesCard> {
                       ],
                     ),
                   ),
-                ),
-              );
-            },
-          );
-        });
-  }
-
-  @override
-  Widget build(BuildContext context) {
-    return GestureDetector(
-      onTap: () {
-        servicesDialog(context);
+                ],
+              ),
+            );
+          },
+        );
       },
       child: Container(
         width: 95,
@@ -224,6 +280,16 @@ class _ServicesCardState extends State<ServicesCard> {
   bool _isNumeric(String str) {
     final numericRegex = RegExp(r'^-?[0-9]+$');
     return numericRegex.hasMatch(str);
+  }
+
+  String formatCurrency(dynamic number) {
+    NumberFormat currencyFormat = NumberFormat.currency(
+      locale: 'id',
+      symbol: 'Rp. ',
+      decimalDigits: 0,
+    );
+
+    return currencyFormat.format(number);
   }
 }
 

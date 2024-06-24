@@ -435,12 +435,14 @@ class MemberDetailPage extends StatelessWidget {
                                   ServicesCard(
                                     memberId: id,
                                     idTransaksi: 2,
+                                    saldo: state.saldo,
                                     icon: Icons.savings_outlined,
                                     label: "Simpan",
                                   ),
                                   ServicesCard(
                                     memberId: id,
                                     idTransaksi: 3,
+                                    saldo: state.saldo,
                                     icon: Icons.call_received_rounded,
                                     label: "Tarik",
                                   ),
@@ -455,6 +457,7 @@ class MemberDetailPage extends StatelessWidget {
                                   ServicesCard(
                                     memberId: id,
                                     idTransaksi: 4,
+                                    saldo: state.saldo,
                                     icon: Icons.query_stats_sharp,
                                     label: "Bunga",
                                   ),
@@ -462,6 +465,7 @@ class MemberDetailPage extends StatelessWidget {
                                     padding: const EdgeInsets.only(left: 36),
                                     child: ServicesCard(
                                       memberId: id,
+                                      saldo: state.saldo,
                                       idTransaksi: 1,
                                       icon: Icons.restart_alt,
                                       label: "Saldo Awal",
@@ -493,6 +497,7 @@ class MemberDetailPage extends StatelessWidget {
                                   ServicesCard(
                                     memberId: id,
                                     idTransaksi: 5,
+                                    saldo: state.saldo,
                                     icon: Icons.addchart,
                                     label: "Tambah",
                                   ),
@@ -501,6 +506,7 @@ class MemberDetailPage extends StatelessWidget {
                                     child: ServicesCard(
                                       memberId: id,
                                       idTransaksi: 6,
+                                      saldo: state.saldo,
                                       icon: Icons.delete_sweep_outlined,
                                       label: "Kurang",
                                     ),

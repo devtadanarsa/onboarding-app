@@ -42,11 +42,11 @@ class HomePage extends StatelessWidget {
       "imageUrl": "assets/companies/tokopedia-icon.jpeg"
     },
     {
-      "companyName": "Laksita Emi Saguna",
-      "companyLocation": "Bali • Indonesia",
+      "companyName": "Gojek",
+      "companyLocation": "Jakarta • Indonesia",
       "jobTitle": "Data Engineer",
       "jobLocation": "Onsite",
-      "imageUrl": "assets/companies/laksita-icon.png"
+      "imageUrl": "assets/companies/gojek-icon.png"
     },
     {
       "companyName": "eFishery Indonesia",
