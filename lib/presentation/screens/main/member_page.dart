@@ -55,7 +55,7 @@ class MemberPage extends StatelessWidget {
             _buildHeader(),
             _buildSearchField(),
             _buildFiltersRow(),
-            _buildMemberListHeader(),
+            // _buildMemberListHeader(),
             _buildMemberListContent(members),
           ],
         ),
@@ -188,41 +188,77 @@ class MemberPage extends StatelessWidget {
   }
 
   Widget _buildMemberListContent(List<Member> members) {
+    members.sort((a, b) => a.name.compareTo(b.name));
+
+    String currentHeader = '';
+    List<Widget> groupedMembers = [];
+
+    for (int i = 0; i < members.length; i++) {
+      Member member = members[i];
+      String header = member.name.substring(0, 1).toUpperCase();
+
+      // Add header if it's a new group
+      if (header != currentHeader) {
+        currentHeader = header;
+        groupedMembers.add(_buildGroupHeader(header));
+      }
+
+      // Add member card to the group
+      groupedMembers.add(
+        Padding(
+          padding: const EdgeInsets.only(top: 10),
+          child: MemberCard(
+            id: member.id!,
+            nomorInduk: member.nomorInduk,
+            name: member.name,
+            address: member.address,
+            dateOfBirth: member.dateOfBirth,
+            telephone: member.phoneNumber,
+            isActive: member.isActive!,
+          ),
+        ),
+      );
+    }
+
     return Padding(
       padding: const EdgeInsets.only(top: 5, bottom: 90),
       child: SizedBox(
         child: SingleChildScrollView(
           physics: const NeverScrollableScrollPhysics(),
           child: Column(
-            children: List.generate(
-                members.length,
-                ((index) => Padding(
-                      padding: EdgeInsets.only(top: (index == 0) ? 10 : 20),
-                      child: MemberCard(
-                        id: members[index].id!,
-                        nomorInduk: members[index].nomorInduk,
-                        name: members[index].name,
-                        address: members[index].address,
-                        dateOfBirth: members[index].dateOfBirth,
-                        telephone: members[index].phoneNumber,
-                        isActive: members[index].isActive!,
-                      ),
-                    ))
-                // (index) => TeamMemberCard(
-                //   id: members[index].id!,
-                //   nomorInduk: members[index].nomorInduk,
-                //   name: members[index].name,
-                //   address: members[index].address,
-                //   dateOfBirth: members[index].dateOfBirth,
-                //   telephone: members[index].phoneNumber,
-                //   isActive: members[index].isActive!,
-                // ),
-                ),
+            crossAxisAlignment: CrossAxisAlignment.start,
+            children: groupedMembers,
           ),
         ),
       ),
     );
   }
+}
+
+Widget _buildGroupHeader(String headerText) {
+  return Padding(
+    padding: const EdgeInsets.only(top: 20, bottom: 0),
+    child: Column(
+      crossAxisAlignment: CrossAxisAlignment.start,
+      children: [
+        Padding(
+          padding: const EdgeInsets.only(left: 8),
+          child: Text(
+            textAlign: TextAlign.start,
+            headerText,
+            style: const TextStyle(
+              fontSize: 14,
+              fontWeight: FontWeight.bold,
+            ),
+          ),
+        ),
+        const Divider(
+          color: Colors.black,
+          thickness: 2,
+        )
+      ],
+    ),
+  );
 }
 
 class TextInput extends StatelessWidget {
