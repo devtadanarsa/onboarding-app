@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
 import 'package:onboarding_app/data/model/tabungan.dart';
-import 'package:onboarding_app/presentation/widgets/transaction_card.dart';
+import 'package:onboarding_app/presentation/screens/main/member/widgets/transaction_card.dart';
 
 class TransactionHistoryPage extends StatelessWidget {
   final List<Tabungan> tabunganList;

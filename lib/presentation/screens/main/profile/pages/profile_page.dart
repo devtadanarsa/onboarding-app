@@ -4,7 +4,7 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:get_storage/get_storage.dart';
 import 'package:onboarding_app/bloc/member_bloc/member_bloc.dart';
 import 'package:onboarding_app/bloc/user_bloc/user_bloc.dart';
-import 'package:onboarding_app/presentation/widgets/team_member_card.dart';
+import 'package:onboarding_app/presentation/screens/main/member/widgets/team_member_card.dart';
 
 class ProfilePage extends StatelessWidget {
   const ProfilePage({super.key});

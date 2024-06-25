@@ -2,8 +2,8 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:onboarding_app/bloc/user_bloc/user_bloc.dart';
 import 'package:onboarding_app/presentation/screens/main/home_page.dart';
-import 'package:onboarding_app/presentation/screens/main/member_page.dart';
-import 'package:onboarding_app/presentation/screens/main/profile_page.dart';
+import 'package:onboarding_app/presentation/screens/main/member/pages/member_page.dart';
+import 'package:onboarding_app/presentation/screens/main/profile/pages/profile_page.dart';
 import 'package:onboarding_app/presentation/screens/main/unfinished_page.dart';
 
 class MainLayout extends StatefulWidget {

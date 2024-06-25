@@ -6,7 +6,7 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:onboarding_app/bloc/member_bloc/member_bloc.dart';
 import 'package:onboarding_app/data/model/member.dart';
 import 'package:onboarding_app/presentation/screens/main/member/pages/edit_member_page.dart';
-import 'package:onboarding_app/presentation/screens/main/member_detail_page.dart';
+import 'package:onboarding_app/presentation/screens/main/member/pages/member_detail_page.dart';
 
 class MemberCard extends StatelessWidget {
   const MemberCard({

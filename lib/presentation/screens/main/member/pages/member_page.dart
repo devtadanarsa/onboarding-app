@@ -6,7 +6,7 @@ import 'package:onboarding_app/bloc/member_bloc/member_bloc.dart';
 import 'package:onboarding_app/data/model/member.dart';
 import 'package:onboarding_app/presentation/screens/main/member/pages/add_member_page.dart';
 import 'package:onboarding_app/presentation/widgets/custom_snackbar.dart';
-import 'package:onboarding_app/presentation/widgets/member_card.dart';
+import 'package:onboarding_app/presentation/screens/main/member/widgets/member_card.dart';
 
 class MemberPage extends StatelessWidget {
   const MemberPage({super.key});

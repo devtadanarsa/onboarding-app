@@ -3,9 +3,9 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:intl/intl.dart';
 import 'package:onboarding_app/bloc/tabungan_bloc/tabungan_bloc.dart';
 import 'package:onboarding_app/data/source/remote_source.dart';
-import 'package:onboarding_app/presentation/screens/main/transaction_history_page.dart';
+import 'package:onboarding_app/presentation/screens/main/member/pages/transaction_history_page.dart';
 import 'package:onboarding_app/presentation/widgets/custom_snackbar.dart';
-import 'package:onboarding_app/presentation/widgets/services_card.dart';
+import 'package:onboarding_app/presentation/screens/main/member/widgets/services_card.dart';
 
 class MemberDetailPage extends StatelessWidget {
   final int id;
