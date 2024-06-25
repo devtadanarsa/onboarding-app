@@ -1,9 +1,7 @@
 import 'dart:async';
 
-import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
-import 'package:flutter/widgets.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:intl/intl.dart';
 import 'package:onboarding_app/bloc/tabungan_bloc/tabungan_bloc.dart';
@@ -36,8 +34,121 @@ class _ServicesCardState extends State<ServicesCard> {
     bool invalidInput = false;
     String formLabel = getTransactionLabel(widget.idTransaksi);
 
+    void saveTransaction() {
+      int nominal = int.parse(nominalController.text.replaceAll('.', ''));
+      BlocProvider.of<TabunganBloc>(context).add(TransaksiTabungan(
+        memberId: widget.memberId,
+        idTransaksi: widget.idTransaksi,
+        nominal: nominal,
+      ));
+      Navigator.pop(context);
+      Navigator.pop(context);
+    }
+
+    void showConfirmationDialog() {
+      showDialog(
+        context: context,
+        builder: (BuildContext context) {
+          return Dialog(
+            insetPadding: const EdgeInsets.symmetric(horizontal: 0),
+            child: Container(
+              padding: const EdgeInsets.only(
+                  top: 30, bottom: 30, left: 20, right: 20),
+              alignment: Alignment.center,
+              decoration: BoxDecoration(
+                color: Colors.white,
+                borderRadius: BorderRadius.circular(10),
+              ),
+              height: 300,
+              width: 350,
+              child: Column(
+                children: [
+                  Container(
+                    padding: const EdgeInsets.all(8),
+                    decoration: BoxDecoration(
+                      borderRadius: BorderRadius.circular(100),
+                      color: Colors.blue[100],
+                    ),
+                    child: const Icon(
+                      Icons.warning_amber,
+                      color: Color.fromRGBO(31, 65, 187, 1),
+                    ),
+                  ),
+                  const Padding(
+                    padding: EdgeInsets.only(top: 10),
+                    child: Text(
+                      "Are you sure?",
+                      style: TextStyle(
+                        fontWeight: FontWeight.bold,
+                        fontSize: 16,
+                      ),
+                    ),
+                  ),
+                  Padding(
+                    padding: const EdgeInsets.only(top: 15),
+                    child: Text(
+                      "This action cannot be undone. All values associated with this member will be lost.",
+                      textAlign: TextAlign.center,
+                      style: TextStyle(
+                        color: Colors.grey[700],
+                        fontSize: 12,
+                      ),
+                    ),
+                  ),
+                  Padding(
+                    padding: const EdgeInsets.only(top: 10),
+                    child: ElevatedButton(
+                      onPressed: () {
+                        saveTransaction();
+                      },
+                      style: ElevatedButton.styleFrom(
+                        backgroundColor: const Color.fromRGBO(31, 65, 187, 1),
+                        foregroundColor: Colors.white,
+                        minimumSize: const Size.fromHeight(40),
+                        shape: const RoundedRectangleBorder(
+                          borderRadius: BorderRadius.all(Radius.circular(5)),
+                        ),
+                      ),
+                      child: const Text(
+                        "Save Transaction",
+                        style: TextStyle(
+                          fontWeight: FontWeight.w600,
+                        ),
+                      ),
+                    ),
+                  ),
+                  Padding(
+                    padding: const EdgeInsets.only(top: 5),
+                    child: ElevatedButton(
+                      onPressed: () {
+                        Navigator.of(context).pop();
+                      },
+                      style: ElevatedButton.styleFrom(
+                        backgroundColor: Colors.white,
+                        foregroundColor: Colors.black,
+                        minimumSize: const Size.fromHeight(40),
+                        shape: const RoundedRectangleBorder(
+                            borderRadius: BorderRadius.all(Radius.circular(5)),
+                            side: BorderSide(color: Colors.grey)),
+                      ),
+                      child: const Text(
+                        "Cancel",
+                        style: TextStyle(
+                          fontWeight: FontWeight.w600,
+                        ),
+                      ),
+                    ),
+                  ),
+                ],
+              ),
+            ),
+          );
+        },
+      );
+    }
+
     void onSaveTap(StateSetter setState) {
-      String cleanedText = nominalController.text.replaceAll(',', '');
+      String cleanedText = nominalController.text.replaceAll('.', '');
 
       if (nominalController.text.isEmpty || !_isNumeric(cleanedText)) {
         setState(() {
@@ -49,12 +160,7 @@ class _ServicesCardState extends State<ServicesCard> {
           });
         });
       } else {
-        int nominal = int.parse(cleanedText);
-        BlocProvider.of<TabunganBloc>(context).add(TransaksiTabungan(
-            memberId: widget.memberId,
-            idTransaksi: widget.idTransaksi,
-            nominal: nominal));
-        Navigator.pop(context);
+        showConfirmationDialog();
       }
     }
 
@@ -204,7 +310,7 @@ class _ServicesCardState extends State<ServicesCard> {
                               ),
                             ),
                             child: const Text(
-                              "Simpan Transaksi",
+                              "Save Transaction",
                               style: TextStyle(
                                 fontWeight: FontWeight.w600,
                               ),
@@ -295,7 +401,7 @@ class _ServicesCardState extends State<ServicesCard> {
 
 class CurrencyInputFormatter extends TextInputFormatter {
   final NumberFormat _formatter =
-      NumberFormat.currency(locale: 'en_US', symbol: '', decimalDigits: 0);
+      NumberFormat.currency(locale: 'id', symbol: '', decimalDigits: 0);
 
   @override
   TextEditingValue formatEditUpdate(
@@ -304,7 +410,7 @@ class CurrencyInputFormatter extends TextInputFormatter {
       return newValue.copyWith(text: '');
     }
 
-    int value = int.parse(newValue.text.replaceAll(',', ''));
+    int value = int.parse(newValue.text.replaceAll('.', ''));
     String newText = _formatter.format(value);
 
     return newValue.copyWith(
