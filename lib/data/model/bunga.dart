@@ -23,6 +23,8 @@ class Bunga {
     required this.isActive,
   });
 
-  factory Bunga.fromModel(Map<String, dynamic> json) =>
-      Bunga(id: json["id"], persen: json["persen"], isActive: json["isaktif"]);
+  factory Bunga.fromModel(Map<String, dynamic> json) => Bunga(
+      id: json["id"],
+      persen: (json["persen"] as num).toDouble(),
+      isActive: json["isaktif"]);
 }

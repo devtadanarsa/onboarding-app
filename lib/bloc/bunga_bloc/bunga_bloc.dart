@@ -15,10 +15,12 @@ class BungaBloc extends Bloc<BungaEvent, BungaState> {
         emit(BungaLoading());
         try {
           final result = await remoteDataSource.getBunga();
-          emit(BungaLoaded(result.listBunga, result.activeBunga));
-          print("tes mantap");
+          if (result == null) {
+            emit(BungaLoaded(const [], Bunga(id: 1, persen: 0, isActive: 0)));
+          } else {
+            emit(BungaLoaded(result.listBunga, result.activeBunga));
+          }
         } on DioException catch (error) {
-          print(error);
           emit(BungaError(error.toString()));
         }
       },

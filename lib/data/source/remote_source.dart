@@ -103,6 +103,9 @@ class RemoteDataSource {
 
   Future getBunga() async {
     final response = await _dio.get("/settingbunga", options: _getOptions());
+    if (response.data["data"]["activebunga"] == null) {
+      return null;
+    }
     return DataBunga.fromJson(response.data);
   }
 }
