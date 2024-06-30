@@ -41,12 +41,15 @@ class BungaCard extends StatelessWidget {
                     bungaInformation.isActive == 0 ? Colors.grey : Colors.green,
               ),
               Padding(
-                padding: const EdgeInsets.only(left: 8, right: 16),
-                child: Text(
-                  "${bungaInformation.persen.toString()}%",
-                  style: const TextStyle(
-                    fontSize: 19,
-                    fontWeight: FontWeight.bold,
+                padding: const EdgeInsets.only(left: 16, right: 8),
+                child: SizedBox(
+                  width: 50,
+                  child: Text(
+                    "${bungaInformation.persen.toString()}%",
+                    style: const TextStyle(
+                      fontSize: 19,
+                      fontWeight: FontWeight.bold,
+                    ),
                   ),
                 ),
               ),
@@ -57,6 +60,7 @@ class BungaCard extends StatelessWidget {
                     "Perubahan Bunga",
                     style: TextStyle(
                       fontSize: 11,
+                      fontWeight: FontWeight.bold,
                     ),
                   ),
                   Text(

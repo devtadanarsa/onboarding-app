@@ -181,6 +181,8 @@ class ProfilePage extends StatelessWidget {
                                           MaterialPageRoute(
                                             builder: (context) => BungaPage(
                                               listBunga: bungaState.listBunga,
+                                              activeBunga:
+                                                  bungaState.activeBunga,
                                             ),
                                           ),
                                         );

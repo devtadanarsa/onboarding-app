@@ -6,14 +6,66 @@ class BungaPage extends StatelessWidget {
   const BungaPage({
     super.key,
     required this.listBunga,
+    required this.activeBunga,
   });
 
   final List<Bunga> listBunga;
+  final Bunga activeBunga;
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       backgroundColor: Colors.white,
+      bottomNavigationBar: BottomAppBar(
+        color: const Color.fromRGBO(31, 65, 187, 1),
+        padding: const EdgeInsets.all(0),
+        elevation: 100,
+        child: Container(
+          padding: const EdgeInsets.symmetric(horizontal: 25),
+          child: Row(
+            mainAxisAlignment: MainAxisAlignment.spaceBetween,
+            crossAxisAlignment: CrossAxisAlignment.center,
+            children: [
+              const Column(
+                mainAxisAlignment: MainAxisAlignment.center,
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: [
+                  Text(
+                    "Bunga Aktif",
+                    style: TextStyle(
+                      color: Colors.white,
+                      fontSize: 16,
+                      fontWeight: FontWeight.bold,
+                    ),
+                  ),
+                ],
+              ),
+              Column(
+                mainAxisAlignment: MainAxisAlignment.center,
+                crossAxisAlignment: CrossAxisAlignment.end,
+                children: [
+                  const Text(
+                    "Persentase Saat Ini",
+                    style: TextStyle(
+                      color: Colors.white,
+                      fontSize: 12,
+                      // fontWeight: FontWeight.bold,
+                    ),
+                  ),
+                  Text(
+                    " ${activeBunga.persen.toString()}%",
+                    style: const TextStyle(
+                      color: Colors.white,
+                      fontSize: 18,
+                      fontWeight: FontWeight.bold,
+                    ),
+                  ),
+                ],
+              ),
+            ],
+          ),
+        ),
+      ),
       body: CustomScrollView(
         slivers: [
           SliverAppBar(
