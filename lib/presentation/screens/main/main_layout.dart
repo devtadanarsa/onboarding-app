@@ -108,7 +108,7 @@ class _MainLayoutState extends State<MainLayout> {
 
   Widget _buildPageContent() {
     return Container(
-      padding: const EdgeInsets.symmetric(vertical: 20, horizontal: 25),
+      padding: const EdgeInsets.symmetric(vertical: 10, horizontal: 25),
       child: _pages[_selectedIdx],
     );
   }
