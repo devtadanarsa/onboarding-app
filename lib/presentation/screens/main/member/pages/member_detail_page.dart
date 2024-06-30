@@ -50,6 +50,9 @@ class MemberDetailPage extends StatelessWidget {
               if (state is TabunganLoading) {
                 return const Center(child: CircularProgressIndicator());
               } else if (state is TabunganLoaded) {
+                /**
+                 * Main page starts here!
+                 */
                 return Stack(
                   children: [
                     Column(
@@ -72,6 +75,9 @@ class MemberDetailPage extends StatelessWidget {
                         child: Column(
                           crossAxisAlignment: CrossAxisAlignment.start,
                           children: [
+                            /**
+                             * Section : Page Header
+                             */
                             Row(
                               mainAxisAlignment: MainAxisAlignment.spaceBetween,
                               children: [
@@ -123,6 +129,10 @@ class MemberDetailPage extends StatelessWidget {
                                 ),
                               ],
                             ),
+
+                            /**
+                             * Section : Profile Card
+                             */
                             Container(
                               margin: const EdgeInsets.only(top: 25),
                               padding: const EdgeInsets.all(10),
@@ -353,6 +363,10 @@ class MemberDetailPage extends StatelessWidget {
                                 ],
                               ),
                             ),
+
+                            /**
+                             * Section : Tabungan Service Options
+                             */
                             const Padding(
                               padding: EdgeInsets.only(top: 20),
                               child: Column(

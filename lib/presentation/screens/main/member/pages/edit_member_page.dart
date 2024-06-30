@@ -136,20 +136,126 @@ class _EditMemberPageState extends State<EditMemberPage> {
     );
   }
 
+  void saveMember() {
+    Member editedMember = Member(
+      id: widget.member.id,
+      nomorInduk: int.tryParse(nomorIndukController.text) ?? 0,
+      name: nameController.text,
+      address: addressController.text,
+      dateOfBirth: selectedDate,
+      phoneNumber: phoneController.text,
+      isActive: 1,
+    );
+    BlocProvider.of<MemberBloc>(context).add(EditMember(member: editedMember));
+    Navigator.pop(context);
+    Navigator.pop(context);
+  }
+
+  void showConfirmationDialog() {
+    showDialog(
+      context: context,
+      builder: (BuildContext context) {
+        return Dialog(
+          insetPadding: const EdgeInsets.symmetric(horizontal: 0),
+          child: Container(
+            padding:
+                const EdgeInsets.only(top: 30, bottom: 30, left: 20, right: 20),
+            alignment: Alignment.center,
+            decoration: BoxDecoration(
+              color: Colors.white,
+              borderRadius: BorderRadius.circular(10),
+            ),
+            height: 300,
+            width: 350,
+            child: Column(
+              children: [
+                Container(
+                  padding: const EdgeInsets.all(8),
+                  decoration: BoxDecoration(
+                    borderRadius: BorderRadius.circular(100),
+                    color: Colors.blue[100],
+                  ),
+                  child: const Icon(
+                    Icons.warning_amber,
+                    color: Color.fromRGBO(31, 65, 187, 1),
+                  ),
+                ),
+                const Padding(
+                  padding: EdgeInsets.only(top: 10),
+                  child: Text(
+                    "Are you sure?",
+                    style: TextStyle(
+                      fontWeight: FontWeight.bold,
+                      fontSize: 16,
+                    ),
+                  ),
+                ),
+                Padding(
+                  padding: const EdgeInsets.only(top: 15),
+                  child: Text(
+                    "Please make sure all of the fields are correct! This value will be inserted to our databases.",
+                    textAlign: TextAlign.center,
+                    style: TextStyle(
+                      color: Colors.grey[700],
+                      fontSize: 12,
+                    ),
+                  ),
+                ),
+                Padding(
+                  padding: const EdgeInsets.only(top: 10),
+                  child: ElevatedButton(
+                    onPressed: () {
+                      saveMember();
+                    },
+                    style: ElevatedButton.styleFrom(
+                      backgroundColor: const Color.fromRGBO(31, 65, 187, 1),
+                      foregroundColor: Colors.white,
+                      minimumSize: const Size.fromHeight(40),
+                      shape: const RoundedRectangleBorder(
+                        borderRadius: BorderRadius.all(Radius.circular(5)),
+                      ),
+                    ),
+                    child: const Text(
+                      "Save Member",
+                      style: TextStyle(
+                        fontWeight: FontWeight.w600,
+                      ),
+                    ),
+                  ),
+                ),
+                Padding(
+                  padding: const EdgeInsets.only(top: 5),
+                  child: ElevatedButton(
+                    onPressed: () {
+                      Navigator.of(context).pop();
+                    },
+                    style: ElevatedButton.styleFrom(
+                      backgroundColor: Colors.white,
+                      foregroundColor: Colors.black,
+                      minimumSize: const Size.fromHeight(40),
+                      shape: const RoundedRectangleBorder(
+                          borderRadius: BorderRadius.all(Radius.circular(5)),
+                          side: BorderSide(color: Colors.grey)),
+                    ),
+                    child: const Text(
+                      "Cancel",
+                      style: TextStyle(
+                        fontWeight: FontWeight.w600,
+                      ),
+                    ),
+                  ),
+                ),
+              ],
+            ),
+          ),
+        );
+      },
+    );
+  }
+
   void onSaveTap() {
     if (_allInputsValid()) {
-      Member editedMember = Member(
-        id: widget.member.id,
-        nomorInduk: int.tryParse(nomorIndukController.text) ?? 0,
-        name: nameController.text,
-        address: addressController.text,
-        dateOfBirth: selectedDate,
-        phoneNumber: phoneController.text,
-        isActive: 1,
-      );
-      BlocProvider.of<MemberBloc>(context)
-          .add(EditMember(member: editedMember));
-      Navigator.pop(context);
+      showConfirmationDialog();
     } else {
       setState(() {
         isInputValid = true;
