@@ -13,12 +13,12 @@ class DataBunga {
 }
 
 class Bunga {
-  final int id;
+  final int? id;
   final double persen;
   final int isActive;
 
   Bunga({
-    required this.id,
+    this.id,
     required this.persen,
     required this.isActive,
   });

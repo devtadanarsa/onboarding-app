@@ -15,6 +15,10 @@ final class BungaLoaded extends BungaState {
 }
 
 final class BungaError extends BungaState {
-  final String error;
-  BungaError(this.error);
+  final int errorCode;
+  final String errorDescription;
+
+  BungaError(this.errorCode, this.errorDescription);
 }
+
+final class BungaAdded extends BungaState {}

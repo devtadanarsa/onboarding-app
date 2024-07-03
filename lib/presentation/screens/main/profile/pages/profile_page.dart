@@ -1,4 +1,5 @@
 import 'package:dio/dio.dart';
+import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/widgets.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
@@ -8,298 +9,319 @@ import 'package:onboarding_app/bloc/member_bloc/member_bloc.dart';
 import 'package:onboarding_app/bloc/user_bloc/user_bloc.dart';
 import 'package:onboarding_app/presentation/screens/main/member/widgets/team_member_card.dart';
 import 'package:onboarding_app/presentation/screens/main/profile/pages/bunga_page.dart';
+import 'package:onboarding_app/presentation/screens/main/profile/widgets/add_bunga_button.dart';
+import 'package:onboarding_app/presentation/widgets/custom_snackbar.dart';
 
 class ProfilePage extends StatelessWidget {
   const ProfilePage({super.key});
 
   @override
   Widget build(BuildContext context) {
-    return BlocBuilder<UserBloc, UserState>(
-      builder: (context, userState) {
-        if (userState is UserInitial) {
-          BlocProvider.of<UserBloc>(context).add(LoadUser());
-          return const Center(
-            child: CircularProgressIndicator(),
-          );
-        } else if (userState is UserLoading) {
-          return const Center(
-            child: CircularProgressIndicator(),
-          );
-        } else if (userState is UserLoaded) {
-          final user = userState.userInformation;
-          return BlocBuilder<MemberBloc, MemberState>(
-            builder: (context, memberState) {
-              if (memberState is MemberLoading) {
-                return const Center(
-                  child: CircularProgressIndicator(),
-                );
-              } else if (memberState is MemberInitial) {
-                BlocProvider.of<MemberBloc>(context).add(LoadMember());
-                return const Center(
-                  child: CircularProgressIndicator(),
-                );
-              } else if (memberState is MemberLoaded) {
-                final members = memberState.members;
-                return BlocBuilder<BungaBloc, BungaState>(
-                  builder: (context, bungaState) {
-                    if (bungaState is BungaInitial) {
-                      BlocProvider.of<BungaBloc>(context).add(LoadBunga());
-                      return const Center(
-                        child: CircularProgressIndicator(),
-                      );
-                    } else if (bungaState is BungaLoading) {
-                      return const Center(
-                        child: CircularProgressIndicator(),
-                      );
-                    } else if (bungaState is BungaLoaded) {
-                      return SafeArea(
-                        child: SingleChildScrollView(
-                          child: Column(
-                            children: [
-                              Container(
-                                alignment: Alignment.center,
-                                child: const Column(
-                                  children: [
-                                    CircleAvatar(
-                                      backgroundImage: AssetImage(
-                                          "assets/default-profile.png"),
-                                      radius: 30,
-                                    ),
-                                    Padding(
-                                      padding:
-                                          EdgeInsets.only(top: 8, bottom: 8),
-                                      child: Text(
-                                        "Edit Profile Photo",
-                                        style: TextStyle(
-                                          fontWeight: FontWeight.bold,
-                                          fontSize: 14,
-                                          color: Color.fromRGBO(31, 65, 187, 1),
+    return BlocListener<BungaBloc, BungaState>(
+      listener: (context, state) {
+        if (state is BungaAdded) {
+          CustomSnackBar.show(context, "success", "Bunga added succesfully!");
+        }
+      },
+      child: BlocBuilder<UserBloc, UserState>(
+        builder: (context, userState) {
+          if (userState is UserInitial) {
+            BlocProvider.of<UserBloc>(context).add(LoadUser());
+            return const Center(
+              child: CircularProgressIndicator(),
+            );
+          } else if (userState is UserLoading) {
+            return const Center(
+              child: CircularProgressIndicator(),
+            );
+          } else if (userState is UserLoaded) {
+            final user = userState.userInformation;
+            return BlocBuilder<MemberBloc, MemberState>(
+              builder: (context, memberState) {
+                if (memberState is MemberLoading) {
+                  return const Center(
+                    child: CircularProgressIndicator(),
+                  );
+                } else if (memberState is MemberInitial) {
+                  BlocProvider.of<MemberBloc>(context).add(LoadMember());
+                  return const Center(
+                    child: CircularProgressIndicator(),
+                  );
+                } else if (memberState is MemberLoaded) {
+                  final members = memberState.members;
+                  return BlocBuilder<BungaBloc, BungaState>(
+                    builder: (context, bungaState) {
+                      if (bungaState is BungaInitial ||
+                          bungaState is BungaAdded) {
+                        BlocProvider.of<BungaBloc>(context).add(LoadBunga());
+                        return const Center(
+                          child: CircularProgressIndicator(),
+                        );
+                      } else if (bungaState is BungaLoading) {
+                        return const Center(
+                          child: CircularProgressIndicator(),
+                        );
+                      } else if (bungaState is BungaLoaded) {
+                        return SafeArea(
+                          child: SingleChildScrollView(
+                            child: Column(
+                              children: [
+                                Container(
+                                  alignment: Alignment.center,
+                                  child: const Column(
+                                    children: [
+                                      CircleAvatar(
+                                        backgroundImage: AssetImage(
+                                            "assets/default-profile.png"),
+                                        radius: 30,
+                                      ),
+                                      Padding(
+                                        padding:
+                                            EdgeInsets.only(top: 8, bottom: 8),
+                                        child: Text(
+                                          "Edit Profile Photo",
+                                          style: TextStyle(
+                                            fontWeight: FontWeight.bold,
+                                            fontSize: 14,
+                                            color:
+                                                Color.fromRGBO(31, 65, 187, 1),
+                                          ),
                                         ),
                                       ),
-                                    ),
-                                  ],
+                                    ],
+                                  ),
                                 ),
-                              ),
-                              const Divider(),
-                              const HeadingText(heading: "Profile Info"),
-                              InformationField(
-                                label: "Name",
-                                value: user.name,
-                              ),
-                              InformationField(
-                                label: "Email",
-                                value: user.email,
-                              ),
-                              const Padding(
-                                padding: EdgeInsets.only(top: 8),
-                                child: Divider(),
-                              ),
-                              const HeadingText(
-                                heading: "Team Members",
-                                href: "See All Members",
-                              ),
-                              SizedBox(
-                                child: SingleChildScrollView(
-                                  physics: const NeverScrollableScrollPhysics(),
-                                  child: Column(
-                                    children: List.generate(
-                                      members.length > 3 ? 3 : members.length,
-                                      (index) {
-                                        return TeamMemberCard(
-                                          id: members[index].id!,
-                                          nomorInduk: members[index].nomorInduk,
-                                          name: members[index].name,
-                                          address: members[index].address,
-                                          dateOfBirth:
-                                              members[index].dateOfBirth,
-                                          telephone: members[index].phoneNumber,
-                                          isActive: members[index].isActive!,
-                                        );
-                                      },
+                                const Divider(),
+                                const HeadingText(heading: "Profile Info"),
+                                InformationField(
+                                  label: "Name",
+                                  value: user.name,
+                                ),
+                                InformationField(
+                                  label: "Email",
+                                  value: user.email,
+                                ),
+                                const Padding(
+                                  padding: EdgeInsets.only(top: 8),
+                                  child: Divider(),
+                                ),
+                                const HeadingText(
+                                  heading: "Team Members",
+                                  href: "See All Members",
+                                ),
+                                SizedBox(
+                                  child: SingleChildScrollView(
+                                    physics:
+                                        const NeverScrollableScrollPhysics(),
+                                    child: Column(
+                                      children: List.generate(
+                                        members.length > 3 ? 3 : members.length,
+                                        (index) {
+                                          return TeamMemberCard(
+                                            id: members[index].id!,
+                                            nomorInduk:
+                                                members[index].nomorInduk,
+                                            name: members[index].name,
+                                            address: members[index].address,
+                                            dateOfBirth:
+                                                members[index].dateOfBirth,
+                                            telephone:
+                                                members[index].phoneNumber,
+                                            isActive: members[index].isActive!,
+                                          );
+                                        },
+                                      ),
                                     ),
                                   ),
                                 ),
-                              ),
-                              const Padding(
-                                padding: EdgeInsets.only(top: 20),
-                                child: Divider(),
-                              ),
-                              const HeadingText(
-                                heading: "General Setting",
-                              ),
-                              Padding(
-                                padding: const EdgeInsets.only(top: 24),
-                                child: Row(
-                                  mainAxisAlignment:
-                                      MainAxisAlignment.spaceBetween,
-                                  children: [
-                                    SizedBox(
-                                      width: 120,
-                                      child: Text(
-                                        "Setting Bunga",
-                                        style: TextStyle(
-                                          color: Colors.grey[700],
-                                        ),
-                                      ),
-                                    ),
-                                    SizedBox(
-                                      width: 120,
-                                      child: Text(
-                                        "${bungaState.activeBunga.persen}% (Saat ini)",
-                                      ),
-                                    ),
-                                    const Icon(
-                                        Icons.keyboard_arrow_right_outlined)
-                                  ],
+                                const Padding(
+                                  padding: EdgeInsets.only(top: 20),
+                                  child: Divider(),
                                 ),
-                              ),
-                              Padding(
-                                padding: const EdgeInsets.only(top: 24),
-                                child: Row(
-                                  mainAxisAlignment:
-                                      MainAxisAlignment.spaceBetween,
-                                  children: [
-                                    SizedBox(
-                                      width: 120,
-                                      child: Text(
-                                        "Riwayat Bunga",
-                                        style: TextStyle(
-                                          color: Colors.grey[700],
-                                        ),
-                                      ),
-                                    ),
-                                    const SizedBox(
-                                      width: 120,
-                                      child: Text(
-                                        "Lihat Riwayat",
-                                      ),
-                                    ),
-                                    GestureDetector(
-                                      onTap: () {
-                                        Navigator.push(
-                                          context,
-                                          MaterialPageRoute(
-                                            builder: (context) => BungaPage(
-                                              listBunga: bungaState.listBunga,
-                                              activeBunga:
-                                                  bungaState.activeBunga,
-                                            ),
+                                const HeadingText(
+                                  heading: "General Setting",
+                                ),
+                                Padding(
+                                  padding: const EdgeInsets.only(top: 24),
+                                  child: Row(
+                                    mainAxisAlignment:
+                                        MainAxisAlignment.spaceBetween,
+                                    children: [
+                                      SizedBox(
+                                        width: 120,
+                                        child: Text(
+                                          "Setting Bunga",
+                                          style: TextStyle(
+                                            color: Colors.grey[700],
                                           ),
-                                        );
-                                      },
-                                      child: const Icon(
-                                          Icons.keyboard_arrow_right_outlined),
-                                    )
-                                  ],
+                                        ),
+                                      ),
+                                      SizedBox(
+                                        width: 120,
+                                        child: Text(
+                                          "${bungaState.activeBunga.persen}% (Saat ini)",
+                                        ),
+                                      ),
+                                      AddBungaButton(
+                                        currentBunga: bungaState.activeBunga,
+                                      ),
+                                      // GestureDetector(
+                                      //   onTap: () {},
+                                      //   child: const Icon(
+                                      //       Icons.keyboard_arrow_right_outlined),
+                                      // ),
+                                    ],
+                                  ),
                                 ),
-                              ),
-                              const Padding(
-                                padding: EdgeInsets.only(top: 20),
-                                child: Divider(),
-                              ),
-                              const Padding(
-                                padding: EdgeInsets.only(top: 20, bottom: 20),
-                                child: LogoutButton(),
-                              )
-                            ],
+                                Padding(
+                                  padding: const EdgeInsets.only(top: 24),
+                                  child: Row(
+                                    mainAxisAlignment:
+                                        MainAxisAlignment.spaceBetween,
+                                    children: [
+                                      SizedBox(
+                                        width: 120,
+                                        child: Text(
+                                          "Riwayat Bunga",
+                                          style: TextStyle(
+                                            color: Colors.grey[700],
+                                          ),
+                                        ),
+                                      ),
+                                      const SizedBox(
+                                        width: 120,
+                                        child: Text(
+                                          "Lihat Riwayat",
+                                        ),
+                                      ),
+                                      GestureDetector(
+                                        onTap: () {
+                                          Navigator.push(
+                                            context,
+                                            MaterialPageRoute(
+                                              builder: (context) => BungaPage(
+                                                listBunga: bungaState.listBunga,
+                                                activeBunga:
+                                                    bungaState.activeBunga,
+                                              ),
+                                            ),
+                                          );
+                                        },
+                                        child: const Icon(Icons
+                                            .keyboard_arrow_right_outlined),
+                                      )
+                                    ],
+                                  ),
+                                ),
+                                const Padding(
+                                  padding: EdgeInsets.only(top: 20),
+                                  child: Divider(),
+                                ),
+                                const Padding(
+                                  padding: EdgeInsets.only(top: 20, bottom: 20),
+                                  child: LogoutButton(),
+                                )
+                              ],
+                            ),
                           ),
-                        ),
-                      );
-                    } else if (bungaState is BungaError) {
-                      return Center(
-                        child: Text(bungaState.error),
-                      );
-                    } else {
-                      return const Center(
-                        child: Text("Unknown error pada Bunga"),
-                      );
-                    }
-                  },
-                );
-              } else if (memberState is MemberError) {
-                return Center(
-                  child: Text(memberState.errorDescription),
-                );
-              } else {
-                return Container(); // Handle other states if needed
-              }
-            },
-          );
-        } else if (userState is UserError) {
-          return Dialog(
-            insetPadding: EdgeInsets.zero,
-            child: Container(
-              decoration: BoxDecoration(
-                color: Colors.white,
-                borderRadius: BorderRadius.circular(10),
-              ),
-              height: 420,
-              width: 350,
-              child: Padding(
-                padding: const EdgeInsets.only(
-                  top: 20,
-                  bottom: 20,
-                  right: 20,
-                  left: 20,
+                        );
+                      } else if (bungaState is BungaError) {
+                        return Center(
+                          child: Text(bungaState.errorDescription),
+                        );
+                      } else {
+                        return const Center(
+                          child: Text("Unknown error pada Bunga"),
+                        );
+                      }
+                    },
+                  );
+                } else if (memberState is MemberError) {
+                  return Center(
+                    child: Text(memberState.errorDescription),
+                  );
+                } else {
+                  return Container(); // Handle other states if needed
+                }
+              },
+            );
+          } else if (userState is UserError) {
+            return Dialog(
+              insetPadding: EdgeInsets.zero,
+              child: Container(
+                decoration: BoxDecoration(
+                  color: Colors.white,
+                  borderRadius: BorderRadius.circular(10),
                 ),
-                child: Column(
-                  children: [
-                    const Image(
-                      image: AssetImage("assets/session-expired.jpg"),
-                    ),
-                    const Padding(
-                      padding: EdgeInsets.only(top: 20),
-                      child: Text(
-                        "Whoops, Your session has expired",
-                        style: TextStyle(
-                          fontWeight: FontWeight.bold,
-                          fontSize: 16,
-                        ),
-                        textAlign: TextAlign.center,
+                height: 420,
+                width: 350,
+                child: Padding(
+                  padding: const EdgeInsets.only(
+                    top: 20,
+                    bottom: 20,
+                    right: 20,
+                    left: 20,
+                  ),
+                  child: Column(
+                    children: [
+                      const Image(
+                        image: AssetImage("assets/session-expired.jpg"),
                       ),
-                    ),
-                    Padding(
-                      padding: const EdgeInsets.only(top: 10),
-                      child: Text(
-                        "Your session has expired due to your inactivity. No worry, simply login again",
-                        style: TextStyle(
-                          fontSize: 13,
-                          color: Colors.grey[700],
-                        ),
-                        textAlign: TextAlign.center,
-                      ),
-                    ),
-                    Padding(
-                      padding: const EdgeInsets.only(top: 15),
-                      child: ElevatedButton(
-                        onPressed: () {
-                          Navigator.pushNamed(context, "/");
-                        },
-                        style: ElevatedButton.styleFrom(
-                          backgroundColor: const Color(0xFF1F41BB),
-                          foregroundColor: Colors.white,
-                          minimumSize: const Size.fromHeight(40),
-                          shape: const RoundedRectangleBorder(
-                            borderRadius: BorderRadius.all(Radius.circular(10)),
-                          ),
-                        ),
-                        child: const Text(
-                          "Login",
+                      const Padding(
+                        padding: EdgeInsets.only(top: 20),
+                        child: Text(
+                          "Whoops, Your session has expired",
                           style: TextStyle(
                             fontWeight: FontWeight.bold,
+                            fontSize: 16,
                           ),
+                          textAlign: TextAlign.center,
                         ),
                       ),
-                    )
-                  ],
+                      Padding(
+                        padding: const EdgeInsets.only(top: 10),
+                        child: Text(
+                          "Your session has expired due to your inactivity. No worry, simply login again",
+                          style: TextStyle(
+                            fontSize: 13,
+                            color: Colors.grey[700],
+                          ),
+                          textAlign: TextAlign.center,
+                        ),
+                      ),
+                      Padding(
+                        padding: const EdgeInsets.only(top: 15),
+                        child: ElevatedButton(
+                          onPressed: () {
+                            Navigator.pushNamed(context, "/");
+                          },
+                          style: ElevatedButton.styleFrom(
+                            backgroundColor: const Color(0xFF1F41BB),
+                            foregroundColor: Colors.white,
+                            minimumSize: const Size.fromHeight(40),
+                            shape: const RoundedRectangleBorder(
+                              borderRadius:
+                                  BorderRadius.all(Radius.circular(10)),
+                            ),
+                          ),
+                          child: const Text(
+                            "Login",
+                            style: TextStyle(
+                              fontWeight: FontWeight.bold,
+                            ),
+                          ),
+                        ),
+                      )
+                    ],
+                  ),
                 ),
               ),
-            ),
-          );
-        } else {
-          return Container(); // Handle other states if needed
-        }
-      },
+            );
+          } else {
+            return Container(); // Handle other states if needed
+          }
+        },
+      ),
     );
   }
 }

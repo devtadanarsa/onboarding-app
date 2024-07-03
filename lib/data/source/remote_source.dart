@@ -108,4 +108,17 @@ class RemoteDataSource {
     }
     return DataBunga.fromJson(response.data);
   }
+
+  Future addBunga(Bunga bunga) async {
+    final response = await _dio.post(
+      "/addsettingbunga",
+      data: {
+        "persen": bunga.persen,
+        "isaktif": bunga.isActive,
+      },
+      options: _getOptions(),
+    );
+
+    return response;
+  }
 }
