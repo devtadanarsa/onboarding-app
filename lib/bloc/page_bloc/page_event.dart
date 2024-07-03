@@ -8,3 +8,5 @@ final class SwitchPage extends PageEvent {
 
   SwitchPage(this.pageIdx);
 }
+
+final class InitPage extends PageEvent {}

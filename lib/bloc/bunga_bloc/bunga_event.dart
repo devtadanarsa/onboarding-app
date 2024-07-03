@@ -10,3 +10,5 @@ final class AddBunga extends BungaEvent {
 
   AddBunga({required this.bunga});
 }
+
+final class InitBunga extends BungaEvent {}

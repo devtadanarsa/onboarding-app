@@ -13,6 +13,7 @@ class BungaBloc extends Bloc<BungaEvent, BungaState> {
   BungaBloc({required this.remoteDataSource}) : super(BungaInitial()) {
     on<LoadBunga>(_loadBunga);
     on<AddBunga>(_addBunga);
+    on<InitBunga>(_initBunga);
   }
 
   void _loadBunga(LoadBunga event, Emitter<BungaState> emit) async {
@@ -43,5 +44,9 @@ class BungaBloc extends Bloc<BungaEvent, BungaState> {
         error.response?.data,
       ));
     }
+  }
+
+  void _initBunga(InitBunga event, Emitter<BungaState> emit) async {
+    emit(BungaInitial());
   }
 }

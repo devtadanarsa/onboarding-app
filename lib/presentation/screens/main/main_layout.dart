@@ -39,9 +39,15 @@ class _MainLayoutState extends State<MainLayout> {
               builder: (context, userState) {
                 if (userState is UserInitial) {
                   BlocProvider.of<UserBloc>(context).add(LoadUser());
-                  return const Center(child: CircularProgressIndicator());
+                  return const Center(
+                      child: CircularProgressIndicator(
+                    color: Color.fromRGBO(31, 65, 187, 1),
+                  ));
                 } else if (userState is UserLoading) {
-                  return const Center(child: CircularProgressIndicator());
+                  return const Center(
+                      child: CircularProgressIndicator(
+                    color: Color.fromRGBO(31, 65, 187, 1),
+                  ));
                 } else if (userState is UserLoaded) {
                   return _buildPageContent(pageState.currentPage);
                 } else if (userState is ExpiredToken) {

@@ -9,5 +9,9 @@ class PageBloc extends Bloc<PageEvent, PageState> {
     on<SwitchPage>((event, emit) {
       emit(CurrentPage(event.pageIdx));
     });
+
+    on<InitPage>((event, emit) {
+      emit(PageInitial());
+    });
   }
 }

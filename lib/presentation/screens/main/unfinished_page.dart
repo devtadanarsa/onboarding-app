@@ -1,7 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/widgets.dart';
 import 'package:google_fonts/google_fonts.dart';
-import 'package:onboarding_app/presentation/widgets/custom_snackbar.dart';
 
 class UnfinishedPage extends StatelessWidget {
   const UnfinishedPage({super.key});
@@ -46,13 +45,13 @@ class UnfinishedPage extends StatelessWidget {
             ),
           ),
         ),
-        ElevatedButton(
-            onPressed: () {
-              // ScaffoldMessenger.of(context)
-              //     .showSnackBar(const SnackBar(content: Text("Test")));
-              CustomSnackBar.show(context, "error", "hello");
-            },
-            child: const Text("Test")),
+        // ElevatedButton(
+        //     onPressed: () {
+        //       // ScaffoldMessenger.of(context)
+        //       //     .showSnackBar(const SnackBar(content: Text("Test")));
+        //       CustomSnackBar.show(context, "error", "hello");
+        //     },
+        //     child: const Text("Test")),
       ],
     );
   }

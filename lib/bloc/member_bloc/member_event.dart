@@ -22,3 +22,5 @@ final class EditMember extends MemberEvent {
 
   EditMember({required this.member});
 }
+
+final class InitMember extends MemberEvent {}

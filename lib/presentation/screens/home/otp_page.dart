@@ -2,6 +2,9 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_otp_text_field/flutter_otp_text_field.dart';
 import 'package:google_fonts/google_fonts.dart';
+import 'package:onboarding_app/bloc/bunga_bloc/bunga_bloc.dart';
+import 'package:onboarding_app/bloc/member_bloc/member_bloc.dart';
+import 'package:onboarding_app/bloc/page_bloc/page_bloc.dart';
 import 'package:onboarding_app/bloc/user_bloc/user_bloc.dart';
 import 'package:timer_count_down/timer_controller.dart';
 import 'package:timer_count_down/timer_count_down.dart';
@@ -21,6 +24,9 @@ class _OTPPageState extends State<OTPPage> {
   void initState() {
     super.initState();
     BlocProvider.of<UserBloc>(context).add(InitUser());
+    BlocProvider.of<MemberBloc>(context).add(InitMember());
+    BlocProvider.of<BungaBloc>(context).add(InitBunga());
+    BlocProvider.of<PageBloc>(context).add(InitPage());
   }
 
   @override

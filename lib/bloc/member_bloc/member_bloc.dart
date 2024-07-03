@@ -15,6 +15,7 @@ class MemberBloc extends Bloc<MemberEvent, MemberState> {
     on<AddMember>(_addMember);
     on<DeleteMember>(_deleteMember);
     on<EditMember>(_editMember);
+    on<InitMember>(_initMember);
   }
 
   void _loadMember(LoadMember event, Emitter<MemberState> emit) async {
@@ -64,5 +65,9 @@ class MemberBloc extends Bloc<MemberEvent, MemberState> {
         "Failed to update member - Nomor Induk is duplicated!",
       ));
     }
+  }
+
+  void _initMember(InitMember event, Emitter<MemberState> emit) async {
+    emit(MemberInitial());
   }
 }
