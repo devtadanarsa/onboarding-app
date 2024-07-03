@@ -28,6 +28,7 @@ environment:
 # the latest version available on pub.dev. To see which dependencies have newer
 # versions available, run `flutter pub outdated`.
 dependencies:
+  carousel_slider: ^4.2.1
   cupertino_icons: ^1.0.6
   dio: ^5.4.3+1
   email_validator: ^2.1.16
@@ -61,6 +62,10 @@ flutter:
     - assets/session-expired.jpg
     - assets/companies/gojek-icon.png
     - assets/companies/elux-icon.png
+    - assets/city-bg.png
+    - assets/promos/promo-1.jpg
+    - assets/promos/promo-2.jpg
+    - assets/promos/promo-3.jpg
     - assets/companies/djitugo-icon.jpeg
     - assets/companies/tokopedia-icon.jpeg
     - assets/companies/laksita-icon.png

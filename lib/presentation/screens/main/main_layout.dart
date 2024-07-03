@@ -23,6 +23,12 @@ class _MainLayoutState extends State<MainLayout> {
     const ProfilePage(),
   ];
 
+  void _onTabTapped(int index) {
+    setState(() {
+      _selectedIdx = index;
+    });
+  }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -86,9 +92,7 @@ class _MainLayoutState extends State<MainLayout> {
 
     return GestureDetector(
       onTap: () {
-        setState(() {
-          _selectedIdx = index;
-        });
+        _onTabTapped(index);
       },
       child: Column(
         mainAxisAlignment: MainAxisAlignment.center,
@@ -108,7 +112,9 @@ class _MainLayoutState extends State<MainLayout> {
 
   Widget _buildPageContent() {
     return Container(
-      padding: const EdgeInsets.symmetric(vertical: 10, horizontal: 25),
+      padding: EdgeInsets.symmetric(
+          vertical: _selectedIdx != 0 ? 10 : 0,
+          horizontal: _selectedIdx != 0 ? 25 : 0),
       child: _pages[_selectedIdx],
     );
   }

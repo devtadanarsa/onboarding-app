@@ -1,13 +1,10 @@
 import 'package:dio/dio.dart';
-import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter/widgets.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:get_storage/get_storage.dart';
 import 'package:onboarding_app/bloc/bunga_bloc/bunga_bloc.dart';
 import 'package:onboarding_app/bloc/member_bloc/member_bloc.dart';
 import 'package:onboarding_app/bloc/user_bloc/user_bloc.dart';
-import 'package:onboarding_app/presentation/screens/main/member/widgets/team_member_card.dart';
 import 'package:onboarding_app/presentation/screens/main/profile/pages/bunga_page.dart';
 import 'package:onboarding_app/presentation/screens/main/profile/widgets/add_bunga_button.dart';
 import 'package:onboarding_app/presentation/widgets/custom_snackbar.dart';
@@ -103,39 +100,6 @@ class ProfilePage extends StatelessWidget {
                                 ),
                                 const Padding(
                                   padding: EdgeInsets.only(top: 8),
-                                  child: Divider(),
-                                ),
-                                const HeadingText(
-                                  heading: "Team Members",
-                                  href: "See All Members",
-                                ),
-                                SizedBox(
-                                  child: SingleChildScrollView(
-                                    physics:
-                                        const NeverScrollableScrollPhysics(),
-                                    child: Column(
-                                      children: List.generate(
-                                        members.length > 3 ? 3 : members.length,
-                                        (index) {
-                                          return TeamMemberCard(
-                                            id: members[index].id!,
-                                            nomorInduk:
-                                                members[index].nomorInduk,
-                                            name: members[index].name,
-                                            address: members[index].address,
-                                            dateOfBirth:
-                                                members[index].dateOfBirth,
-                                            telephone:
-                                                members[index].phoneNumber,
-                                            isActive: members[index].isActive!,
-                                          );
-                                        },
-                                      ),
-                                    ),
-                                  ),
-                                ),
-                                const Padding(
-                                  padding: EdgeInsets.only(top: 20),
                                   child: Divider(),
                                 ),
                                 const HeadingText(
