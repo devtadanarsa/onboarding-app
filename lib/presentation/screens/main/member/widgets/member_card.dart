@@ -143,6 +143,7 @@ class MemberCard extends StatelessWidget {
                             address: address,
                             dateOfBirth: dateOfBirth,
                             phoneNumber: telephone,
+                            isActive: isActive,
                           ),
                         );
                       },

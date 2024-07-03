@@ -164,12 +164,14 @@ class MemberDetailPage extends StatelessWidget {
                                               margin: const EdgeInsets.all(5),
                                               decoration: BoxDecoration(
                                                   border: Border.all(
-                                                      color: Colors.black),
+                                                    color: Colors.black,
+                                                    width: 2,
+                                                  ),
                                                   borderRadius:
                                                       BorderRadius.circular(5)),
                                               child: const Image(
                                                 image: AssetImage(
-                                                  "assets/default-profile.png",
+                                                  "assets/unknown-profile.jpg",
                                                 ),
                                               ),
                                             ),

@@ -64,6 +64,7 @@ flutter:
     - assets/companies/gojek-icon.png
     - assets/companies/elux-icon.png
     - assets/city-bg.png
+    - assets/unknown-profile.jpg
     - assets/promos/promo-1.jpg
     - assets/promos/promo-2.jpg
     - assets/promos/promo-3.jpg

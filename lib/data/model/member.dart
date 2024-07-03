@@ -40,5 +40,5 @@ class Member {
       dateOfBirth: json["tgl_lahir"],
       phoneNumber: json["telepon"],
       imageUrl: json["imageUrl"],
-      isActive: json["id"]);
+      isActive: json["status_aktif"]);
 }

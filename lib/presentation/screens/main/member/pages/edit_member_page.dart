@@ -26,6 +26,7 @@ class _EditMemberPageState extends State<EditMemberPage> {
 
   String selectedDate = "";
   bool isInputValid = false;
+  bool isActiveController = false;
 
   final ValueNotifier<bool> isNameValid = ValueNotifier<bool>(false);
   final ValueNotifier<bool> isNomorIndukValid = ValueNotifier<bool>(false);
@@ -44,6 +45,7 @@ class _EditMemberPageState extends State<EditMemberPage> {
     dobController =
         TextEditingController(text: formatDate(widget.member.dateOfBirth));
     selectedDate = widget.member.dateOfBirth;
+    isActiveController = widget.member.isActive == 1;
 
     isNameValid.value = nameController.text.isNotEmpty;
     isNomorIndukValid.value = nomorIndukController.text.isNotEmpty;
@@ -90,7 +92,32 @@ class _EditMemberPageState extends State<EditMemberPage> {
                   });
                 }),
                 Padding(
-                  padding: const EdgeInsets.only(top: 30),
+                  padding: const EdgeInsets.only(top: 15),
+                  child: Row(
+                    mainAxisAlignment: MainAxisAlignment.end,
+                    children: [
+                      const Text(
+                        "Member Status : ",
+                        style: TextStyle(
+                          fontWeight: FontWeight.bold,
+                        ),
+                      ),
+                      Switch(
+                        activeColor: const Color.fromRGBO(31, 65, 187, 1),
+                        inactiveThumbColor:
+                            const Color.fromRGBO(31, 65, 187, 1),
+                        value: isActiveController,
+                        onChanged: (bool value) {
+                          setState(() {
+                            isActiveController = value;
+                          });
+                        },
+                      ),
+                    ],
+                  ),
+                ),
+                Padding(
+                  padding: const EdgeInsets.only(top: 10),
                   child: ElevatedButton(
                     onPressed: () {
                       onSaveTap();
@@ -144,7 +171,7 @@ class _EditMemberPageState extends State<EditMemberPage> {
       address: addressController.text,
       dateOfBirth: selectedDate,
       phoneNumber: phoneController.text,
-      isActive: 1,
+      isActive: isActiveController ? 1 : 0,
     );
     BlocProvider.of<MemberBloc>(context).add(EditMember(member: editedMember));
     Navigator.pop(context);
