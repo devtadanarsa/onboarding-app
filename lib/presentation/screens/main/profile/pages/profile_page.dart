@@ -35,178 +35,159 @@ class ProfilePage extends StatelessWidget {
             final user = userState.userInformation;
             return BlocBuilder<MemberBloc, MemberState>(
               builder: (context, memberState) {
-                if (memberState is MemberLoading) {
-                  return const Center(
-                    child: CircularProgressIndicator(),
-                  );
-                } else if (memberState is MemberInitial) {
-                  BlocProvider.of<MemberBloc>(context).add(LoadMember());
-                  return const Center(
-                    child: CircularProgressIndicator(),
-                  );
-                } else if (memberState is MemberLoaded) {
-                  final members = memberState.members;
-                  return BlocBuilder<BungaBloc, BungaState>(
-                    builder: (context, bungaState) {
-                      if (bungaState is BungaInitial ||
-                          bungaState is BungaAdded) {
-                        BlocProvider.of<BungaBloc>(context).add(LoadBunga());
-                        return const Center(
-                          child: CircularProgressIndicator(),
-                        );
-                      } else if (bungaState is BungaLoading) {
-                        return const Center(
-                          child: CircularProgressIndicator(),
-                        );
-                      } else if (bungaState is BungaLoaded) {
-                        return SafeArea(
-                          child: SingleChildScrollView(
-                            child: Column(
-                              children: [
-                                Container(
-                                  alignment: Alignment.center,
-                                  child: const Column(
-                                    children: [
-                                      CircleAvatar(
-                                        backgroundImage: AssetImage(
-                                            "assets/default-profile.png"),
-                                        radius: 30,
-                                      ),
-                                      Padding(
-                                        padding:
-                                            EdgeInsets.only(top: 8, bottom: 8),
-                                        child: Text(
-                                          "Edit Profile Photo",
-                                          style: TextStyle(
-                                            fontWeight: FontWeight.bold,
-                                            fontSize: 14,
-                                            color:
-                                                Color.fromRGBO(31, 65, 187, 1),
-                                          ),
+                return BlocBuilder<BungaBloc, BungaState>(
+                  builder: (context, bungaState) {
+                    if (bungaState is BungaInitial ||
+                        bungaState is BungaAdded) {
+                      BlocProvider.of<BungaBloc>(context).add(LoadBunga());
+                      return const Center(
+                        child: CircularProgressIndicator(),
+                      );
+                    } else if (bungaState is BungaLoading) {
+                      return const Center(
+                        child: CircularProgressIndicator(),
+                      );
+                    } else if (bungaState is BungaLoaded) {
+                      return SafeArea(
+                        child: SingleChildScrollView(
+                          child: Column(
+                            children: [
+                              Container(
+                                alignment: Alignment.center,
+                                child: const Column(
+                                  children: [
+                                    CircleAvatar(
+                                      backgroundImage: AssetImage(
+                                          "assets/default-profile.png"),
+                                      radius: 30,
+                                    ),
+                                    Padding(
+                                      padding:
+                                          EdgeInsets.only(top: 8, bottom: 8),
+                                      child: Text(
+                                        "Edit Profile Photo",
+                                        style: TextStyle(
+                                          fontWeight: FontWeight.bold,
+                                          fontSize: 14,
+                                          color: Color.fromRGBO(31, 65, 187, 1),
                                         ),
                                       ),
-                                    ],
-                                  ),
+                                    ),
+                                  ],
                                 ),
-                                const Divider(),
-                                const HeadingText(heading: "Profile Info"),
-                                InformationField(
-                                  label: "Name",
-                                  value: user.name,
-                                ),
-                                InformationField(
-                                  label: "Email",
-                                  value: user.email,
-                                ),
-                                const Padding(
-                                  padding: EdgeInsets.only(top: 8),
-                                  child: Divider(),
-                                ),
-                                const HeadingText(
-                                  heading: "General Setting",
-                                ),
-                                Padding(
-                                  padding: const EdgeInsets.only(top: 24),
-                                  child: Row(
-                                    mainAxisAlignment:
-                                        MainAxisAlignment.spaceBetween,
-                                    children: [
-                                      SizedBox(
-                                        width: 120,
-                                        child: Text(
-                                          "Setting Bunga",
-                                          style: TextStyle(
-                                            color: Colors.grey[700],
-                                          ),
+                              ),
+                              const Divider(),
+                              const HeadingText(heading: "Profile Info"),
+                              InformationField(
+                                label: "Name",
+                                value: user.name,
+                              ),
+                              InformationField(
+                                label: "Email",
+                                value: user.email,
+                              ),
+                              const Padding(
+                                padding: EdgeInsets.only(top: 8),
+                                child: Divider(),
+                              ),
+                              const HeadingText(
+                                heading: "General Setting",
+                              ),
+                              Padding(
+                                padding: const EdgeInsets.only(top: 24),
+                                child: Row(
+                                  mainAxisAlignment:
+                                      MainAxisAlignment.spaceBetween,
+                                  children: [
+                                    SizedBox(
+                                      width: 120,
+                                      child: Text(
+                                        "Setting Bunga",
+                                        style: TextStyle(
+                                          color: Colors.grey[700],
                                         ),
                                       ),
-                                      SizedBox(
-                                        width: 120,
-                                        child: Text(
-                                          "${bungaState.activeBunga.persen}% (Saat ini)",
-                                        ),
+                                    ),
+                                    SizedBox(
+                                      width: 120,
+                                      child: Text(
+                                        "${bungaState.activeBunga.persen}% (Saat ini)",
                                       ),
-                                      AddBungaButton(
-                                        currentBunga: bungaState.activeBunga,
-                                      ),
-                                      // GestureDetector(
-                                      //   onTap: () {},
-                                      //   child: const Icon(
-                                      //       Icons.keyboard_arrow_right_outlined),
-                                      // ),
-                                    ],
-                                  ),
+                                    ),
+                                    AddBungaButton(
+                                      currentBunga: bungaState.activeBunga,
+                                    ),
+                                    // GestureDetector(
+                                    //   onTap: () {},
+                                    //   child: const Icon(
+                                    //       Icons.keyboard_arrow_right_outlined),
+                                    // ),
+                                  ],
                                 ),
-                                Padding(
-                                  padding: const EdgeInsets.only(top: 24),
-                                  child: Row(
-                                    mainAxisAlignment:
-                                        MainAxisAlignment.spaceBetween,
-                                    children: [
-                                      SizedBox(
-                                        width: 120,
-                                        child: Text(
-                                          "Riwayat Bunga",
-                                          style: TextStyle(
-                                            color: Colors.grey[700],
-                                          ),
+                              ),
+                              Padding(
+                                padding: const EdgeInsets.only(top: 24),
+                                child: Row(
+                                  mainAxisAlignment:
+                                      MainAxisAlignment.spaceBetween,
+                                  children: [
+                                    SizedBox(
+                                      width: 120,
+                                      child: Text(
+                                        "Riwayat Bunga",
+                                        style: TextStyle(
+                                          color: Colors.grey[700],
                                         ),
                                       ),
-                                      const SizedBox(
-                                        width: 120,
-                                        child: Text(
-                                          "Lihat Riwayat",
-                                        ),
+                                    ),
+                                    const SizedBox(
+                                      width: 120,
+                                      child: Text(
+                                        "Lihat Riwayat",
                                       ),
-                                      GestureDetector(
-                                        onTap: () {
-                                          Navigator.push(
-                                            context,
-                                            MaterialPageRoute(
-                                              builder: (context) => BungaPage(
-                                                listBunga: bungaState.listBunga,
-                                                activeBunga:
-                                                    bungaState.activeBunga,
-                                              ),
+                                    ),
+                                    GestureDetector(
+                                      onTap: () {
+                                        Navigator.push(
+                                          context,
+                                          MaterialPageRoute(
+                                            builder: (context) => BungaPage(
+                                              listBunga: bungaState.listBunga,
+                                              activeBunga:
+                                                  bungaState.activeBunga,
                                             ),
-                                          );
-                                        },
-                                        child: const Icon(Icons
-                                            .keyboard_arrow_right_outlined),
-                                      )
-                                    ],
-                                  ),
+                                          ),
+                                        );
+                                      },
+                                      child: const Icon(
+                                          Icons.keyboard_arrow_right_outlined),
+                                    )
+                                  ],
                                 ),
-                                const Padding(
-                                  padding: EdgeInsets.only(top: 20),
-                                  child: Divider(),
-                                ),
-                                const Padding(
-                                  padding: EdgeInsets.only(top: 20, bottom: 20),
-                                  child: LogoutButton(),
-                                )
-                              ],
-                            ),
+                              ),
+                              const Padding(
+                                padding: EdgeInsets.only(top: 20),
+                                child: Divider(),
+                              ),
+                              const Padding(
+                                padding: EdgeInsets.only(top: 20, bottom: 20),
+                                child: LogoutButton(),
+                              )
+                            ],
                           ),
-                        );
-                      } else if (bungaState is BungaError) {
-                        return Center(
-                          child: Text(bungaState.errorDescription),
-                        );
-                      } else {
-                        return const Center(
-                          child: Text("Unknown error pada Bunga"),
-                        );
-                      }
-                    },
-                  );
-                } else if (memberState is MemberError) {
-                  return Center(
-                    child: Text(memberState.errorDescription),
-                  );
-                } else {
-                  return Container(); // Handle other states if needed
-                }
+                        ),
+                      );
+                    } else if (bungaState is BungaError) {
+                      return Center(
+                        child: Text(bungaState.errorDescription),
+                      );
+                    } else {
+                      return const Center(
+                        child: Text("Unknown error pada Bunga"),
+                      );
+                    }
+                  },
+                );
               },
             );
           } else if (userState is UserError) {

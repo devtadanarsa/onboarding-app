@@ -1,5 +1,9 @@
 import 'package:carousel_slider/carousel_slider.dart';
+import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter/widgets.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:onboarding_app/bloc/page_bloc/page_bloc.dart';
 
 class HomePage extends StatelessWidget {
   HomePage({super.key});
@@ -247,13 +251,15 @@ class HomePage extends StatelessWidget {
                 child: Row(
                   mainAxisAlignment: MainAxisAlignment.spaceBetween,
                   children: [
-                    Column(
-                      children: [
-                        Icon(Icons.people_alt_outlined),
-                        Padding(
-                          padding: EdgeInsets.only(top: 2),
-                          child: GestureDetector(
-                            onTap: () {},
+                    GestureDetector(
+                      onTap: () {
+                        BlocProvider.of<PageBloc>(context).add(SwitchPage(2));
+                      },
+                      child: const Column(
+                        children: [
+                          Icon(Icons.people_alt_outlined),
+                          Padding(
+                            padding: EdgeInsets.only(top: 2),
                             child: Text(
                               "Manage\nMember",
                               textAlign: TextAlign.center,
@@ -262,40 +268,50 @@ class HomePage extends StatelessWidget {
                               ),
                             ),
                           ),
-                        ),
-                      ],
+                        ],
+                      ),
                     ),
-                    Column(
-                      children: [
-                        Icon(Icons.monetization_on_outlined),
-                        Padding(
-                          padding: EdgeInsets.only(top: 2),
-                          child: Text(
-                            "Interest\nRate",
-                            textAlign: TextAlign.center,
-                            style: TextStyle(
-                              fontSize: 11,
+                    GestureDetector(
+                      onTap: () {
+                        BlocProvider.of<PageBloc>(context).add(SwitchPage(3));
+                      },
+                      child: const Column(
+                        children: [
+                          Icon(Icons.monetization_on_outlined),
+                          Padding(
+                            padding: EdgeInsets.only(top: 2),
+                            child: Text(
+                              "Interest\nRate",
+                              textAlign: TextAlign.center,
+                              style: TextStyle(
+                                fontSize: 11,
+                              ),
                             ),
                           ),
-                        ),
-                      ],
+                        ],
+                      ),
                     ),
-                    Column(
-                      children: [
-                        Icon(Icons.memory_sharp),
-                        Padding(
-                          padding: EdgeInsets.only(top: 2),
-                          child: Text(
-                            "Account\nSetting",
-                            textAlign: TextAlign.center,
-                            style: TextStyle(
-                              fontSize: 11,
+                    GestureDetector(
+                      onTap: () {
+                        BlocProvider.of<PageBloc>(context).add(SwitchPage(3));
+                      },
+                      child: const Column(
+                        children: [
+                          Icon(Icons.memory_sharp),
+                          Padding(
+                            padding: EdgeInsets.only(top: 2),
+                            child: Text(
+                              "Account\nSetting",
+                              textAlign: TextAlign.center,
+                              style: TextStyle(
+                                fontSize: 11,
+                              ),
                             ),
                           ),
-                        ),
-                      ],
+                        ],
+                      ),
                     ),
-                    Column(
+                    const Column(
                       children: [
                         Icon(Icons.settings_outlined),
                         Padding(

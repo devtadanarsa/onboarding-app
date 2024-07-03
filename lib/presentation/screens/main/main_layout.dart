@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:onboarding_app/bloc/page_bloc/page_bloc.dart';
 import 'package:onboarding_app/bloc/user_bloc/user_bloc.dart';
 import 'package:onboarding_app/presentation/screens/main/home_page.dart';
 import 'package:onboarding_app/presentation/screens/main/member/pages/member_page.dart';
@@ -23,32 +24,37 @@ class _MainLayoutState extends State<MainLayout> {
     const ProfilePage(),
   ];
 
-  void _onTabTapped(int index) {
-    setState(() {
-      _selectedIdx = index;
-    });
-  }
-
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       backgroundColor: Colors.grey[100],
       bottomNavigationBar: _buildBottomAppBar(),
-      body: BlocBuilder<UserBloc, UserState>(
-        builder: (context, userState) {
-          if (userState is UserInitial) {
-            BlocProvider.of<UserBloc>(context).add(LoadUser());
-            return const Center(child: CircularProgressIndicator());
-          } else if (userState is UserLoading) {
-            return const Center(child: CircularProgressIndicator());
-          } else if (userState is UserLoaded) {
-            return _buildPageContent();
-          } else if (userState is ExpiredToken) {
-            return _buildExpiredTokenDialog(context);
-          } else if (userState is UserError) {
-            return _buildErrorDialog(context);
+      body: BlocBuilder<PageBloc, PageState>(
+        builder: (context, pageState) {
+          if (pageState is PageInitial) {
+            BlocProvider.of<PageBloc>(context).add(SwitchPage(0));
+            return Container();
+          } else if (pageState is CurrentPage) {
+            return BlocBuilder<UserBloc, UserState>(
+              builder: (context, userState) {
+                if (userState is UserInitial) {
+                  BlocProvider.of<UserBloc>(context).add(LoadUser());
+                  return const Center(child: CircularProgressIndicator());
+                } else if (userState is UserLoading) {
+                  return const Center(child: CircularProgressIndicator());
+                } else if (userState is UserLoaded) {
+                  return _buildPageContent(pageState.currentPage);
+                } else if (userState is ExpiredToken) {
+                  return _buildExpiredTokenDialog(context);
+                } else if (userState is UserError) {
+                  return _buildErrorDialog(context);
+                } else {
+                  return Container(); // Handle other states if needed
+                }
+              },
+            );
           } else {
-            return Container(); // Handle other states if needed
+            return Container();
           }
         },
       ),
@@ -92,7 +98,10 @@ class _MainLayoutState extends State<MainLayout> {
 
     return GestureDetector(
       onTap: () {
-        _onTabTapped(index);
+        setState(() {
+          _selectedIdx = index;
+          BlocProvider.of<PageBloc>(context).add(SwitchPage(index));
+        });
       },
       child: Column(
         mainAxisAlignment: MainAxisAlignment.center,
@@ -110,12 +119,12 @@ class _MainLayoutState extends State<MainLayout> {
     );
   }
 
-  Widget _buildPageContent() {
+  Widget _buildPageContent(int currentPage) {
     return Container(
       padding: EdgeInsets.symmetric(
-          vertical: _selectedIdx != 0 ? 10 : 0,
-          horizontal: _selectedIdx != 0 ? 25 : 0),
-      child: _pages[_selectedIdx],
+          vertical: currentPage != 0 ? 10 : 0,
+          horizontal: currentPage != 0 ? 25 : 0),
+      child: _pages[currentPage],
     );
   }
 

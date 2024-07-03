@@ -3,6 +3,7 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:onboarding_app/bloc/bunga_bloc/bunga_bloc.dart';
 import 'package:onboarding_app/bloc/member_bloc/member_bloc.dart';
+import 'package:onboarding_app/bloc/page_bloc/page_bloc.dart';
 import 'package:onboarding_app/bloc/user_bloc/user_bloc.dart';
 import 'package:onboarding_app/data/source/remote_source.dart';
 import 'package:onboarding_app/presentation/screens/home/login_page.dart';
@@ -34,6 +35,7 @@ class MyApp extends StatelessWidget {
         BlocProvider<BungaBloc>(
           create: (context) => BungaBloc(remoteDataSource: RemoteDataSource()),
         ),
+        BlocProvider<PageBloc>(create: (context) => PageBloc())
       ],
       child: MaterialApp(
         theme: _buildTheme(Brightness.light),
