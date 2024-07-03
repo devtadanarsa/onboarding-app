@@ -53,20 +53,20 @@ class BungaCard extends StatelessWidget {
                   ),
                 ),
               ),
-              Column(
+              const Column(
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
-                  const Text(
-                    "Perubahan Bunga",
+                  Text(
+                    "Persentase Bunga",
                     style: TextStyle(
-                      fontSize: 11,
+                      fontSize: 12,
                       fontWeight: FontWeight.bold,
                     ),
                   ),
-                  Text(
-                    bungaInformation.isActive == 0 ? "Tidak Aktif" : "Aktif",
-                    style: const TextStyle(fontSize: 10, color: Colors.grey),
-                  )
+                  // Text(
+                  //   bungaInformation.isActive == 0 ? "Tidak Aktif" : "Aktif",
+                  //   style: const TextStyle(fontSize: 10, color: Colors.grey),
+                  // )
                 ],
               ),
             ],
@@ -74,13 +74,15 @@ class BungaCard extends StatelessWidget {
           Container(
             padding: const EdgeInsets.symmetric(horizontal: 10, vertical: 5),
             decoration: BoxDecoration(
-              color: Colors.green[100],
+              color: bungaInformation.isActive == 1
+                  ? Colors.green[100]
+                  : Colors.grey[300],
               borderRadius: BorderRadius.circular(100),
             ),
-            child: const Text(
-              "Berhasil",
+            child: Text(
+              bungaInformation.isActive == 1 ? "Bunga Aktif" : "Non-Aktif",
               textAlign: TextAlign.center,
-              style: TextStyle(
+              style: const TextStyle(
                 fontSize: 10,
                 fontWeight: FontWeight.bold,
               ),

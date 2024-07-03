@@ -114,6 +114,8 @@ class BungaPage extends StatelessWidget {
               ? SliverList(
                   delegate: SliverChildBuilderDelegate(
                     (BuildContext context, int index) {
+                      listBunga.sort((b, a) => a.id!.compareTo(b.id!));
+
                       return Padding(
                         padding: EdgeInsets.only(top: (index == 0) ? 20 : 0),
                         child: BungaCard(bungaInformation: listBunga[index]),
