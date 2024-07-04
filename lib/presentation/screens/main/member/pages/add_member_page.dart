@@ -42,14 +42,14 @@ class _AddMemberPageState extends State<AddMemberPage> {
             padding: const EdgeInsets.only(top: 10, left: 30, right: 30),
             child: Column(
               children: [
-                buildTextInput(
-                    nameController, "Full Name", "John Marston", isNameValid),
-                buildTextInput(nomorIndukController, "Nomor Induk", "100",
+                buildTextInput(nameController, "Full Name", "John Marston",
+                    false, isNameValid),
+                buildTextInput(nomorIndukController, "Nomor Induk", "100", true,
                     isNomorIndukValid),
-                buildTextInput(
-                    addressController, "Address", "Denpasar", isAddressValid),
-                buildTextInput(phoneController, "Phone Number", "08123456789",
-                    isPhoneValid),
+                buildTextInput(addressController, "Address", "Denpasar, Bali",
+                    false, isAddressValid),
+                buildTextInput(phoneController, "Phone Number", "081234567890",
+                    true, isPhoneValid),
                 buildDateInput(
                     context, dobController, "Date of Birth", isDobValid,
                     (String date) {
@@ -86,9 +86,10 @@ class _AddMemberPageState extends State<AddMemberPage> {
                   child: Container(
                     padding: const EdgeInsets.only(top: 10),
                     child: const Text(
-                      "Please fill all the fields",
+                      "Your input is invalid!",
                       style: TextStyle(
                         color: Colors.red,
+                        fontWeight: FontWeight.bold,
                         fontSize: 12,
                       ),
                     ),

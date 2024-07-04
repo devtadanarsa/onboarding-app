@@ -76,14 +76,14 @@ class _EditMemberPageState extends State<EditMemberPage> {
             padding: const EdgeInsets.only(top: 10, left: 30, right: 30),
             child: Column(
               children: [
-                buildTextInput(
-                    nameController, "Full Name", "John Marston", isNameValid),
-                buildTextInput(nomorIndukController, "Nomor Induk", "100",
+                buildTextInput(nameController, "Full Name", "John Marston",
+                    false, isNameValid),
+                buildTextInput(nomorIndukController, "Nomor Induk", "100", true,
                     isNomorIndukValid),
-                buildTextInput(
-                    addressController, "Address", "Denpasar", isAddressValid),
+                buildTextInput(addressController, "Address", "Denpasar", false,
+                    isAddressValid),
                 buildTextInput(phoneController, "Phone Number", "08123456789",
-                    isPhoneValid),
+                    true, isPhoneValid),
                 buildDateInput(
                     context, dobController, "Date of Birth", isDobValid,
                     (String date) {

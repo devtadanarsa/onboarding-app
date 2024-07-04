@@ -24,7 +24,6 @@ class _AddBungaButtonState extends State<AddBungaButton> {
 
   @override
   Widget build(BuildContext context) {
-    print(isActiveController);
     return GestureDetector(
       onTap: () {
         showModalBottomSheet(
