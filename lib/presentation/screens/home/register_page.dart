@@ -4,6 +4,7 @@ import 'package:dio/dio.dart';
 import 'package:email_validator/email_validator.dart';
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
+import 'package:onboarding_app/presentation/widgets/custom_snackbar.dart';
 
 class RegisterPage extends StatefulWidget {
   const RegisterPage({super.key});
@@ -79,6 +80,8 @@ class _RegisterPageState extends State<RegisterPage> {
       }
 
       if (mounted) {
+        CustomSnackBar.show(
+            context, "success", "Akun telah berhasil terdaftar");
         Navigator.pushNamed(context, "/login");
       }
     } on DioException catch (e) {

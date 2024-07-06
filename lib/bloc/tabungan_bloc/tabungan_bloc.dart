@@ -32,6 +32,7 @@ class TabunganBloc extends Bloc<TabunganEvent, TabunganState> {
 
   void _transaksiTabungan(
       TransaksiTabungan event, Emitter<TabunganState> emit) async {
+    emit(TabunganLoading());
     try {
       final result = await remoteDataSource.transaksiTabungan(
           event.memberId, event.idTransaksi, event.nominal);

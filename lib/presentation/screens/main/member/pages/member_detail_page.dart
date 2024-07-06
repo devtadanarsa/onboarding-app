@@ -677,7 +677,7 @@ class MemberDetailPage extends StatelessWidget {
                     .add(LoadTabungan(memberId: id));
                 return const Center(child: CircularProgressIndicator());
               } else {
-                return const Center(child: Text("Unknown Error"));
+                return const Center(child: CircularProgressIndicator());
               }
             },
           ),

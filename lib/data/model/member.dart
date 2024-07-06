@@ -13,7 +13,7 @@ class DataMember {
 
 class Member {
   final int? id;
-  final int nomorInduk;
+  final dynamic nomorInduk;
   final String name;
   final String address;
   final String dateOfBirth;

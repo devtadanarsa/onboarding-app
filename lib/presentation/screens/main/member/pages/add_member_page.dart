@@ -25,7 +25,6 @@ class _AddMemberPageState extends State<AddMemberPage> {
   bool isInputValid = false;
 
   final ValueNotifier<bool> isNameValid = ValueNotifier<bool>(false);
-  final ValueNotifier<bool> isNomorIndukValid = ValueNotifier<bool>(false);
   final ValueNotifier<bool> isAddressValid = ValueNotifier<bool>(false);
   final ValueNotifier<bool> isPhoneValid = ValueNotifier<bool>(false);
   final ValueNotifier<bool> isDobValid = ValueNotifier<bool>(false);
@@ -44,8 +43,6 @@ class _AddMemberPageState extends State<AddMemberPage> {
               children: [
                 buildTextInput(nameController, "Full Name", "John Marston",
                     false, isNameValid),
-                buildTextInput(nomorIndukController, "Nomor Induk", "100", true,
-                    isNomorIndukValid),
                 buildTextInput(addressController, "Address", "Denpasar, Bali",
                     false, isAddressValid),
                 buildTextInput(phoneController, "Phone Number", "081234567890",
@@ -104,8 +101,10 @@ class _AddMemberPageState extends State<AddMemberPage> {
   }
 
   void saveMember() {
+    int date = DateTime.now().millisecondsSinceEpoch;
+    print(date);
     Member member = Member(
-      nomorInduk: int.tryParse(nomorIndukController.text) ?? 0,
+      nomorInduk: date,
       name: nameController.text,
       address: addressController.text,
       dateOfBirth: selectedDate,
@@ -235,7 +234,6 @@ class _AddMemberPageState extends State<AddMemberPage> {
 
   bool _allInputsValid() {
     return isNameValid.value &&
-        isNomorIndukValid.value &&
         isAddressValid.value &&
         isPhoneValid.value &&
         isDobValid.value;

@@ -33,6 +33,7 @@ class MemberBloc extends Bloc<MemberEvent, MemberState> {
 
   void _addMember(AddMember event, Emitter<MemberState> emit) async {
     try {
+      emit(MemberLoading());
       await remoteDataSource.addMember(event.member);
       emit(MemberAdded());
     } on DioException catch (error) {
@@ -45,6 +46,7 @@ class MemberBloc extends Bloc<MemberEvent, MemberState> {
 
   void _deleteMember(DeleteMember event, Emitter<MemberState> emit) async {
     try {
+      emit(MemberLoading());
       await remoteDataSource.deleteMember(event.memberId);
       emit(MemberDeleted());
     } on DioException catch (error) {
@@ -57,6 +59,7 @@ class MemberBloc extends Bloc<MemberEvent, MemberState> {
 
   void _editMember(EditMember event, Emitter<MemberState> emit) async {
     try {
+      emit(MemberLoading());
       await remoteDataSource.editMember(event.member);
       emit(MemberEdited());
     } on DioException catch (error) {

@@ -56,7 +56,19 @@ class MemberPage extends StatelessWidget {
             _buildSearchField(),
             _buildFiltersRow(),
             // _buildMemberListHeader(),
-            _buildMemberListContent(members),
+            (members.isNotEmpty
+                ? _buildMemberListContent(members)
+                : const Padding(
+                    padding: EdgeInsets.only(top: 30),
+                    child: Text(
+                      "You don't have any members yet",
+                      style: TextStyle(
+                        color: Colors.grey,
+                        fontWeight: FontWeight.bold,
+                      ),
+                      textAlign: TextAlign.center,
+                    ),
+                  )),
           ],
         ),
         const AddMemberButton(),
